@@ -1,0 +1,19 @@
+﻿Build started 25/02/2017 01:29:32.
+     1>Project "C:\Users\Transrodel\Desktop\ex1 P3D\P3DExercise1\P3DExercise1\P3DExercise1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I. /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt "main - P3D.cpp"
+         main - P3D.cpp
+     1>c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\vector\vector.h(22): warning C4172: returning address of local variable or temporary
+     1>c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\main - p3d.cpp(350): error C2039: 'load_nff' : is not a member of 'Scene'
+                 c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\scene.h(4) : see declaration of 'Scene'
+     1>c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\main - p3d.cpp(351): error C2039: 'GetCamera' : is not a member of 'Scene'
+                 c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\scene.h(4) : see declaration of 'Scene'
+     1>c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\main - p3d.cpp(351): error C2227: left of '->GetResX' must point to class/struct/union/generic type
+     1>c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\main - p3d.cpp(352): error C2039: 'GetCamera' : is not a member of 'Scene'
+                 c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\scene.h(4) : see declaration of 'Scene'
+     1>c:\users\transrodel\desktop\ex1 p3d\p3dexercise1\p3dexercise1\main - p3d.cpp(352): error C2227: left of '->GetResY' must point to class/struct/union/generic type
+     1>Done Building Project "C:\Users\Transrodel\Desktop\ex1 P3D\P3DExercise1\P3DExercise1\P3DExercise1.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.06
