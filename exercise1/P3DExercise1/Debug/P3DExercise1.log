@@ -1,6 +1,22 @@
-﻿  main - P3D.cpp
-d:\documents\dropbox\2º semestre\programação 3d\github\exercise1\p3dexercise1\main - p3d.cpp(70): warning C4553: '==': operator has no effect; did you intend '='?
-d:\documents\dropbox\2º semestre\programação 3d\github\exercise1\p3dexercise1\main - p3d.cpp(132): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\documents\dropbox\2º semestre\programação 3d\github\exercise1\p3dexercise1\main - p3d.cpp(133): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\documents\dropbox\2º semestre\programação 3d\github\exercise1\p3dexercise1\main - p3d.cpp(310): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  P3DExercise1.vcxproj -> D:\Documents\Dropbox\2º semestre\Programação 3D\GitHub\exercise1\Debug\P3DExercise1.exe
+﻿Build started 28/02/2017 21:34:03.
+     1>Project "C:\Users\Tiago Almeida\MEIC\P3D\repo\exercise1\P3DExercise1\P3DExercise1.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I. /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt "main - P3D.cpp"
+         main - P3D.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Tiago Almeida\MEIC\P3D\repo\exercise1\Debug\P3DExercise1.exe" /INCREMENTAL /NOLOGO /LIBPATH:GL freeglut.lib glew32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Tiago Almeida\MEIC\P3D\repo\exercise1\Debug\P3DExercise1.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Tiago Almeida\MEIC\P3D\repo\exercise1\Debug\P3DExercise1.lib" /MACHINE:X86 Debug\camera.obj
+         Debug\color.obj
+         Debug\light.obj
+         "Debug\main - P3D.obj"
+         Debug\material.obj
+         Debug\object.obj
+         Debug\plane.obj
+         Debug\ray.obj
+         Debug\scene.obj
+         Debug\sphere.obj
+         P3DExercise1.vcxproj -> C:\Users\Tiago Almeida\MEIC\P3D\repo\exercise1\Debug\P3DExercise1.exe
+     1>Done Building Project "C:\Users\Tiago Almeida\MEIC\P3D\repo\exercise1\P3DExercise1\P3DExercise1.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.30
