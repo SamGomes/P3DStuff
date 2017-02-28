@@ -54,6 +54,7 @@ int WindowHandle = 0;
 
 ///////////////////////////////////////////////////////////////////////  RAY-TRACE SCENE
 
+/*
 Color rayTracing( Ray ray, int depth, float RefrIndex)
 {
     //INSERT HERE YOUR CODE
@@ -61,7 +62,8 @@ Color rayTracing( Ray ray, int depth, float RefrIndex)
 
 Ray calculatePrimaryRay(int x, int y){
 	//INSERTED THIS HERE ASS: SAMUEL
-}
+	
+}*/
 
 /////////////////////////////////////////////////////////////////////// ERRORS
 
@@ -226,7 +228,7 @@ void renderScene()
 		{
 		
 		 /*   YOUR 2 FUNTIONS: */
-			Ray ray = calculatePrimaryRay(x, y);
+		/*	Ray ray = calculatePrimaryRay(x, y);
 			Color color = rayTracing(ray, 1, 1.0);
 
 			vertices[index_pos++]= (float)x;
@@ -246,13 +248,15 @@ void renderScene()
 				drawPoints();
 				index_pos=0;
 				index_col=0;
+				*/
 		}
 	}
 
 	if(draw_mode == 2) //preenchar o conteúdo da janela com uma imagem completa
 		 drawPoints();
 
-	printf("Terminou!\n"); 	
+	printf("Terminou!\n");
+	
 }
 
 void cleanup()
@@ -347,9 +351,9 @@ int main(int argc, char* argv[])
 {
     //INSERT HERE YOUR CODE FOR PARSING NFF FILES
 	scene = new Scene();
-	if(!(scene->load_nff("jap.nff"))) return 0;
-	RES_X = scene->GetCamera()->GetResX();
-	RES_Y = scene->GetCamera()->GetResY();
+	if(!(scene->loadSceneFromNFF("jap.nff"))) return 0;
+	RES_X = scene->getCamera()->getResX();
+	RES_Y = scene->getCamera()->getResY();
 
 	if(draw_mode == 0) { // desenhar o conteúdo da janela ponto a ponto
 		size_vertices = 2*sizeof(float);

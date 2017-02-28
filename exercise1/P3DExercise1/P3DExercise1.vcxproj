@@ -66,13 +66,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="main - P3D.cpp" />
+    <ClCompile Include="material.cpp" />
+    <ClCompile Include="scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="input_file_nff.pdf" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="color.h" />
+    <ClInclude Include="light.h" />
+    <ClInclude Include="main - P3D.h" />
+    <ClInclude Include="material.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="scene.h" />
   </ItemGroup>
