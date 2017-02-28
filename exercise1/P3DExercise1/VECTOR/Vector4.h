@@ -1,15 +1,13 @@
 #pragma once
 #include "Vector.h"
-#include "Matrix.h"
-#include "Matrix4.h"
+#include "MATRIX\Matrix.h"
+#include "MATRIX\Matrix4.h"
 
 #ifndef VECTOR4_H
 #define VECTOR4_H
 
 class Vector4 : public Vector
 {
-
-
 
 public:
 	GLfloat data[4];
