@@ -13,11 +13,17 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Object">
-      <UniqueIdentifier>{dbce8577-fad3-4d93-93d1-84cb26c5b04e}</UniqueIdentifier>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{9365e81e-4e66-4797-8f4a-a9a878d11417}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Object">
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{94461799-dcf3-4183-bb73-f28eac3bd5aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Object">
       <UniqueIdentifier>{af0b7a6a-344d-41c8-91f6-c3344f8379dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Object">
+      <UniqueIdentifier>{dbce8577-fad3-4d93-93d1-84cb26c5b04e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,13 +37,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="object.cpp">
-      <Filter>Source Files\Object</Filter>
+      <Filter>Source Files\Scene\Object</Filter>
     </ClCompile>
     <ClCompile Include="sphere.cpp">
-      <Filter>Source Files\Object</Filter>
+      <Filter>Source Files\Scene\Object</Filter>
     </ClCompile>
     <ClCompile Include="plane.cpp">
-      <Filter>Source Files\Object</Filter>
+      <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,9 +64,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,13 +71,25 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="object.h">
-      <Filter>Header Files\Object</Filter>
+      <Filter>Header Files\Scene\Object</Filter>
     </ClInclude>
     <ClInclude Include="sphere.h">
-      <Filter>Header Files\Object</Filter>
+      <Filter>Header Files\Scene\Object</Filter>
     </ClInclude>
     <ClInclude Include="plane.h">
-      <Filter>Header Files\Object</Filter>
+      <Filter>Header Files\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

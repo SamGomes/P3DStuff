@@ -3,6 +3,7 @@
 
 #include"glm\glm.hpp"
 #include"Ray.h"
+#include"Material.h"
 
 enum objType
 {
@@ -14,16 +15,16 @@ class Object{
 
 private:
 	glm::vec3 position;
-	//Material* material;
+	Material* material;
 
 protected:
 	objType type;
 public:
 	glm::vec3 getPosition();
-	//Material* getMaterial();
+	Material* getMaterial();
 	
 	void setPosition(glm::vec3 position);
-	//void setMaterial(Material* material);
+	void setMaterial(Material* material);
 	
 	objType getType();
 	
