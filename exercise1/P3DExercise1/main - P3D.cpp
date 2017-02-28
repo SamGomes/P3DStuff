@@ -1,4 +1,4 @@
- ///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
 //
 // P3D Course
 // (c) 2016 by João Madeiras Pereira
@@ -21,6 +21,7 @@
 #include "scene.h"
 #include "color.h"
 #include "ray.h"
+#include "glm\glm.hpp"
 
 #define CAPTION "ray tracer"
 
@@ -28,6 +29,7 @@
 #define COLOR_ATTRIB 1
 
 #define MAX_DEPTH 6
+#define BLACK_COLOR glm::vec3(0, 0, 0)
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -35,6 +37,8 @@ float *vertices;
 
 int size_vertices;
 int size_colors;
+
+glm::vec3 Background(1, 0, 0); //TODO from nff
 
 GLfloat m[16];  //projection matrix initialized by ortho function
 
@@ -48,19 +52,47 @@ Scene* scene = NULL;
 int RES_X, RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode=1; 
+int draw_mode = 1;
 
 int WindowHandle = 0;
 
 ///////////////////////////////////////////////////////////////////////  RAY-TRACE SCENE
 
-Color rayTracing( Ray ray, int depth, float RefrIndex)
+glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth, glm::vec3 color)
 {
-    //INSERT HERE YOUR CODE
+	if (depth > MAX_DEPTH) {
+		return BLACK_COLOR;
+	}
+	else {
+		bool intersection = true; //TODO samu intersection
+		if (!intersection) {
+			return Background;
+		}
+		else {
+			glm::vec3 localColor; //calculate direct ilumination
+
+			glm::vec3 intersectionPoint();
+			
+			//if object is reflective
+			//calculate reflective direction
+
+
+			//if object is refractive
+			//calculate refractive direction
+
+
+
+
+		}
+
+	}
 }
 
-Ray calculatePrimaryRay(int x, int y){
-	//INSERTED THIS HERE ASS: SAMUEL
+glm::vec3 calculatePrimaryRay(float x, float y, float invWidth, float invHeight, float angle, float aspectratio) {
+	float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
+	float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
+	glm::vec3 ray(xx, yy, 1);
+	return glm::normalize(ray);
 }
 
 /////////////////////////////////////////////////////////////////////// ERRORS
@@ -79,7 +111,7 @@ bool isOpenGLError() {
 
 void checkOpenGLError(std::string error)
 {
-	if(isOpenGLError()) {
+	if (isOpenGLError()) {
 		std::cerr << error << std::endl;
 		exit(EXIT_FAILURE);
 	}
@@ -132,7 +164,7 @@ void createShaderProgram()
 
 	glBindAttribLocation(ProgramId, VERTEX_COORD_ATTRIB, "in_Position");
 	glBindAttribLocation(ProgramId, COLOR_ATTRIB, "in_Color");
-	
+
 	glLinkProgram(ProgramId);
 	UniformId = glGetUniformLocation(ProgramId, "Matrix");
 
@@ -159,17 +191,17 @@ void createBufferObjects()
 	glGenBuffers(2, VboId);
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
 
-	/* Não é necessário fazer glBufferData, ou seja o envio dos pontos para a placa gráfica pois isso 
+	/* Não é necessário fazer glBufferData, ou seja o envio dos pontos para a placa gráfica pois isso
 	é feito na drawPoints em tempo de execução com GL_DYNAMIC_DRAW */
 
 	glEnableVertexAttribArray(VERTEX_COORD_ATTRIB);
 	glVertexAttribPointer(VERTEX_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[1]);
 	glEnableVertexAttribArray(COLOR_ATTRIB);
 	glVertexAttribPointer(COLOR_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
-	
-// unbind the VAO
+
+	// unbind the VAO
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDisableVertexAttribArray(VERTEX_COORD_ATTRIB);
@@ -181,7 +213,7 @@ void destroyBufferObjects()
 {
 	glDisableVertexAttribArray(VERTEX_COORD_ATTRIB);
 	glDisableVertexAttribArray(COLOR_ATTRIB);
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
@@ -217,42 +249,50 @@ void drawPoints()
 
 void renderScene()
 {
-	int index_pos=0;
-	int index_col=0;
+	int index_pos = 0;
+	int index_col = 0;
+
+	//TODO values from nff
+	glm::vec3 eye = glm::vec3(0, 0, -5);
+	float width = 640;
+	float height = 480;
+	float invWidth = 1 / width;
+	float invHeight = 1 / height;
+	float angle = 30;
+	float aspectratio = width / float(height);
+	//Dont forget to use unit vectors
 
 	for (int y = 0; y < RES_Y; y++)
 	{
 		for (int x = 0; x < RES_X; x++)
 		{
-		
-		 /*   YOUR 2 FUNTIONS: */
-			Ray ray = calculatePrimaryRay(x, y);
-			Color color = rayTracing(ray, 1, 1.0);
+			glm::vec3 raydir = calculatePrimaryRay(x, y, invWidth, invHeight, angle, aspectratio);
+			glm::vec3 color = rayTracing(eye, raydir, 1, glm::vec3());
 
-			vertices[index_pos++]= (float)x;
-			vertices[index_pos++]= (float)y;
-			colors[index_col++]= (float)color.r;
-			colors[index_col++]= (float)color.g;
-			colors[index_col++]= (float)color.b;	
+			vertices[index_pos++] = (float)x;
+			vertices[index_pos++] = (float)y;
+			colors[index_col++] = (float)color.r;
+			colors[index_col++] = (float)color.g;
+			colors[index_col++] = (float)color.b;
 
-			if(draw_mode == 0) {  // desenhar o conteúdo da janela ponto a ponto
+			if (draw_mode == 0) {  // desenhar o conteúdo da janela ponto a ponto
 				drawPoints();
-				index_pos=0;
-				index_col=0;
+				index_pos = 0;
+				index_col = 0;
 			}
 		}
 		printf("line %d", y);
-		if(draw_mode == 1) {  // desenhar o conteúdo da janela linha a linha
-				drawPoints();
-				index_pos=0;
-				index_col=0;
+		if (draw_mode == 1) {  // desenhar o conteúdo da janela linha a linha
+			drawPoints();
+			index_pos = 0;
+			index_col = 0;
 		}
 	}
 
-	if(draw_mode == 2) //preenchar o conteúdo da janela com uma imagem completa
-		 drawPoints();
+	if (draw_mode == 2) //preenchar o conteúdo da janela com uma imagem completa
+		drawPoints();
 
-	printf("Terminou!\n"); 	
+	printf("Terminou!\n");
 }
 
 void cleanup()
@@ -261,8 +301,8 @@ void cleanup()
 	destroyBufferObjects();
 }
 
-void ortho(float left, float right, float bottom, float top, 
-			float nearp, float farp)
+void ortho(float left, float right, float bottom, float top,
+	float nearp, float farp)
 {
 	m[0 * 4 + 0] = 2 / (right - left);
 	m[0 * 4 + 1] = 0.0;
@@ -284,13 +324,13 @@ void ortho(float left, float right, float bottom, float top,
 
 void reshape(int w, int h)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glViewport(0, 0, w, h);
 	ortho(0, (float)RES_X, 0, (float)RES_Y, -1.0, 1.0);
 }
 
 /////////////////////////////////////////////////////////////////////// SETUP
-void setupCallbacks() 
+void setupCallbacks()
 {
 	glutCloseFunc(cleanup);
 	glutDisplayFunc(renderScene);
@@ -299,34 +339,34 @@ void setupCallbacks()
 
 void setupGLEW() {
 	glewExperimental = GL_TRUE;
-	GLenum result = glewInit() ; 
-	if (result != GLEW_OK) { 
+	GLenum result = glewInit();
+	if (result != GLEW_OK) {
 		std::cerr << "ERROR glewInit: " << glewGetString(result) << std::endl;
 		exit(EXIT_FAILURE);
-	} 
+	}
 	GLenum err_code = glGetError();
-	printf ("Vendor: %s\n", glGetString (GL_VENDOR));
-	printf ("Renderer: %s\n", glGetString (GL_RENDERER));
-	printf ("Version: %s\n", glGetString (GL_VERSION));
-	printf ("GLSL: %s\n", glGetString (GL_SHADING_LANGUAGE_VERSION));
+	printf("Vendor: %s\n", glGetString(GL_VENDOR));
+	printf("Renderer: %s\n", glGetString(GL_RENDERER));
+	printf("Version: %s\n", glGetString(GL_VERSION));
+	printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
 void setupGLUT(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
-	
+
 	glutInitContextVersion(3, 3);
 	glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE,GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-	
-	glutInitWindowPosition(640,100);
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+
+	glutInitWindowPosition(640, 100);
 	glutInitWindowSize(RES_X, RES_Y);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
 	glDisable(GL_DEPTH_TEST);
 	WindowHandle = glutCreateWindow(CAPTION);
-	if(WindowHandle < 1) {
+	if (WindowHandle < 1) {
 		std::cerr << "ERROR: Could not create a new rendering window." << std::endl;
 		exit(EXIT_FAILURE);
 	}
@@ -345,25 +385,25 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    //INSERT HERE YOUR CODE FOR PARSING NFF FILES
+	//INSERT HERE YOUR CODE FOR PARSING NFF FILES
 	scene = new Scene();
-	if(!(scene->load_nff("jap.nff"))) return 0;
+	if (!(scene->load_nff("jap.nff"))) return 0;
 	RES_X = scene->GetCamera()->GetResX();
 	RES_Y = scene->GetCamera()->GetResY();
 
-	if(draw_mode == 0) { // desenhar o conteúdo da janela ponto a ponto
-		size_vertices = 2*sizeof(float);
-		size_colors = 3*sizeof(float);
+	if (draw_mode == 0) { // desenhar o conteúdo da janela ponto a ponto
+		size_vertices = 2 * sizeof(float);
+		size_colors = 3 * sizeof(float);
 		printf("DRAWING MODE: POINT BY POINT\n");
 	}
-	else if(draw_mode == 1) { // desenhar o conteúdo da janela linha a linha
-		size_vertices = 2*RES_X*sizeof(float);
-		size_colors = 3*RES_X*sizeof(float);
+	else if (draw_mode == 1) { // desenhar o conteúdo da janela linha a linha
+		size_vertices = 2 * RES_X*sizeof(float);
+		size_colors = 3 * RES_X*sizeof(float);
 		printf("DRAWING MODE: LINE BY LINE\n");
 	}
-	else if(draw_mode == 2) { // preencher o conteúdo da janela com uma imagem completa
-		size_vertices = 2*RES_X*RES_Y*sizeof(float);
-		size_colors = 3*RES_X*RES_Y*sizeof(float);
+	else if (draw_mode == 2) { // preencher o conteúdo da janela com uma imagem completa
+		size_vertices = 2 * RES_X*RES_Y*sizeof(float);
+		size_colors = 3 * RES_X*RES_Y*sizeof(float);
 		printf("DRAWING MODE: FULL IMAGE\n");
 	}
 	else {
@@ -373,13 +413,13 @@ int main(int argc, char* argv[])
 	printf("resx = %d  resy= %d.\n", RES_X, RES_Y);
 
 	vertices = (float*)malloc(size_vertices);
-    if (vertices==NULL) exit (1);
+	if (vertices == NULL) exit(1);
 
 	colors = (float*)malloc(size_colors);
-    if (colors==NULL) exit (1);
+	if (colors == NULL) exit(1);
 
 	init(argc, argv);
-	glutMainLoop();	
+	glutMainLoop();
 	exit(EXIT_SUCCESS);
 }
 ///////////////////////////////////////////////////////////////////////
