@@ -3,12 +3,13 @@
 
 #include"object.h"
 
-class Sphere : Object{
+class Sphere : public Object{
 
 private:
 	float radius;
 
 public:
+	Sphere(glm::vec3 position, float radius);
 
 	float getRadius();
 

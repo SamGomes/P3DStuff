@@ -2,6 +2,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "sphere.h"
+#include "plane.h"
+
 #include "scene.h"
 
 Scene::Scene()
@@ -82,7 +85,7 @@ bool Scene::loadSceneFromNFF(char * path)
 		if (line.substr(0, 1) == "v") {
 
 			//Parsing "from"
-			if (std::getline(fileStream, line) || line.substr(0, 4) != "from")
+			if (!std::getline(fileStream, line) || line.substr(0, 4) != "from")
 				return false; //No "from" info
 
 			std::istringstream fromStream(line.substr(5));
@@ -91,7 +94,7 @@ bool Scene::loadSceneFromNFF(char * path)
 			from = glm::vec3(x, y, z);
 
 			//Parsing "at"
-			if (std::getline(fileStream, line) || line.substr(0, 2) != "at")
+			if (!std::getline(fileStream, line) || line.substr(0, 2) != "at")
 				return false; //No "at" info
 
 			std::istringstream atStream(line.substr(3));
@@ -100,7 +103,7 @@ bool Scene::loadSceneFromNFF(char * path)
 			at = glm::vec3(x, y, z);
 
 			//Parsing "up"
-			if (std::getline(fileStream, line) || line.substr(0, 2) != "up")
+			if (!std::getline(fileStream, line) || line.substr(0, 2) != "up")
 				return false; //No "up" info
 
 			std::istringstream upStream(line.substr(3));
@@ -109,7 +112,7 @@ bool Scene::loadSceneFromNFF(char * path)
 			up = glm::vec3(x, y, z);
 
 			//Parsing "angle"
-			if (std::getline(fileStream, line) || line.substr(0, 5) != "angle")
+			if (!std::getline(fileStream, line) || line.substr(0, 5) != "angle")
 				return false; //No "angle" info
 
 			std::istringstream angleStream(line.substr(6));
@@ -117,7 +120,7 @@ bool Scene::loadSceneFromNFF(char * path)
 			angleStream >> angle;
 
 			//Parsing "hither"
-			if (std::getline(fileStream, line) || line.substr(0, 6) != "hither")
+			if (!std::getline(fileStream, line) || line.substr(0, 6) != "hither")
 				return false; //No "hither" info
 
 			std::istringstream hitherStream(line.substr(7));
@@ -125,7 +128,7 @@ bool Scene::loadSceneFromNFF(char * path)
 			hitherStream >> hither;
 
 			//Parsing "resolution"
-			if (std::getline(fileStream, line) || line.substr(0, 10) != "resolution")
+			if (!std::getline(fileStream, line) || line.substr(0, 10) != "resolution")
 				return false; //No "resolution" info
 
 			std::istringstream resolutionStream(line.substr(11));
@@ -155,10 +158,69 @@ bool Scene::loadSceneFromNFF(char * path)
 			lightStream >> x; lightStream >> y; lightStream >> z;
 			lightPosition = glm::vec3(x, y, z);
 
-			if (lightStream.peek() != EOF) { //FIX ME: EOF or \0, \n
+			if (lightStream.peek() != EOF) {
 				lightStream >> x; lightStream >> y; lightStream >> z;
 				lightColor.x = x, lightColor.y = y, lightColor.z = z;
 			}
+
+			this->lights->push_back(new Light(lightPosition, lightColor));
+		}
+
+		//check f for material info
+		else if (line.substr(0, 2) == "f ") {
+
+		std::istringstream materialStream(line.substr(2));
+		glm::vec3 materialColor;
+		float materialDiffuse, materialSpecular, materialShininess, 
+				materialTransmittance, materialIndexOfRefraction;
+
+		materialStream >> x; materialStream >> y; materialStream >> z;
+		materialStream >> materialDiffuse; materialStream >> materialSpecular; 
+		materialStream >> materialShininess; materialStream >> materialTransmittance;
+		materialStream >> materialIndexOfRefraction;
+		materialColor = glm::vec3(x, y, z);
+
+		Material* newMaterial = new Material(materialColor, materialDiffuse, materialSpecular,
+			materialShininess, materialTransmittance, materialIndexOfRefraction);
+		this->materials->push_back(newMaterial);
+		currentMaterial = newMaterial;
+	}
+
+		//check s for sphere info
+		else if (line.substr(0, 2) == "s ") {
+
+			std::istringstream sphereStream(line.substr(2));
+			glm::vec3 spherePosition;
+			float sphereRadius;
+
+			sphereStream >> x; sphereStream >> y; sphereStream >> z; 
+			spherePosition = glm::vec3(x, y, z);
+			sphereStream >> sphereRadius;
+
+			Sphere * newSphere = new Sphere(spherePosition, sphereRadius);
+			newSphere->setMaterial(currentMaterial);
+			this->objects->push_back(newSphere);
+		
+		}
+
+		//check pl for plane info
+		else if (line.substr(0, 3) == "pl ") {
+
+			std::istringstream planeStream(line.substr(3));
+			glm::vec3 planePosition1, planePosition2, planePosition3;
+
+			planeStream >> x; planeStream >> y; planeStream >> z;
+			planePosition1 = glm::vec3(x, y, z);
+
+			planeStream >> x; planeStream >> y; planeStream >> z;
+			planePosition2 = glm::vec3(x, y, z);
+
+			planeStream >> x; planeStream >> y; planeStream >> z;
+			planePosition3 = glm::vec3(x, y, z);
+
+			Plane * newPlane = new Plane(planePosition1, planePosition2, planePosition3);
+			newPlane->setMaterial(currentMaterial);
+			this->objects->push_back(newPlane);
 		}
 	}
 

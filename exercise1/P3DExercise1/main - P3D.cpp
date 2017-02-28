@@ -307,8 +307,13 @@ void renderScene()
 	//TODO values from nff
 	glm::vec3 eye = glm::vec3(0, 0, -5);
 
+<<<<<<< HEAD
 	float invWidth = 1 / (float)RES_X;
 	float invHeight = 1 / (float)RES_Y;
+=======
+	float invWidth = (float)1 / (float)RES_X;
+	float invHeight = (float)1 / (float)RES_Y;
+>>>>>>> 2ff266ed2eeab242178f1c003cf01a4008b837c4
 	float angle = 30;
 	float aspectratio = RES_Y / (float)RES_Y;
 	//Dont forget to use unit vectors
@@ -444,7 +449,7 @@ int main(int argc, char* argv[])
 	//INSERT HERE YOUR CODE FOR PARSING NFF FILES
 	scene = new Scene();
 
-	if (!(scene->loadSceneFromNFF("jap.nff"))) return 0;
+	if (!(scene->loadSceneFromNFF("scene/test2.nff"))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
 
