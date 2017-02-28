@@ -268,12 +268,11 @@ void renderScene()
 
 	//TODO values from nff
 	glm::vec3 eye = glm::vec3(0, 0, -5);
-	float width = 640;
-	float height = 480;
-	float invWidth = 1 / width;
-	float invHeight = 1 / height;
+
+	float invWidth = 1 / RES_X;
+	float invHeight = 1 / RES_Y;
 	float angle = 30;
-	float aspectratio = width / float(height);
+	float aspectratio = RES_Y / (float)RES_Y;
 	//Dont forget to use unit vectors
 
 	for (int y = 0; y < RES_Y; y++)
