@@ -70,10 +70,10 @@ bool rayCasting(Ray ray, glm::vec3* targetVector, Object* targetObject, std::vec
 	targetVector = nullptr;
 
 	for (int count = 0; count < numObjects; count++) {
-		glm::vec3* auxVector = nullptr;
-		objects[count]->getIntersectionPoint(auxVector, ray);
-		if (glm::distance(*auxVector, ray.getInitialPoint()) < minDist) {
-			targetVector = auxVector;
+		glm::vec3 auxVector;
+		if (objects[count]->getIntersectionPoint(&auxVector, ray) &&
+			glm::distance(auxVector, ray.getInitialPoint()) < minDist) {
+			targetVector = &auxVector;
 			targetObject = objects[count];
 		}
 	}
@@ -99,7 +99,6 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		}
 		else {
 			Material* mat = obj->getMaterial(); 
-
 			
 			glm::vec3 color = *mat->getColor(); 
 			glm::vec3 normal = obj->getNormal(intersectionPoint);
@@ -304,18 +303,13 @@ void renderScene()
 	int index_pos = 0;
 	int index_col = 0;
 
-	//TODO values from nff
-	glm::vec3 eye = glm::vec3(0, 0, -5);
 
-<<<<<<< HEAD
-	float invWidth = 1 / (float)RES_X;
-	float invHeight = 1 / (float)RES_Y;
-=======
+	Camera * camera = scene->getCamera();
+
 	float invWidth = (float)1 / (float)RES_X;
 	float invHeight = (float)1 / (float)RES_Y;
->>>>>>> 2ff266ed2eeab242178f1c003cf01a4008b837c4
-	float angle = 30;
-	float aspectratio = RES_Y / (float)RES_Y;
+	float angle = camera->getFovY();
+	float aspectratio = RES_X / (float)RES_Y;
 	//Dont forget to use unit vectors
 
 	for (int y = 0; y < RES_Y; y++)
@@ -324,7 +318,7 @@ void renderScene()
 		{
 
 			glm::vec3 rayDir = calculatePrimaryRay(x, y, invWidth, invHeight, angle, aspectratio);
-			glm::vec3 color = rayTracing(eye, rayDir, 1);
+			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
 
 			vertices[index_pos++] = (float)x;
 			vertices[index_pos++] = (float)y;
