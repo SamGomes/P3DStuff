@@ -7,6 +7,3 @@ c:\users\samuel\documents\p3dstuff\exercise1\p3dexercise1\main - p3d.cpp(351): e
 c:\users\samuel\documents\p3dstuff\exercise1\p3dexercise1\main - p3d.cpp(352): error C2039: 'GetCamera': is not a member of 'Scene'
   c:\users\samuel\documents\p3dstuff\exercise1\p3dexercise1\scene.h(4): note: see declaration of 'Scene'
 c:\users\samuel\documents\p3dstuff\exercise1\p3dexercise1\main - p3d.cpp(352): error C2227: left of '->GetResY' must point to class/struct/union/generic type
-  Vector4.cpp
-  Generating Code...
-c:\users\samuel\documents\p3dstuff\exercise1\p3dexercise1\vector\vector.h(23): warning C4172: returning address of local variable or temporary: out

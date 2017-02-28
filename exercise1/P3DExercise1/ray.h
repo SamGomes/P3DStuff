@@ -1,16 +1,16 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "VECTOR\Vector.h"
+#include"glm\vec3.hpp"
 
 class Ray {
 
 private:
 	float initialPoint;
-	Vector direction;
+	glm::vec3 direction;
 
 public:
-	Ray(float initialPoint,Vector direction);
+	Ray(float initialPoint,glm::vec3 direction);
 };
 
 
