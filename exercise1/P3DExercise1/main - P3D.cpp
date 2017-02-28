@@ -67,7 +67,7 @@ bool rayCasting(Ray ray, glm::vec3* targetVector, Object* targetObject, std::vec
 	int numObjects = objects.size();
 	int minDist = INFINITE;
 
-	targetVector == nullptr;
+	targetVector = nullptr;
 
 	for (int count = 0; count < numObjects; count++) {
 		glm::vec3* auxVector = nullptr;
@@ -90,37 +90,48 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		return BLACK_COLOR;
 	}
 	else {
-		bool intersection = true; //TODO samu intersection
+		Ray ray(origin, direction);
+		glm::vec3 intersectionPoint;
+		Object* obj = nullptr;
+		bool intersection = rayCasting(ray, &intersectionPoint, obj, *scene->getObjects());
 		if (!intersection) {
 			return Background;
 		}
 		else {
-			glm::vec3 intersectionPoint(1, 2, 3); //TODO
-			//Material mat; intersection obj material
+			Material* mat = obj->getMaterial(); 
 
-			glm::vec3 normal; //at hitpoint
-			glm::vec3 color; //material color
-			//for (each source light) {
-			glm::vec3 L;//L = unit light vector from hit point to light source;
-			if (glm::dot(L, normal) > 0) {
-				//if (!point in shadow); //trace shadow ray
-					//color += diffuse color + specular color;
+			
+			glm::vec3 color = *mat->getColor(); 
+			glm::vec3 normal = obj->getNormal(intersectionPoint);
+			for (auto light : *scene->getLights()) {
+				glm::vec3 L = *light->getPosition();
+				float difuse = glm::dot(L, normal);
+				if (difuse > 0) {
+					//if (!point in shadow) //trace shadow ray
+						color += *mat->getColor() * mat->getDiffuse() * difuse;
+						glm::vec3 reflect = glm::reflect(-L, normal);
+						float dot = glm::dot(reflect, direction);
+						float base = std::fmaxf(dot, 0.0f);
+						float specular = glm::pow(base, mat->getShininess());
+						color += mat->getSpecular() * specular;
+				}
+
 			}
-
-			//}
 
 
 			//if object is reflective
 			//calculate reflective direction
-			glm::vec3 reflectedDir; //TODO
+
+			glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
 			glm::vec3 reflectedColor = rayTracing(intersectionPoint, reflectedDir, depth + 1);
-			color += reflectedColor; //TODO
+			color += reflectedColor;
+
 
 			//if object is refractive
 			//calculate refractive direction
-			glm::vec3 refractedDir; //TODO
-			glm::vec3 refractedColor = rayTracing(intersectionPoint, refractedDir, depth + 1);
-			color += refractedColor; //TODO
+			//glm::vec3 refractedDir; //TODO
+			//glm::vec3 refractedColor = rayTracing(intersectionPoint, refractedDir, depth + 1);
+			//color += refractedColor; //TODO
 
 			return color;
 		}
@@ -128,9 +139,9 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 	}
 }
 
-glm::vec3 calculatePrimaryRay(float x, float y, float invWidth, float invHeight, float angle, float aspectratio) {
-	float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
-	float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
+glm::vec3 calculatePrimaryRay(int x, int y, float invWidth, float invHeight, float angle, float aspectratio) {
+	float xx = (2 * ((x + 0.5f) * invWidth) - 1) * angle * aspectratio;
+	float yy = (1 - 2 * ((y + 0.5f) * invHeight)) * angle;
 	glm::vec3 ray(xx, yy, 1);
 	return glm::normalize(ray);
 }
@@ -296,8 +307,8 @@ void renderScene()
 	//TODO values from nff
 	glm::vec3 eye = glm::vec3(0, 0, -5);
 
-	float invWidth = 1 / RES_X;
-	float invHeight = 1 / RES_Y;
+	float invWidth = 1 / (float)RES_X;
+	float invHeight = 1 / (float)RES_Y;
 	float angle = 30;
 	float aspectratio = RES_Y / (float)RES_Y;
 	//Dont forget to use unit vectors
