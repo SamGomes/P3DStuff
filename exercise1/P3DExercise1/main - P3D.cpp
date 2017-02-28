@@ -58,7 +58,7 @@ int WindowHandle = 0;
 
 ///////////////////////////////////////////////////////////////////////  RAY-TRACE SCENE
 
-glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth, glm::vec3 color)
+glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth)
 {
 	if (depth > MAX_DEPTH) {
 		return BLACK_COLOR;
@@ -69,20 +69,34 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth, glm::vec3
 			return Background;
 		}
 		else {
-			glm::vec3 localColor; //calculate direct ilumination
+			glm::vec3 intersectionPoint(1, 2, 3); //TODO
+			//Material mat; intersection obj material
 
-			glm::vec3 intersectionPoint();
+			glm::vec3 normal; //at hitpoint
+			glm::vec3 color; //material color
+			//for (each source light) {
+				glm::vec3 L;//L = unit light vector from hit point to light source;
+				if (glm::dot(L, normal) > 0) {
+					//if (!point in shadow); //trace shadow ray
+						//color += diffuse color + specular color;
+				}
+					
+			//}
+			
 			
 			//if object is reflective
 			//calculate reflective direction
-
+			glm::vec3 reflectedDir; //TODO
+			glm::vec3 reflectedColor = rayTracing(intersectionPoint, reflectedDir, depth + 1);
+			color += reflectedColor; //TODO
 
 			//if object is refractive
 			//calculate refractive direction
+			glm::vec3 refractedDir; //TODO
+			glm::vec3 refractedColor = rayTracing(intersectionPoint, refractedDir, depth + 1);
+			color += refractedColor; //TODO
 
-
-
-
+			return color;
 		}
 
 	}
@@ -267,7 +281,7 @@ void renderScene()
 		for (int x = 0; x < RES_X; x++)
 		{
 			glm::vec3 raydir = calculatePrimaryRay(x, y, invWidth, invHeight, angle, aspectratio);
-			glm::vec3 color = rayTracing(eye, raydir, 1, glm::vec3());
+			glm::vec3 color = rayTracing(eye, raydir, 1);
 
 			vertices[index_pos++] = (float)x;
 			vertices[index_pos++] = (float)y;
