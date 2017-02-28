@@ -8,6 +8,10 @@ public: //vars
 
 public: //methods
 	Color(float r, float g, float b);
+	
+	float getR();
+	float getG();
+	float getB();
 };
 
 

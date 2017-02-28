@@ -6,11 +6,14 @@
 class Ray {
 
 private:
-	float initialPoint;
+	glm::vec3 initialPoint;
 	glm::vec3 direction;
 
 public:
-	Ray(float initialPoint,glm::vec3 direction);
+	Ray(glm::vec3 initialPoint, glm::vec3 direction);
+
+	glm::vec3 getInitialPoint();
+	glm::vec3 getDirection();
 };
 
 
