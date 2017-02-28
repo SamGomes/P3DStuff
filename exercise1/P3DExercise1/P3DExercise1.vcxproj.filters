@@ -13,46 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\VECTOR">
-      <UniqueIdentifier>{b6cfb585-e2e4-47e6-b761-b3a292ee998a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\MATRIX">
-      <UniqueIdentifier>{ad1b01d6-5962-4cb9-a8ab-f02f469c54fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MATRIX">
-      <UniqueIdentifier>{701b10d8-ef91-4e37-8691-a31e69adcf0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\VECTOR">
-      <UniqueIdentifier>{83b58ee3-125a-4313-a261-cf70c5c931f2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main - P3D.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MATRIX\Matrix.cpp">
-      <Filter>Source Files\MATRIX</Filter>
-    </ClCompile>
-    <ClCompile Include="MATRIX\Matrix2.cpp">
-      <Filter>Source Files\MATRIX</Filter>
-    </ClCompile>
-    <ClCompile Include="MATRIX\Matrix3.cpp">
-      <Filter>Source Files\MATRIX</Filter>
-    </ClCompile>
-    <ClCompile Include="MATRIX\Matrix4.cpp">
-      <Filter>Source Files\MATRIX</Filter>
-    </ClCompile>
-    <ClCompile Include="VECTOR\Vector.cpp">
-      <Filter>Source Files\VECTOR</Filter>
-    </ClCompile>
-    <ClCompile Include="VECTOR\Vector2.cpp">
-      <Filter>Source Files\VECTOR</Filter>
-    </ClCompile>
-    <ClCompile Include="VECTOR\Vector3.cpp">
-      <Filter>Source Files\VECTOR</Filter>
-    </ClCompile>
-    <ClCompile Include="VECTOR\Vector4.cpp">
-      <Filter>Source Files\VECTOR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,30 +33,6 @@
     </ClInclude>
     <ClInclude Include="ray.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MATRIX\Matrix.h">
-      <Filter>Header Files\MATRIX</Filter>
-    </ClInclude>
-    <ClInclude Include="MATRIX\Matrix2.h">
-      <Filter>Header Files\MATRIX</Filter>
-    </ClInclude>
-    <ClInclude Include="MATRIX\Matrix3.h">
-      <Filter>Header Files\MATRIX</Filter>
-    </ClInclude>
-    <ClInclude Include="MATRIX\Matrix4.h">
-      <Filter>Header Files\MATRIX</Filter>
-    </ClInclude>
-    <ClInclude Include="VECTOR\Vector.h">
-      <Filter>Header Files\VECTOR</Filter>
-    </ClInclude>
-    <ClInclude Include="VECTOR\Vector2.h">
-      <Filter>Header Files\VECTOR</Filter>
-    </ClInclude>
-    <ClInclude Include="VECTOR\Vector3.h">
-      <Filter>Header Files\VECTOR</Filter>
-    </ClInclude>
-    <ClInclude Include="VECTOR\Vector4.h">
-      <Filter>Header Files\VECTOR</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

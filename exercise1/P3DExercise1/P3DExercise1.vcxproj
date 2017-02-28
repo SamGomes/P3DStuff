@@ -67,30 +67,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main - P3D.cpp" />
-    <ClCompile Include="MATRIX\Matrix.cpp" />
-    <ClCompile Include="MATRIX\Matrix2.cpp" />
-    <ClCompile Include="MATRIX\Matrix3.cpp" />
-    <ClCompile Include="MATRIX\Matrix4.cpp" />
-    <ClCompile Include="VECTOR\Vector.cpp" />
-    <ClCompile Include="VECTOR\Vector2.cpp" />
-    <ClCompile Include="VECTOR\Vector3.cpp" />
-    <ClCompile Include="VECTOR\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="input_file_nff.pdf" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="color.h" />
-    <ClInclude Include="MATRIX\Matrix.h" />
-    <ClInclude Include="MATRIX\Matrix2.h" />
-    <ClInclude Include="MATRIX\Matrix3.h" />
-    <ClInclude Include="MATRIX\Matrix4.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="scene.h" />
-    <ClInclude Include="VECTOR\Vector.h" />
-    <ClInclude Include="VECTOR\Vector2.h" />
-    <ClInclude Include="VECTOR\Vector3.h" />
-    <ClInclude Include="VECTOR\Vector4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
