@@ -3,13 +3,15 @@
 
 #include"object.h"
 
-class Plane : Object {
+class Plane : public Object {
 
 private:
 	glm::vec3 position2;
 	glm::vec3 position3;
 
 public:
+	Plane(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3);
+
 	glm::vec3 getPosition2();
 	glm::vec3 getPosition3();
 

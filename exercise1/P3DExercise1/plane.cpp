@@ -1,5 +1,14 @@
 #include "plane.h"
 
+Plane::Plane(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3)
+{
+	this->type = PLANE;
+	this->position = position1;
+	this->position2 = position2;
+	this->position3 = position3;
+	this->material = NULL;
+}
+
 glm::vec3 Plane::getPosition2()
 {
 	return position2;

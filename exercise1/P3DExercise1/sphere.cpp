@@ -41,6 +41,14 @@ bool Sphere::getIntersectionPoint(glm::vec3* intersect, Ray ray)
 	return false;
 }
 
+Sphere::Sphere(glm::vec3 position, float radius)
+{
+	this->type = SPHERE;
+	this->position = position;
+	this->radius = radius;
+	this->material = NULL;
+}
+
 float Sphere::getRadius() {
 	return this->radius;
 }

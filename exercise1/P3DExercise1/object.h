@@ -13,17 +13,14 @@ enum objType
 
 class Object{
 
-private:
+protected:
 	glm::vec3 position;
 	Material* material;
-
-protected:
 	objType type;
 public:
 	glm::vec3 getPosition();
 	Material* getMaterial();
 	
-	void setPosition(glm::vec3 position);
 	void setMaterial(Material* material);
 	
 	objType getType();
