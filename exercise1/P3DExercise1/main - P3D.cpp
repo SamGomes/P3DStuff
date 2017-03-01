@@ -40,7 +40,7 @@ float *vertices;
 int size_vertices;
 int size_colors;
 
-glm::vec3 Background(1, 0, 0); //TODO from nff
+glm::vec3 background(1, 0, 0); //TODO from nff
 
 GLfloat m[16];  //projection matrix initialized by ortho function
 
@@ -61,23 +61,24 @@ int WindowHandle = 0;
 ///////////////////////////////////////////////////////////////////////  RAY-TRACE SCENE
 
 
-bool rayCasting(Ray ray, glm::vec3* targetVector, Object* targetObject, std::vector<Object*> objects) {
+bool rayCasting(Ray ray, glm::vec3& targetVector, Object*& targetObject, std::vector<Object*> objects) {
 
 	int count = 0;
 	int numObjects = objects.size();
-	int minDist = INFINITE;
+	float minDist = INFINITY;
 
-	targetVector = nullptr;
+	int changed = 0;
 
 	for (int count = 0; count < numObjects; count++) {
 		glm::vec3 auxVector;
 		if (objects[count]->getIntersectionPoint(&auxVector, ray) &&
 			glm::distance(auxVector, ray.getInitialPoint()) < minDist) {
-			targetVector = &auxVector;
+			targetVector = auxVector;
 			targetObject = objects[count];
+			changed = 1;
 		}
 	}
-	if (targetVector == nullptr)
+	if (changed == 0)
 		return false;
 	return true;
 }
@@ -90,12 +91,12 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		return BLACK_COLOR;
 	}
 	else {
-		Ray ray(origin, direction);
+		Ray ray(origin, glm::normalize(direction));
 		glm::vec3 intersectionPoint;
 		Object* obj = nullptr;
-		bool intersection = rayCasting(ray, &intersectionPoint, obj, *scene->getObjects());
+		bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
 		if (!intersection) {
-			return Background;
+			return background;
 		}
 		else {
 			Material* mat = obj->getMaterial(); 
@@ -238,26 +239,38 @@ void destroyShaderProgram()
 void createBufferObjects()
 {
 	glGenVertexArrays(1, &VaoId);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glBindVertexArray(VaoId);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glGenBuffers(2, VboId);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 
 	/* Não é necessário fazer glBufferData, ou seja o envio dos pontos para a placa gráfica pois isso
 	é feito na drawPoints em tempo de execução com GL_DYNAMIC_DRAW */
 
 	glEnableVertexAttribArray(VERTEX_COORD_ATTRIB);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glVertexAttribPointer(VERTEX_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[1]);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glEnableVertexAttribArray(COLOR_ATTRIB);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glVertexAttribPointer(COLOR_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 
 	// unbind the VAO
 	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDisableVertexAttribArray(VERTEX_COORD_ATTRIB);
-	glDisableVertexAttribArray(COLOR_ATTRIB);
 	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
+	/*glDisableVertexAttribArray(VERTEX_COORD_ATTRIB);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
+	glDisableVertexAttribArray(COLOR_ATTRIB);
+	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");*/
 }
 
 void destroyBufferObjects()
@@ -443,10 +456,11 @@ int main(int argc, char* argv[])
 	//INSERT HERE YOUR CODE FOR PARSING NFF FILES
 	scene = new Scene();
 
-	if (!(scene->loadSceneFromNFF("scene/test2.nff"))) return 0;
+	if (!(scene->loadSceneFromNFF("scene/test.nff"))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
 
+	background = *scene->getBackgroundColor();
 
 	if (draw_mode == 0) { // desenhar o conteúdo da janela ponto a ponto
 		size_vertices = 2 * sizeof(float);

@@ -3,7 +3,7 @@
 
 Ray::Ray(glm::vec3 initialPoint, glm::vec3 direction) {
 	this->initialPoint = initialPoint;
-	this->direction = direction;
+	this->direction = glm::normalize(direction);
 }
 
 glm::vec3 Ray::getInitialPoint() {
