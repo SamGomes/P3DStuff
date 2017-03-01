@@ -27,6 +27,7 @@
 
 #define CAPTION "ray tracer"
 
+#define M_PI 3.14159265358979323846
 #define VERTEX_COORD_ATTRIB 0
 #define COLOR_ATTRIB 1
 
@@ -37,6 +38,7 @@
 float *colors;
 float *vertices;
 
+int nPoints;
 int size_vertices;
 int size_colors;
 
@@ -54,7 +56,7 @@ Scene* scene = NULL;
 int RES_X, RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode = 1;
+int draw_mode = 2;
 
 int WindowHandle = 0;
 
@@ -139,9 +141,9 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 	}
 }
 
-glm::vec3 calculatePrimaryRay(int x, int y, float invWidth, float invHeight, float angle, float aspectratio) {
-	float xx = (2 * ((x + 0.5f) * invWidth) - 1) * angle * aspectratio;
-	float yy = (1 - 2 * ((y + 0.5f) * invHeight)) * angle;
+glm::vec3 calculatePrimaryRay(int x, int y, float invWidth, float invHeight, float aspectratio, float angleTan) {
+	float xx = (2 * ((x + 0.5f) * invWidth) - 1) * angleTan * aspectratio;
+	float yy = (1 - 2 * ((y + 0.5f) * invHeight)) * angleTan; //FIXME: yy might be upside-down: find out latter.
 	glm::vec3 ray(xx, yy, 1);
 	return glm::normalize(ray);
 }
@@ -297,7 +299,7 @@ void drawPoints()
 	glBufferData(GL_ARRAY_BUFFER, size_colors, colors, GL_DYNAMIC_DRAW);
 
 	glUniformMatrix4fv(UniformId, 1, GL_FALSE, m);
-	glDrawArrays(GL_POINTS, 0, RES_X*RES_Y);
+	glDrawArrays(GL_POINTS, 0, nPoints);
 	glFinish();
 
 	glUseProgram(0);
@@ -321,8 +323,9 @@ void renderScene()
 
 	float invWidth = (float)1 / (float)RES_X;
 	float invHeight = (float)1 / (float)RES_Y;
-	float angle = camera->getFovY();
+	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
 	float aspectratio = RES_X / (float)RES_Y;
+	float angleTan = tanf(angle / 2);
 	//Dont forget to use unit vectors
 
 	for (int y = 0; y < RES_Y; y++)
@@ -330,7 +333,7 @@ void renderScene()
 		for (int x = 0; x < RES_X; x++)
 		{
 
-			glm::vec3 rayDir = calculatePrimaryRay(x, y, invWidth, invHeight, angle, aspectratio);
+			glm::vec3 rayDir = calculatePrimaryRay(x, y, invWidth, invHeight, aspectratio, angleTan);
 			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
 
 			vertices[index_pos++] = (float)x;
@@ -366,6 +369,10 @@ void cleanup()
 {
 	destroyShaderProgram();
 	destroyBufferObjects();
+
+	delete colors;
+	delete vertices;
+	delete scene;
 }
 
 void ortho(float left, float right, float bottom, float top,
@@ -463,24 +470,27 @@ int main(int argc, char* argv[])
 	background = *scene->getBackgroundColor();
 
 	if (draw_mode == 0) { // desenhar o conteúdo da janela ponto a ponto
-		size_vertices = 2 * sizeof(float);
-		size_colors = 3 * sizeof(float);
+		nPoints = 1;
 		printf("DRAWING MODE: POINT BY POINT\n");
 	}
 	else if (draw_mode == 1) { // desenhar o conteúdo da janela linha a linha
-		size_vertices = 2 * RES_X * sizeof(float);
-		size_colors = 3 * RES_X * sizeof(float);
+		nPoints = RES_X;
+		
 		printf("DRAWING MODE: LINE BY LINE\n");
 	}
 	else if (draw_mode == 2) { // preencher o conteúdo da janela com uma imagem completa
-		size_vertices = 2 * RES_X*RES_Y * sizeof(float);
-		size_colors = 3 * RES_X*RES_Y * sizeof(float);
+		nPoints = RES_X*RES_Y;
+
 		printf("DRAWING MODE: FULL IMAGE\n");
 	}
 	else {
 		printf("Draw mode not valid \n");
 		exit(0);
 	}
+
+	size_vertices = 2 * nPoints * sizeof(float);
+	size_colors = 3 * nPoints * sizeof(float);
+
 	printf("resx = %d  resy= %d.\n", RES_X, RES_Y);
 
 	vertices = (float*)malloc(size_vertices);
