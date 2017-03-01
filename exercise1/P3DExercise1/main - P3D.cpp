@@ -146,10 +146,9 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 	x and y are the pixels on the screen
 */
 glm::vec3 calculatePrimaryRay(int x, int y, glm::vec3 ze, glm::vec3 xe, glm::vec3 ye, float df, float h, float w) {		
-	glm::vec3 d = -df * ze + ye * (h * (y / RES_Y) - 0.5f) + xe * (w * (x / RES_X) - 0.5f);
+	glm::vec3 d = -df * ze + ye * (h * (y / (float)RES_Y) - 0.5f) + xe * (w * (x / (float)RES_X) - 0.5f);
 	return glm::normalize(d);
 }
-
 
 void initCameraVectors(Camera * camera, glm::vec3& ze, glm::vec3& xe, glm::vec3& ye, float & df, float & h, float & w ) {
 	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
@@ -160,9 +159,9 @@ void initCameraVectors(Camera * camera, glm::vec3& ze, glm::vec3& xe, glm::vec3&
 	h = 2 * df * angleTan;
 	w = aspectratio * h;
 	ze = (1 / (df)) * (dir);
-	glm::vec3 cross = *camera->getUp() * ze;
+	glm::vec3 cross = glm::cross(*camera->getUp(), ze);
 	xe = (1 / glm::length(cross)) * cross;
-	ye = ze * xe;
+	ye = glm::cross(ze, xe);
 }
 
 
