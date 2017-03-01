@@ -104,19 +104,21 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		else {
 			Material* mat = obj->getMaterial(); 
 			
-			glm::vec3 color = *mat->getColor(); 
+			glm::vec3 color = glm::vec3(1,0,0);
 			glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 			for (auto light : *scene->getLights()) {
-				glm::vec3 L = *light->getPosition();
-				float difuse = glm::dot(L, normal);
-				if (difuse > 0) {
+				glm::vec3 L = glm::normalize(intersectionPoint - *light->getPosition());
+				float lightIntensity = glm::dot(L, normal);
+				if (lightIntensity > 0) {
 					//if (!point in shadow) //trace shadow ray
-						color += *mat->getColor() * mat->getDiffuse() * difuse;
-						glm::vec3 reflect = glm::reflect(-L, normal);
+						
+					    color += *light->getColor() *lightIntensity *mat->getDiffuse();
+						glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
 						float dot = glm::dot(reflect, direction);
 						float base = std::fmaxf(dot, 0.0f);
 						float specular = glm::pow(base, mat->getShininess());
 						color += mat->getSpecular() * specular;
+
 				}
 
 			}
