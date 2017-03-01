@@ -22,7 +22,7 @@ bool Sphere::hasIntersection(Ray ray)
 
 }
 
-bool Sphere::getIntersectionPoint(glm::vec3* intersect, Ray ray)
+bool Sphere::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 {
 
 	glm::vec3 c = this->getPosition();
@@ -74,9 +74,9 @@ bool Sphere::getIntersectionPoint(glm::vec3* intersect, Ray ray)
 	}
 
 	//calc intersection point
-	intersect->x = e.x + point1*d.x;
-	intersect->y = e.y + point1*d.y;
-	intersect->z = e.z + point1*d.z;
+	intersect.x = e.x + point1*d.x;
+	intersect.y = e.y + point1*d.y;
+	intersect.z = e.z + point1*d.z;
 	return true;
 	
 }
@@ -97,7 +97,7 @@ glm::vec3 Sphere::getNormal(glm::vec3 intersectionPoint, Ray ray)
 		aux = -1.0f*aux;
 	}
 
-	return glm::normalize(aux);
+	return aux;
 }
 
 Sphere::Sphere(glm::vec3 position, float radius)

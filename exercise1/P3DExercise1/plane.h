@@ -16,7 +16,7 @@ public:
 	glm::vec3 getPosition3();
 
 	bool hasIntersection(Ray ray);
-	bool getIntersectionPoint(glm::vec3*  intersect, Ray ray);
+	bool getIntersectionPoint(glm::vec3& intersect, Ray ray);
 	glm::vec3 getNormal(glm::vec3 intersectionPoint, Ray ray);
 
 };
