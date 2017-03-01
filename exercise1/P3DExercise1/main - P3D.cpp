@@ -74,11 +74,14 @@ bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vec
 
 	for (int count = 0; count < numObjects; count++) {
 		glm::vec3 auxPoint;
-		if (objects[count]->getIntersectionPoint(&auxPoint, ray) &&
-			glm::distance(auxPoint, ray.getInitialPoint()) < minDist) {
-			targetPoint = auxPoint;
-			targetObject = objects[count];
-			changed = 1;
+		if (objects[count]->getIntersectionPoint(auxPoint, ray)){
+			float dist = glm::distance(ray.getInitialPoint(), auxPoint);
+			if(dist < minDist) {
+				targetPoint = auxPoint;
+				targetObject = objects[count];
+				changed = 1;
+				minDist = dist;
+			}
 		}
 	}
 	if (changed == 0)
@@ -107,7 +110,7 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 			glm::vec3 color = glm::vec3(1,0,0);
 			glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 			for (auto light : *scene->getLights()) {
-				glm::vec3 L = glm::normalize(intersectionPoint - *light->getPosition());
+				glm::vec3 L = glm::normalize(*light->getPosition() - intersectionPoint);
 				float lightIntensity = glm::dot(L, normal);
 				if (lightIntensity > 0) {
 					//if (!point in shadow) //trace shadow ray
@@ -127,9 +130,9 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 			//if object is reflective
 			//calculate reflective direction
 
-			glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
+			/*glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
 			glm::vec3 reflectedColor = rayTracing(intersectionPoint, reflectedDir, depth + 1);
-			color += reflectedColor;
+			color += reflectedColor;*/
 
 
 			//if object is refractive
