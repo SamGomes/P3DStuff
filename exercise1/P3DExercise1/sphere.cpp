@@ -42,7 +42,7 @@ bool Sphere::getIntersectionPoint(glm::vec3* intersect, Ray ray)
 		+ (c.z - e.z)*(c.z - e.z);
 
 	//test if radius origin is inside the sphere
-	if (d_oc*d_oc == r*r) {
+	if (d_oc == r*r) {
 		return false;
 	}
 
@@ -50,14 +50,14 @@ bool Sphere::getIntersectionPoint(glm::vec3* intersect, Ray ray)
 	float b = d.x*(c.x - e.x) + d.y*(c.y - e.y) + d.z*(c.z - e.z);
 
 	//test if radius origin points in opposite to the sphere
-	if (d_oc*d_oc > r*r) {
+	if (d_oc > r*r) {
 		if (b < 0) {
 			return false;
 		}
 	}
 	
 	//calc R
-	float R = b*b - d_oc*d_oc + r*r;
+	float R = b*b - d_oc + r*r;
 
 	//test for negative root
 	if (R < 0) {
@@ -93,7 +93,7 @@ glm::vec3 Sphere::getNormal(glm::vec3 intersectionPoint, Ray ray)
 
 	glm::vec3 aux = (intersectionPoint - this->getPosition())/this->radius;
 
-	if (d_oc*d_oc < r*r) {
+	if (d_oc < r*r) {
 		aux = -1.0f*aux;
 	}
 
