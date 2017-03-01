@@ -42,7 +42,7 @@ int nPoints;
 int size_vertices;
 int size_colors;
 
-glm::vec3 background(1, 0, 0); //TODO from nff
+glm::vec3 background;
 
 GLfloat m[16];  //projection matrix initialized by ortho function
 
@@ -56,7 +56,7 @@ Scene* scene = NULL;
 int RES_X, RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode = 2;
+int draw_mode = 1;
 
 int WindowHandle = 0;
 
@@ -141,10 +141,13 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 	}
 }
 
-glm::vec3 calculatePrimaryRay(int x, int y, float invWidth, float invHeight, float aspectratio, float angleTan) {
-	float xx = (2 * ((x + 0.5f) * invWidth) - 1) * angleTan * aspectratio;
-	float yy = (1 - 2 * ((y + 0.5f) * invHeight)) * angleTan; //FIXME: yy might be upside-down: find out latter.
-	glm::vec3 ray(xx, yy, 1);
+/*
+	x and y are the pixels on the screen
+*/
+glm::vec3 calculatePrimaryRay(int x, int y, float width, float height, float aspectratio, float angleTan) {
+	float xx = (2 * ((x + 0.5f) / width) - 1) * angleTan * aspectratio;
+	float yy = (1 - 2 * ((y + 0.5f) / height)) * angleTan; //FIXME: yy might be upside-down: find out latter.
+	glm::vec3 ray(xx, yy, -1);
 	return glm::normalize(ray);
 }
 
@@ -326,14 +329,13 @@ void renderScene()
 	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
 	float aspectratio = RES_X / (float)RES_Y;
 	float angleTan = tanf(angle / 2);
-	//Dont forget to use unit vectors
 
 	for (int y = 0; y < RES_Y; y++)
 	{
 		for (int x = 0; x < RES_X; x++)
 		{
 
-			glm::vec3 rayDir = calculatePrimaryRay(x, y, invWidth, invHeight, aspectratio, angleTan);
+			glm::vec3 rayDir = calculatePrimaryRay(x, y, RES_X, RES_Y, aspectratio, angleTan);
 			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
 
 			vertices[index_pos++] = (float)x;
