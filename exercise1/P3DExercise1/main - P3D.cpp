@@ -146,7 +146,11 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 	x and y are the pixels on the screen
 */
 glm::vec3 calculatePrimaryRay(int x, int y, glm::vec3 ze, glm::vec3 xe, glm::vec3 ye, float df, float h, float w) {		
-	glm::vec3 d = -df * ze + ye * (h * (y / (float)RES_Y) - 0.5f) + xe * (w * (x / (float)RES_X) - 0.5f);
+	glm::vec3 xComp = xe * w * (((float)x / (float)RES_X) - 0.5f);
+	glm::vec3 yComp = ye * h * (((float)y / (float)RES_Y) - 0.5f);
+	glm::vec3 zComp = -df * ze;
+
+	glm::vec3 d = xComp + yComp + zComp;
 	return glm::normalize(d);
 }
 
