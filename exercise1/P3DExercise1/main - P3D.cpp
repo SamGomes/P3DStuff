@@ -20,6 +20,7 @@
 #include <GL/freeglut.h>
 
 #include"glm\glm.hpp"
+#include "glm\gtc\matrix_transform.hpp"
 #include "scene.h"
 #include "color.h"
 #include "ray.h"
@@ -144,11 +145,24 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 /*
 	x and y are the pixels on the screen
 */
-glm::vec3 calculatePrimaryRay(int x, int y, float aspectratio, float angleTan) {
-	float xx = (2 * ((x + 0.5f) / RES_X) - 1) * angleTan * aspectratio;
-	float yy = (1 - 2 * ((y + 0.5f) / RES_Y)) * angleTan; //FIXME: yy might be upside-down: find out latter.
-	glm::vec3 ray(xx, yy, -1);
-	return glm::normalize(ray);
+glm::vec3 calculatePrimaryRay(int x, int y, glm::vec3 ze, glm::vec3 xe, glm::vec3 ye, float df, float h, float w) {		
+	glm::vec3 d = -df * ze + ye * (h * (y / RES_Y) - 0.5f) + xe * (w * (x / RES_X) - 0.5f);
+	return glm::normalize(d);
+}
+
+
+void initCameraVectors(Camera * camera, glm::vec3& ze, glm::vec3& xe, glm::vec3& ye, float & df, float & h, float & w ) {
+	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
+	float aspectratio = RES_X / (float)RES_Y;
+	float angleTan = tanf(angle / 2);
+	glm::vec3 dir = *camera->getEye() - *camera->getCenter();
+	df = glm::length(dir);
+	h = 2 * df * angleTan;
+	w = aspectratio * h;
+	ze = (1 / (df)) * (dir);
+	glm::vec3 cross = *camera->getUp() * ze;
+	xe = (1 / glm::length(cross)) * cross;
+	ye = ze * xe;
 }
 
 
@@ -321,21 +335,19 @@ void renderScene()
 	int index_pos = 0;
 	int index_col = 0;
 
-
 	Camera * camera = scene->getCamera();
 
-	float invWidth = (float)1 / (float)RES_X;
-	float invHeight = (float)1 / (float)RES_Y;
-	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
-	float aspectratio = RES_X / (float)RES_Y;
-	float angleTan = tanf(angle / 2);
+	glm::vec3 ze, xe, ye;
+	float df, w, h;
+
+	initCameraVectors(camera, ze, xe, ye, df, w, h);
 
 	for (int y = 0; y < RES_Y; y++)
 	{
 		for (int x = 0; x < RES_X; x++)
 		{
 
-			glm::vec3 rayDir = calculatePrimaryRay(x, y, aspectratio, angleTan);
+			glm::vec3 rayDir = calculatePrimaryRay(x, y, ze, xe, ye, df, w, h);
 			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
 
 			vertices[index_pos++] = (float)x;
