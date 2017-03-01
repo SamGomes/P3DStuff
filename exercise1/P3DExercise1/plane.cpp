@@ -35,7 +35,7 @@ bool Plane::hasIntersection(Ray ray)
 bool Plane::getIntersectionPoint(glm::vec3* intersect, Ray ray)
 {
 
-	if (this->hasIntersection(ray)) {
+	/*if (this->hasIntersection(ray)) {
 
 		glm::vec3 rayDir = ray.getDirection();
 		glm::vec3 rayInitPoint = ray.getInitialPoint();
@@ -47,13 +47,13 @@ bool Plane::getIntersectionPoint(glm::vec3* intersect, Ray ray)
 		intersect->y = rayInitPoint.y + t*ray.getDirection().y;
 		intersect->z = rayInitPoint.z + t*ray.getDirection().z;
 		return true;
-	}
+	}*/
 
 	intersect = nullptr;
 	return false;
 }
 
-glm::vec3 Plane::getNormal(glm::vec3 intersectionPoint)
+glm::vec3 Plane::getNormal(glm::vec3 intersectionPoint, Ray ray)
 {
 	glm::vec3 aux = glm::cross((this->getPosition() - this->getPosition2()), (this->getPosition() - this->getPosition3()));
 	return glm::normalize(aux);

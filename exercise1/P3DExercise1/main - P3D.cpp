@@ -63,7 +63,7 @@ int WindowHandle = 0;
 ///////////////////////////////////////////////////////////////////////  RAY-TRACE SCENE
 
 
-bool rayCasting(Ray ray, glm::vec3& targetVector, Object*& targetObject, std::vector<Object*> objects) {
+bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vector<Object*> objects) {
 
 	int count = 0;
 	int numObjects = objects.size();
@@ -72,10 +72,10 @@ bool rayCasting(Ray ray, glm::vec3& targetVector, Object*& targetObject, std::ve
 	int changed = 0;
 
 	for (int count = 0; count < numObjects; count++) {
-		glm::vec3 auxVector;
-		if (objects[count]->getIntersectionPoint(&auxVector, ray) &&
-			glm::distance(auxVector, ray.getInitialPoint()) < minDist) {
-			targetVector = auxVector;
+		glm::vec3 auxPoint;
+		if (objects[count]->getIntersectionPoint(&auxPoint, ray) &&
+			glm::distance(auxPoint, ray.getInitialPoint()) < minDist) {
+			targetPoint = auxPoint;
 			targetObject = objects[count];
 			changed = 1;
 		}
@@ -93,7 +93,7 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		return BLACK_COLOR;
 	}
 	else {
-		Ray ray(origin, glm::normalize(direction));
+		Ray ray(origin, direction);
 		glm::vec3 intersectionPoint;
 		Object* obj = nullptr;
 		bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
@@ -104,7 +104,7 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 			Material* mat = obj->getMaterial(); 
 			
 			glm::vec3 color = *mat->getColor(); 
-			glm::vec3 normal = obj->getNormal(intersectionPoint);
+			glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 			for (auto light : *scene->getLights()) {
 				glm::vec3 L = *light->getPosition();
 				float difuse = glm::dot(L, normal);
@@ -144,9 +144,9 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 /*
 	x and y are the pixels on the screen
 */
-glm::vec3 calculatePrimaryRay(int x, int y, float width, float height, float aspectratio, float angleTan) {
-	float xx = (2 * ((x + 0.5f) / width) - 1) * angleTan * aspectratio;
-	float yy = (1 - 2 * ((y + 0.5f) / height)) * angleTan; //FIXME: yy might be upside-down: find out latter.
+glm::vec3 calculatePrimaryRay(int x, int y, float aspectratio, float angleTan) {
+	float xx = (2 * ((x + 0.5f) / RES_X) - 1) * angleTan * aspectratio;
+	float yy = (1 - 2 * ((y + 0.5f) / RES_Y)) * angleTan; //FIXME: yy might be upside-down: find out latter.
 	glm::vec3 ray(xx, yy, -1);
 	return glm::normalize(ray);
 }
@@ -335,7 +335,7 @@ void renderScene()
 		for (int x = 0; x < RES_X; x++)
 		{
 
-			glm::vec3 rayDir = calculatePrimaryRay(x, y, RES_X, RES_Y, aspectratio, angleTan);
+			glm::vec3 rayDir = calculatePrimaryRay(x, y, aspectratio, angleTan);
 			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
 
 			vertices[index_pos++] = (float)x;
