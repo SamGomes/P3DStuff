@@ -21,34 +21,21 @@ glm::vec3 Plane::getPosition3()
 
 bool Plane::hasIntersection(Ray ray)
 {
-	glm::vec3 normal = glm::cross((this->getPosition2()-this->getPosition()),(this->getPosition3()-this->getPosition()));
-	float denom = glm::dot(normal,ray.getDirection());
-	if (abs(denom) > 0.0001f) // your favorite epsilon
-	{
-		float t = glm::dot((this->getPosition() - ray.getInitialPoint()),normal) / denom;
-		if (t >= 0) return true; // you might want to allow an epsilon here too
-	}
-	return false;
-
+	return true;
 }
 
 bool Plane::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 {
+	glm::vec3 rayDir = ray.getDirection();
+	glm::vec3 rayInitPoint = ray.getInitialPoint();
 
-	/*if (this->hasIntersection(ray)) {
+	glm::vec3 normal = -glm::cross((this->getPosition2() - this->getPosition()), (this->getPosition3() - this->getPosition()));
+	float t = -1 * (glm::dot(this->getPosition(), normal) + glm::distance((this->getPosition2() - this->getPosition()), glm::vec3(0.0f)) / glm::dot(ray.getDirection(), normal));
 
-		glm::vec3 rayDir = ray.getDirection();
-		glm::vec3 rayInitPoint = ray.getInitialPoint();
-
-		glm::vec3 normal = glm::cross((this->getPosition2() - this->getPosition()), (this->getPosition3() - this->getPosition()));
-		float t = -1 * (glm::dot(this->getPosition(), normal) + 0) / glm::dot(ray.getDirection(), normal);
-
-		intersect->x = rayInitPoint.x + t*ray.getDirection().x;
-		intersect->y = rayInitPoint.y + t*ray.getDirection().y;
-		intersect->z = rayInitPoint.z + t*ray.getDirection().z;
-		return true;
-	}*/
-	return false;
+	intersect.x = rayInitPoint.x + t*ray.getDirection().x;
+	intersect.y = rayInitPoint.y + t*ray.getDirection().y;
+	intersect.z = rayInitPoint.z + t*ray.getDirection().z;
+	return true;	
 }
 
 glm::vec3 Plane::getNormal(glm::vec3 intersectionPoint, Ray ray)

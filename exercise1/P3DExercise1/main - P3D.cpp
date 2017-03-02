@@ -20,12 +20,15 @@
 #include <GL/freeglut.h>
 
 #include"glm\glm.hpp"
+#include "glm\gtc\matrix_transform.hpp"
 #include "scene.h"
 #include "color.h"
 #include "ray.h"
 #include "object.h"
 
 #define CAPTION "ray tracer"
+
+#define M_PI 3.14159265358979323846
 #define VERTEX_COORD_ATTRIB 0
 #define COLOR_ATTRIB 1
 
@@ -104,15 +107,15 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		else {
 			Material* mat = obj->getMaterial(); 
 			
-			glm::vec3 color = glm::vec3(1,0,0);
+			glm::vec3 color = *mat->getColor();
 			glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 			for (auto light : *scene->getLights()) {
 				glm::vec3 L = glm::normalize(*light->getPosition() - intersectionPoint);
-				float lightIntensity = glm::dot(L, normal);
-				if (lightIntensity > 0) {
+				float diffuse = glm::dot(L, normal);
+				if (diffuse > 0) {
 					//if (!point in shadow) //trace shadow ray
 						
-					    color += *light->getColor() *lightIntensity *mat->getDiffuse();
+					    color += *light->getColor() * diffuse *mat->getDiffuse();
 						glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
 						float dot = glm::dot(reflect, direction);
 						float base = std::fmaxf(dot, 0.0f);
@@ -127,9 +130,9 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 			//if object is reflective
 			//calculate reflective direction
 
-			/*glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
+			glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
 			glm::vec3 reflectedColor = rayTracing(intersectionPoint, reflectedDir, depth + 1);
-			color += reflectedColor;*/
+			color += reflectedColor * mat->getSpecular();
 
 
 			//if object is refractive
@@ -143,6 +146,33 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 
 	}
 }
+
+/*
+	x and y are the pixels on the screen
+*/
+glm::vec3 calculatePrimaryRay(int x, int y, glm::vec3 ze, glm::vec3 xe, glm::vec3 ye, float df, float h, float w) {		
+	glm::vec3 xComp = xe * w * (((float)x / (float)RES_X) - 0.5f);
+	glm::vec3 yComp = ye * h * (((float)y / (float)RES_Y) - 0.5f);
+	glm::vec3 zComp = -df * ze;
+
+	glm::vec3 d = xComp + yComp + zComp;
+	return glm::normalize(d);
+}
+
+void initCameraVectors(Camera * camera, glm::vec3& ze, glm::vec3& xe, glm::vec3& ye, float & df, float & h, float & w ) {
+	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
+	float aspectratio = RES_X / (float)RES_Y;
+	float angleTan = tanf(angle / 2);
+	glm::vec3 dir = *camera->getEye() - *camera->getCenter();
+	df = glm::length(dir);
+	h = 2 * df * angleTan;
+	w = aspectratio * h;
+	ze = (1 / (df)) * (dir);
+	glm::vec3 cross = glm::cross(*camera->getUp(), ze);
+	xe = (1 / glm::length(cross)) * cross;
+	ye = glm::cross(ze, xe);
+}
+
 
 /////////////////////////////////////////////////////////////////////// ERRORS
 
@@ -312,14 +342,20 @@ void renderScene()
 {
 	int index_pos = 0;
 	int index_col = 0;
+
 	Camera * camera = scene->getCamera();
+
+	glm::vec3 ze, xe, ye;
+	float df, w, h;
+
+	initCameraVectors(camera, ze, xe, ye, df, w, h);
 
 	for (int y = 0; y < RES_Y; y++)
 	{
 		for (int x = 0; x < RES_X; x++)
 		{
 
-			glm::vec3 rayDir = camera->calculatePrimaryRay(x, y);
+			glm::vec3 rayDir = calculatePrimaryRay(x, y, ze, xe, ye, df, w, h);
 			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
 
 			vertices[index_pos++] = (float)x;
