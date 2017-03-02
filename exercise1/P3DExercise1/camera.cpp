@@ -83,10 +83,10 @@ void Camera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
 		delete this->eyeZ;
 
 	glm::vec3 dir = *this->eye - *this->center;
-	float df = dir.length();
+	float df = glm::length(dir);
 
 	glm::vec3 eyeZtemp = *this->eye - *this->center;
-	this->focusDistance = eyeZtemp.length();
+	this->focusDistance = glm::length(eyeZtemp);
 
 	this->eyeZ = new glm::vec3(glm::normalize(eyeZtemp));
 	this->eyeX = new glm::vec3(glm::normalize(glm::cross(*this->up, *this->eyeZ)));

@@ -107,7 +107,7 @@ glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
 		else {
 			Material* mat = obj->getMaterial(); 
 			
-			glm::vec3 color = *mat->getColor();
+			glm::vec3 color = glm::vec3(1, 0, 0);
 			glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 			for (auto light : *scene->getLights()) {
 				glm::vec3 L = glm::normalize(*light->getPosition() - intersectionPoint);
