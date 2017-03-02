@@ -90,7 +90,18 @@ bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vec
 }
 
 bool inShadow(Ray ray, Object* targetObject) {
-	return targetObject->hasIntersection(ray);
+	std::vector<Object*>* objects = scene->getObjects();
+
+	int numObjects = objects->size();
+
+	for (std::vector<Object*>::iterator it = objects->begin(); it != objects->end(); ++it) {
+		if((*it) != targetObject){
+			if ((*it)->hasIntersection(ray)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 
@@ -116,15 +127,15 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		glm::vec3 L = glm::normalize(intersectionPoint-*light->getPosition());
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
-			Ray shadowRay((intersectionPoint + 0.01f*normal), glm::normalize(*light->getPosition() - (intersectionPoint)));
-			//if (!inShadow(shadowRay, obj)){ //trace shadow ray
+			Ray shadowRay(intersectionPoint-0.1f*L, -L);
+			if (!inShadow(shadowRay, obj)){ //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
-				glm::vec3 reflect = glm::reflect(glm::normalize(L), glm::normalize(normal));
+				glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
 				float dot = glm::dot(reflect, ray.getDirection());
 				float base = std::fmaxf(dot, 0.0f);
 				float specular = glm::pow(base, mat->getShininess());
 				color += mat->getSpecular() * specular*objcolor;
-			//}
+			}
 
 		}
 
@@ -383,7 +394,7 @@ void renderScene()
 				index_col = 0;
 			}
 		}
-		printf("line %d", y);
+		//printf("line %d\n", y);
 		if (draw_mode == 1) {  // desenhar o conteúdo da janela linha a linha
 			drawPoints();
 			index_pos = 0;
