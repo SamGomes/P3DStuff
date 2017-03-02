@@ -9,6 +9,7 @@ private:
 	glm::vec3 position2;
 	glm::vec3 position3;
 	glm::vec3 normal;
+	float d;
 
 public:
 	Plane(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3);

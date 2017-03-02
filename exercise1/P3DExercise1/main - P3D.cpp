@@ -95,10 +95,8 @@ bool inShadow(Ray ray, Object* targetObject) {
 	int numObjects = objects->size();
 
 	for (std::vector<Object*>::iterator it = objects->begin(); it != objects->end(); ++it) {
-		if((*it) != targetObject){
-			if ((*it)->hasIntersection(ray)) {
-				return true;
-			}
+		if ((*it)->hasIntersection(ray)) {
+			return true;
 		}
 	}
 	return false;
@@ -120,14 +118,14 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	Material* mat = obj->getMaterial(); 
 			
-	glm::vec3 color = glm::vec3(0, 0, 0);  //*mat->getColor(); //
+	glm::vec3 color = glm::vec3(0, 0, 0);
 	glm::vec3 objcolor = *mat->getColor();
 	glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 	for (auto light : *scene->getLights()) {
 		glm::vec3 L = glm::normalize(intersectionPoint-*light->getPosition());
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
-			Ray shadowRay(intersectionPoint-0.1f*L, -L);
+			Ray shadowRay(intersectionPoint-0.0001f*L, -L);
 			if (!inShadow(shadowRay, obj)){ //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
 				glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
