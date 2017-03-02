@@ -32,7 +32,7 @@
 #define VERTEX_COORD_ATTRIB 0
 #define COLOR_ATTRIB 1
 
-#define MAX_DEPTH 6
+#define MAX_DEPTH 2
 #define BLACK_COLOR glm::vec3(0, 0, 0)
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
@@ -109,21 +109,22 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	Material* mat = obj->getMaterial(); 
 			
-	glm::vec3 color = glm::vec3(1, 0, 0);  //*mat->getColor(); //
+	glm::vec3 color = glm::vec3(0, 0, 0);  //*mat->getColor(); //
+	glm::vec3 objcolor = *mat->getColor();
 	glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 	for (auto light : *scene->getLights()) {
-		glm::vec3 L = glm::normalize(*light->getPosition() - intersectionPoint);
+		glm::vec3 L = glm::normalize(intersectionPoint-*light->getPosition());
 		float diffuse = glm::dot(L, normal);
 		if (diffuse > 0) {
-			Ray shadowRay(obj->getPosition(), (obj->getPosition() - *light->getPosition()));
-			if (!inShadow(shadowRay, obj)){ //trace shadow ray
-				color += *light->getColor() * diffuse *mat->getDiffuse();
+			Ray shadowRay((intersectionPoint + 0.01f*normal), glm::normalize(*light->getPosition() - (intersectionPoint)));
+			//if (!inShadow(shadowRay, obj)){ //trace shadow ray
+				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
 				glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
 				float dot = glm::dot(reflect, ray.getDirection());
 				float base = std::fmaxf(dot, 0.0f);
 				float specular = glm::pow(base, mat->getShininess());
-				color += mat->getSpecular() * specular;
-			}
+				color += mat->getSpecular() * specular*objcolor;
+			//}
 
 		}
 

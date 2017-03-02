@@ -21,8 +21,8 @@ glm::vec3 Plane::getPosition3()
 
 bool Plane::hasIntersection(Ray ray)
 {
-	if (glm::dot((this->getPosition2() - this->getPosition()), ray.getDirection())<0)
-		return false;
+	/*if (glm::dot((this->getPosition2() - this->getPosition()), ray.getDirection())<0)
+		return false;*/
 
 	return true;
 }
@@ -46,6 +46,6 @@ bool Plane::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 
 glm::vec3 Plane::getNormal(glm::vec3 intersectionPoint, Ray ray)
 {
-	glm::vec3 aux = -glm::cross((this->getPosition() - this->getPosition2()), (this->getPosition() - this->getPosition3()));
+	glm::vec3 aux = glm::cross((this->getPosition() - this->getPosition2()), (this->getPosition() - this->getPosition3()));
 	return glm::normalize(aux);
 }
