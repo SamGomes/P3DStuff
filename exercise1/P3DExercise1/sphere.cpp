@@ -4,20 +4,45 @@
 
 bool Sphere::hasIntersection(Ray ray)
 {
+	glm::vec3 c = this->getPosition();
+	glm::vec3 e = ray.getInitialPoint();
+
 	float r = this->getRadius();
-	glm::vec3 pos = this->getPosition();
 
-	glm::vec3 rayDir = ray.getDirection();
-	glm::vec3 rayInitPoint = ray.getInitialPoint();
+	glm::vec3 d = ray.getDirection();
 
-	float descriminant = (glm::dot(rayDir, (rayInitPoint - pos))*glm::dot(rayDir, (rayInitPoint - pos))) - glm::dot(rayDir, rayDir)*(glm::dot((rayInitPoint - pos), (rayInitPoint - pos)) - r*r);
+	//normalize rd
+	d = glm::normalize(d);
 
-	
-	if (descriminant < 0) {
+	//calculate square Doc
+
+	float d_oc = (c.x - e.x)*(c.x - e.x)
+		+ (c.y - e.y)*(c.y - e.y)
+		+ (c.z - e.z)*(c.z - e.z);
+
+	//test if radius origin is inside the sphere
+	if (d_oc == r*r) {
+		return false;
+	}
+
+	//calculate b
+	float b = d.x*(c.x - e.x) + d.y*(c.y - e.y) + d.z*(c.z - e.z);
+
+	//test if radius origin points in opposite to the sphere
+	if (d_oc > r*r) {
+		if (b < 0) {
+			return false;
+		}
+	}
+
+	//calc R
+	float R = b*b - d_oc + r*r;
+
+	//test for negative root
+	if (R < 0) {
 		return false;
 	}
 	return true;
-
 	
 
 }

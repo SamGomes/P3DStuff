@@ -89,62 +89,72 @@ bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vec
 	return true;
 }
 
+bool inShadow(Ray ray, Object* targetObject) {
+	return targetObject->hasIntersection(ray);
+}
 
 
 
-glm::vec3 rayTracing(glm::vec3 origin, glm::vec3 direction, int depth) {
+glm::vec3 rayTracing(Ray ray, int depth) {
 	if (depth > MAX_DEPTH) {
 		return BLACK_COLOR;
 	}
-	else {
-		Ray ray(origin, direction);
-		glm::vec3 intersectionPoint;
-		Object* obj = nullptr;
-		bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
-		if (!intersection) {
-			return background;
-		}
-		else {
-			Material* mat = obj->getMaterial(); 
+
+	glm::vec3 intersectionPoint;
+	Object* obj = nullptr;
+	bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
+	if (!intersection) {
+		return background;
+	}
+
+	Material* mat = obj->getMaterial(); 
 			
-			glm::vec3 color = glm::vec3(1, 0, 0);
-			glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
-			for (auto light : *scene->getLights()) {
-				glm::vec3 L = glm::normalize(*light->getPosition() - intersectionPoint);
-				float diffuse = glm::dot(L, normal);
-				if (diffuse > 0) {
-					//if (!point in shadow) //trace shadow ray
-						
-					    color += *light->getColor() * diffuse *mat->getDiffuse();
-						glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
-						float dot = glm::dot(reflect, direction);
-						float base = std::fmaxf(dot, 0.0f);
-						float specular = glm::pow(base, mat->getShininess());
-						color += mat->getSpecular() * specular;
-
-				}
-
+	glm::vec3 color = glm::vec3(1, 0, 0);  //*mat->getColor(); //
+	glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
+	for (auto light : *scene->getLights()) {
+		glm::vec3 L = glm::normalize(*light->getPosition() - intersectionPoint);
+		float diffuse = glm::dot(L, normal);
+		if (diffuse > 0) {
+			Ray shadowRay(obj->getPosition(), (obj->getPosition() - *light->getPosition()));
+			if (!inShadow(shadowRay, obj)){ //trace shadow ray
+				color += *light->getColor() * diffuse *mat->getDiffuse();
+				glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
+				float dot = glm::dot(reflect, ray.getDirection());
+				float base = std::fmaxf(dot, 0.0f);
+				float specular = glm::pow(base, mat->getShininess());
+				color += mat->getSpecular() * specular;
 			}
 
-
-			//if object is reflective
-			//calculate reflective direction
-
-			glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
-			glm::vec3 reflectedColor = rayTracing(intersectionPoint, reflectedDir, depth + 1);
-			color += reflectedColor * mat->getSpecular();
-
-
-			//if object is refractive
-			//calculate refractive direction
-			//glm::vec3 refractedDir; //TODO
-			//glm::vec3 refractedColor = rayTracing(intersectionPoint, refractedDir, depth + 1);
-			//color += refractedColor; //TODO
-
-			return color;
 		}
 
 	}
+
+
+			
+	float transmitanceCoeff = mat->getTransmittance();
+	float reflectionCoeff = mat->getSpecular();
+
+	//if object is reflective
+	//calculate reflective direction
+	if (reflectionCoeff > 0) {
+		glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
+		Ray reflectedRay(intersectionPoint, reflectedDir);
+		glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);
+		color += reflectedColor * reflectionCoeff;
+	}
+			
+
+	//if object is refractive
+	//calculate refractive direction
+	if (transmitanceCoeff > 0) {
+		glm::vec3 refractedDir = glm::refract(ray.getDirection(), normal, mat->getIndexOfRefraction());
+		Ray refractedRay(intersectionPoint, refractedDir);
+		glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
+		color += refractedColor * transmitanceCoeff;
+	}
+
+	return color;
+	
 }
 
 /*
@@ -356,7 +366,8 @@ void renderScene()
 		{
 
 			glm::vec3 rayDir = calculatePrimaryRay(x, y, ze, xe, ye, df, w, h);
-			glm::vec3 color = rayTracing(*camera->getEye(), rayDir, 0);
+			Ray ray(*camera->getEye(), rayDir);
+			glm::vec3 color = rayTracing(ray, 0);
 
 			vertices[index_pos++] = (float)x;
 			vertices[index_pos++] = (float)y;
