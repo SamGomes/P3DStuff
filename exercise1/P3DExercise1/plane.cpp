@@ -46,6 +46,6 @@ bool Plane::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 
 glm::vec3 Plane::getNormal(glm::vec3 intersectionPoint, Ray ray)
 {
-	glm::vec3 aux = glm::cross((this->getPosition() - this->getPosition2()), (this->getPosition() - this->getPosition3()));
+	glm::vec3 aux = -glm::cross((this->getPosition() - this->getPosition2()), (this->getPosition() - this->getPosition3()));
 	return glm::normalize(aux);
 }

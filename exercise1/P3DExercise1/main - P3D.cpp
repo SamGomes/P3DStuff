@@ -114,12 +114,12 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
 	for (auto light : *scene->getLights()) {
 		glm::vec3 L = glm::normalize(intersectionPoint-*light->getPosition());
-		float diffuse = glm::dot(L, normal);
+		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
 			Ray shadowRay((intersectionPoint + 0.01f*normal), glm::normalize(*light->getPosition() - (intersectionPoint)));
 			//if (!inShadow(shadowRay, obj)){ //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
-				glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
+				glm::vec3 reflect = glm::reflect(glm::normalize(L), glm::normalize(normal));
 				float dot = glm::dot(reflect, ray.getDirection());
 				float base = std::fmaxf(dot, 0.0f);
 				float specular = glm::pow(base, mat->getShininess());
@@ -137,22 +137,22 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	//if object is reflective
 	//calculate reflective direction
-	if (reflectionCoeff > 0) {
+	/*if (reflectionCoeff > 0) {
 		glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
 		Ray reflectedRay(intersectionPoint, reflectedDir);
 		glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);
 		color += reflectedColor * reflectionCoeff;
-	}
+	}*/
 			
 
 	//if object is refractive
 	//calculate refractive direction
-	if (transmitanceCoeff > 0) {
+	/*if (transmitanceCoeff > 0) {
 		glm::vec3 refractedDir = glm::refract(ray.getDirection(), normal, mat->getIndexOfRefraction());
 		Ray refractedRay(intersectionPoint, refractedDir);
 		glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
 		color += refractedColor * transmitanceCoeff;
-	}
+	}*/
 
 	return color;
 	
