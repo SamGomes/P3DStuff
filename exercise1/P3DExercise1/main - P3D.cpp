@@ -32,7 +32,9 @@
 #define VERTEX_COORD_ATTRIB 0
 #define COLOR_ATTRIB 1
 
-#define MAX_DEPTH 2
+#define EPSILON 0.0001f
+
+#define MAX_DEPTH 6
 #define BLACK_COLOR glm::vec3(0, 0, 0)
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
@@ -105,7 +107,8 @@ bool inShadow(Ray ray, Object* targetObject) {
 
 
 glm::vec3 rayTracing(Ray ray, int depth) {
-	if (depth > MAX_DEPTH) {
+
+	if (depth >= MAX_DEPTH) {
 		return BLACK_COLOR;
 	}
 
@@ -125,43 +128,50 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		glm::vec3 L = glm::normalize(intersectionPoint-*light->getPosition());
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
-			Ray shadowRay(intersectionPoint-0.0001f*L, -L);
+			Ray shadowRay(intersectionPoint-EPSILON*L, -L);
 			if (!inShadow(shadowRay, obj)){ //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
 				glm::vec3 reflect = glm::reflect(glm::normalize(-L), glm::normalize(normal));
 				float dot = glm::dot(reflect, ray.getDirection());
 				float base = std::fmaxf(dot, 0.0f);
 				float specular = glm::pow(base, mat->getShininess());
-				color += mat->getSpecular() * specular*objcolor;
+				color += mat->getSpecular() * specular*(*light->getColor());
 			}
 
 		}
 
 	}
 
-
+	
 			
 	float transmitanceCoeff = mat->getTransmittance();
 	float reflectionCoeff = mat->getSpecular();
 
 	//if object is reflective
 	//calculate reflective direction
-	/*if (reflectionCoeff > 0) {
+	if (reflectionCoeff > 0) {
 		glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
-		Ray reflectedRay(intersectionPoint, reflectedDir);
+		Ray reflectedRay(intersectionPoint + EPSILON*reflectedDir, reflectedDir);
 		glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);
 		color += reflectedColor * reflectionCoeff;
-	}*/
+	}
 			
 
 	//if object is refractive
 	//calculate refractive direction
-	/*if (transmitanceCoeff > 0) {
-		glm::vec3 refractedDir = glm::refract(ray.getDirection(), normal, mat->getIndexOfRefraction());
-		Ray refractedRay(intersectionPoint, refractedDir);
+	if (transmitanceCoeff > 0) {
+		glm::vec3 refractedDir;
+		if (!obj->isInside((ray.getInitialPoint()+ intersectionPoint)/2.0f)) {
+			refractedDir = glm::refract(ray.getDirection(), normal, mat->getIndexOfRefraction() / 1.0f);
+
+		}
+		else {
+			refractedDir = glm::refract(ray.getDirection(), normal, 1.0f / mat->getIndexOfRefraction());
+		}
+		Ray refractedRay(intersectionPoint + EPSILON*refractedDir, refractedDir);
 		glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
 		color += refractedColor * transmitanceCoeff;
-	}*/
+	}
 
 	return color;
 	

@@ -57,3 +57,7 @@ glm::vec3 Plane::getNormal(glm::vec3 intersectionPoint, Ray ray)
 {
 	return normal;
 }
+
+bool Plane::isInside(glm::vec3 point) {
+	return false;
+}

@@ -136,3 +136,11 @@ Sphere::Sphere(glm::vec3 position, float radius)
 float Sphere::getRadius() {
 	return this->radius;
 }
+
+
+bool Sphere::isInside(glm::vec3 point) {
+	glm::vec3 distanceVector = (point - this->position);
+	float distanceVectorQuadrance = (distanceVector.x*distanceVector.x + distanceVector.y*distanceVector.y + distanceVector.z*distanceVector.z);
+
+	return (distanceVectorQuadrance<radius*radius);
+}

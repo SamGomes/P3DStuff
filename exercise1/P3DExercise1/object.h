@@ -18,6 +18,7 @@ protected:
 	Material* material;
 	objType type;
 public:
+
 	glm::vec3 getPosition();
 	Material* getMaterial();
 	
@@ -28,6 +29,7 @@ public:
 	virtual bool hasIntersection(Ray ray) = 0;
 	virtual bool getIntersectionPoint(glm::vec3& intersect, Ray ray) = 0;
 	virtual glm::vec3 getNormal(glm::vec3 intersectionPoint, Ray ray) = 0;
+	virtual bool isInside(glm::vec3 point) = 0;
 };
 
 
