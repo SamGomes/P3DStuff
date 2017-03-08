@@ -516,7 +516,7 @@ int main(int argc, char* argv[])
 	//INSERT HERE YOUR CODE FOR PARSING NFF FILES
 	scene = new Scene();
 
-	if (!(scene->loadSceneFromNFF("scene/test.nff"))) return 0;
+	if (!(scene->loadSceneFromNFF("scene/mount_low.nff"))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
 
