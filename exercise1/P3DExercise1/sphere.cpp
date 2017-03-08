@@ -122,7 +122,7 @@ glm::vec3 Sphere::getNormal(glm::vec3 intersectionPoint, Ray ray)
 		aux = -1.0f*aux;
 	}
 
-	return aux;
+	return glm::normalize(aux);
 }
 
 Sphere::Sphere(glm::vec3 position, float radius)
