@@ -34,8 +34,9 @@
 
 #define EPSILON 0.0001f
 
-#define MAX_DEPTH 6
+#define MAX_DEPTH 4
 #define BLACK_COLOR glm::vec3(0, 0, 0)
+#define ANTIALIASING_SAMPLING 1
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -59,7 +60,7 @@ Scene* scene = NULL;
 int RES_X, RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode = 1;
+int draw_mode = 2;
 
 int WindowHandle = 0;
 
@@ -147,31 +148,31 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	float transmitanceCoeff = mat->getTransmittance();
 	float reflectionCoeff = mat->getSpecular();
 
-	//if object is reflective
-	//calculate reflective direction
-	if (reflectionCoeff > 0) {
-		glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
-		Ray reflectedRay(intersectionPoint + EPSILON*reflectedDir, reflectedDir);
-		glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);
-		color += reflectedColor * reflectionCoeff;
-	}
-			
+	////if object is reflective
+	////calculate reflective direction
+	//if (reflectionCoeff > 0) {
+	//	glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
+	//	Ray reflectedRay(intersectionPoint + EPSILON*reflectedDir, reflectedDir);
+	//	glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);
+	//	color += reflectedColor * reflectionCoeff;
+	//}
+	//		
 
-	//if object is refractive
-	//calculate refractive direction
-	if (transmitanceCoeff > 0) {
-		glm::vec3 refractedDir;
-		if (!obj->isInside((ray.getInitialPoint()+ intersectionPoint)/2.0f)) {
-			refractedDir = glm::refract(ray.getDirection(), normal, mat->getIndexOfRefraction() / 1.0f);
+	////if object is refractive
+	////calculate refractive direction
+	//if (transmitanceCoeff > 0) {
+	//	glm::vec3 refractedDir;
+	//	if (!obj->isInside((ray.getInitialPoint()+ intersectionPoint)/2.0f)) {
+	//		refractedDir = glm::refract(ray.getDirection(), normal, mat->getIndexOfRefraction() / 1.0f);
 
-		}
-		else {
-			refractedDir = glm::refract(ray.getDirection(), normal, 1.0f / mat->getIndexOfRefraction());
-		}
-		Ray refractedRay(intersectionPoint + EPSILON*refractedDir, refractedDir);
-		glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
-		color += refractedColor * transmitanceCoeff;
-	}
+	//	}
+	//	else {
+	//		refractedDir = glm::refract(ray.getDirection(), normal, 1.0f / mat->getIndexOfRefraction());
+	//	}
+	//	Ray refractedRay(intersectionPoint + EPSILON*refractedDir, refractedDir);
+	//	glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
+	//	color += refractedColor * transmitanceCoeff;
+	//}
 
 	return color;
 	
@@ -343,10 +344,64 @@ void destroyBufferObjects()
 	checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
+glm::vec3 averageColors(int y, int x) {
+	int idx = y * RES_Y + x;
+	glm::vec3 samples[ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING];
+	int idxColor = 0;
+	for (int i = y; i < y + ANTIALIASING_SAMPLING; ++i) {
+		for (int j = x; j < x + ANTIALIASING_SAMPLING; ++j) {
+			glm::vec3 color;
+			color.r = colors[idx++];
+			color.g = colors[idx++];
+			color.b = colors[idx++];
+			samples[idxColor++] = color;
+
+		}
+	}
+
+	glm::vec3 resultColor;
+	for (auto color : samples) {
+		resultColor += color;
+	}
+	int colorSize = ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING;
+	resultColor.r /= colorSize;
+	resultColor.g /= colorSize;
+	resultColor.b /= colorSize;
+	return resultColor;
+
+
+}
+
 void drawPoints()
 {
 	glBindVertexArray(VaoId);
 	glUseProgram(ProgramId);
+
+	//Antialiasing
+
+	int finalResY = RES_Y / ANTIALIASING_SAMPLING;
+	int finalResX = RES_X / ANTIALIASING_SAMPLING;
+	int index = 0;
+	int superSampledIndex = 0;
+	if (ANTIALIASING_SAMPLING > 1) {
+		for (int y = 0; y < finalResY; y++)
+		{
+			for (int x = 0; x < finalResX; x++)
+			{
+
+				int superSampledY = y * ANTIALIASING_SAMPLING;
+				int superSampledX = x * ANTIALIASING_SAMPLING;
+				
+				glm::vec3 color = averageColors(superSampledY, superSampledX);
+
+				colors[index++] = (float)color.r;
+				colors[index++] = (float)color.g;
+				colors[index++] = (float)color.b;
+				
+			}
+		}
+
+	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
 	glBufferData(GL_ARRAY_BUFFER, size_vertices, vertices, GL_DYNAMIC_DRAW);
@@ -354,7 +409,8 @@ void drawPoints()
 	glBufferData(GL_ARRAY_BUFFER, size_colors, colors, GL_DYNAMIC_DRAW);
 
 	glUniformMatrix4fv(UniformId, 1, GL_FALSE, m);
-	glDrawArrays(GL_POINTS, 0, nPoints);
+
+	glDrawArrays(GL_POINTS, 0, finalResX * finalResY);
 	glFinish();
 
 	glUseProgram(0);
@@ -382,6 +438,7 @@ void renderScene()
 
 	for (int y = 0; y < RES_Y; y++)
 	{
+		printf("%d ", y);
 		for (int x = 0; x < RES_X; x++)
 		{
 
@@ -489,7 +546,7 @@ void setupGLUT(int argc, char* argv[])
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	glutInitWindowPosition(640, 100);
-	glutInitWindowSize(RES_X, RES_Y);
+	glutInitWindowSize(RES_X/ANTIALIASING_SAMPLING, RES_Y/ANTIALIASING_SAMPLING);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
 	glDisable(GL_DEPTH_TEST);
 	WindowHandle = glutCreateWindow(CAPTION);
@@ -512,13 +569,11 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	
-	//INSERT HERE YOUR CODE FOR PARSING NFF FILES
 	scene = new Scene();
 
 	if (!(scene->loadSceneFromNFF("scene/test.nff"))) return 0;
-	RES_X = scene->getCamera()->getResX();
-	RES_Y = scene->getCamera()->getResY();
+	RES_X = scene->getCamera()->getResX() * ANTIALIASING_SAMPLING;
+	RES_Y = scene->getCamera()->getResY() * ANTIALIASING_SAMPLING;
 
 	background = *scene->getBackgroundColor();
 
