@@ -8,7 +8,8 @@
 enum objType
 {
 	SPHERE = 0,
-	PLANE = 1
+	PLANE = 1,
+	TRIANGLE = 2
 };
 
 class Object{

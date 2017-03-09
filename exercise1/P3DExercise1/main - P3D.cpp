@@ -105,34 +105,35 @@ bool inShadow(Ray ray, Object* targetObject) {
 	}
 	return false;
 }
+
+
 /*
-JUST TRYIN ¯\_(-.-)_/¯ ASS:Samuel
-
-glm::vec3 refract(glm::vec3 incidentVec, glm::vec3 normal, float eta){
-	
-	float vectorsAngleCos = -glm::dot(incidentVec, normal);
-	glm::vec3 incidentVecParallel = incidentVec + vectorsAngleCos*normal;
-	glm::vec3 tParallel = eta* incidentVecParallel;
-
-	float tParallelLength = glm::length(tParallel);
-
-	float tPerpendicularComponent = glm::sqrt(1 - tParallelLength*tParallelLength);
-
-	return eta*incidentVec + (eta*vectorsAngleCos - tPerpendicularComponent)*normal;
-}
+vi esta formula k so mexe nos angulos... ¯\_(-.-)_/¯ ASS:Samuel
 */
-
-
 glm::vec3 refract(glm::vec3 incidentVec, glm::vec3 normal, float eta) {
-	glm::vec3 perpendicular = glm::dot(incidentVec, normal)*normal - incidentVec;
-	float perpendicularLength = glm::length(perpendicular);
-	perpendicular = perpendicular / perpendicularLength;
-	
-	float sinRefract = eta*perpendicularLength;
-	float cosRefract = glm::sqrt(1 - sinRefract*sinRefract);
-	
-	return glm::normalize(sinRefract*perpendicular - cosRefract*normal);
+
+	float incidentAngleCos = glm::dot(incidentVec, normal);
+	float transmittedAngleSinSquared = eta*eta*(1 - incidentAngleCos*incidentAngleCos);
+	float tPerpendicularComponent = glm::sqrt(1 - transmittedAngleSinSquared);
+
+	return glm::normalize(eta*-incidentVec + (eta*incidentAngleCos - tPerpendicularComponent)*normal);
 }
+
+
+
+//a tua tmb funca André, mas como pensei k o erro podesse vir daqui andei a mexer nisto e cheguei a outra solucao...
+//claro k podemos usar ambas :b
+
+//glm::vec3 refract(glm::vec3 incidentVec, glm::vec3 normal, float eta) {
+//	glm::vec3 perpendicular = glm::dot(incidentVec, normal)*normal - incidentVec;
+//	float perpendicularLength = glm::length(perpendicular);
+//	perpendicular = perpendicular / perpendicularLength;
+//	
+//	float sinRefract = eta*perpendicularLength;
+//	float cosRefract = glm::sqrt(1 - sinRefract*sinRefract);
+//	
+//	return glm::normalize(sinRefract*perpendicular - cosRefract*normal);
+//}
 
 
 glm::vec3 rayTracing(Ray ray, int depth) {
@@ -179,8 +180,8 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	//if object is reflective
 	//calculate reflective direction
-	/*
-	if (reflectionCoeff > 0) {
+	
+	/*if (reflectionCoeff > 0) {
 		glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
 		Ray reflectedRay(intersectionPoint + EPSILON*reflectedDir, reflectedDir);
 		glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);

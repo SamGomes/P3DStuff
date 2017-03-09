@@ -90,12 +90,13 @@ bool Sphere::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 	}
 
 	//calc roots
+
 	float point1 = b - std::sqrt(R);
 	float point2 = b + std::sqrt(R);
 
-	//check for smallest root
-	if (point1 > 0 && point2 > 0) {
-		point1 = std::fminf(point1, point2);
+	//check for the adequate root
+	if (d_oc < r*r) {
+		point1 = point2;
 	}
 
 	//calc intersection point
