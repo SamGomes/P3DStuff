@@ -37,7 +37,7 @@
 
 #define MAX_DEPTH 1
 #define BLACK_COLOR glm::vec3(0, 0, 0)
-#define ANTIALIASING_SAMPLING 1
+#define ANTIALIASING_SAMPLING 3
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -64,7 +64,7 @@ int RES_X, RES_Y;
 int SS_RES_X, SS_RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode = 1;
+int draw_mode = 2;
 
 int WindowHandle = 0;
 
@@ -425,25 +425,25 @@ void drawPoints()
 		//}
 		
 
-		//for (int y = 0; y < RES_Y; y++)
-		//{
-		//	for (int x = 0; x < RES_X; x++)
-		//	{
+		for (int y = 0; y < RES_Y; y++)
+		{
+			for (int x = 0; x < RES_X; x++)
+			{
 
-		//		int superSampledY = y * ANTIALIASING_SAMPLING;
-		//		int superSampledX = x * ANTIALIASING_SAMPLING;
-		//		
-		//		glm::vec3 color = averageColors(superSampledY, superSampledX);
+				int superSampledY = y * ANTIALIASING_SAMPLING;
+				int superSampledX = x * ANTIALIASING_SAMPLING;
+				
+				glm::vec3 color = averageColors(superSampledY, superSampledX);
 
-		//		vertices[index_pos++] = (float)x;
-		//		vertices[index_pos++] = (float)y;
-		//		//printf("vertices[%d] = %d,%d", index_pos - 2, x, y);
-		//		colors[index++] = (float)color.r;
-		//		colors[index++] = (float)color.g;
-		//		colors[index++] = (float)color.b;
-		//		
-		//	}
-		//}
+				vertices[index_pos++] = (float)x;
+				vertices[index_pos++] = (float)y;
+				//printf("vertices[%d] = %d,%d", index_pos - 2, x, y);
+				colors[index++] = (float)color.r;
+				colors[index++] = (float)color.g;
+				colors[index++] = (float)color.b;
+				
+			}
+		}
 
 	}
 
@@ -480,10 +480,10 @@ void renderScene()
 
 	initCameraVectors(camera, ze, xe, ye, df, w, h);
 
-	for (int y = 0; y < RES_Y; y++)
+	for (int y = 0; y < SS_RES_Y; y++)
 	{
 		printf("\r%d ", y);
-		for (int x = 0; x < RES_X; x++)
+		for (int x = 0; x < SS_RES_X; x++)
 		{
 
 			glm::vec3 rayDir = calculatePrimaryRay(x, y, ze, xe, ye, df, w, h);
