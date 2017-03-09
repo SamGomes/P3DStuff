@@ -35,17 +35,19 @@
 
 #define EPSILON 0.0001f
 
-#define MAX_DEPTH 4
+#define MAX_DEPTH 1
 #define BLACK_COLOR glm::vec3(0, 0, 0)
 #define ANTIALIASING_SAMPLING 1
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
+float *ss_colors;   //super sampling antialiasing
 float *vertices;
 
 int nPoints;
 int size_vertices;
 int size_colors;
+int ss_size_colors;
 
 glm::vec3 background;
 
@@ -59,6 +61,7 @@ GLint UniformId;
 
 Scene* scene = NULL;
 int RES_X, RES_Y;
+int SS_RES_X, SS_RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
@@ -214,8 +217,8 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	x and y are the pixels on the screen
 */
 glm::vec3 calculatePrimaryRay(int x, int y, glm::vec3 ze, glm::vec3 xe, glm::vec3 ye, float df, float h, float w) {		
-	glm::vec3 xComp = xe * w * (((float)x / (float)RES_X) - 0.5f);
-	glm::vec3 yComp = ye * h * (((float)y / (float)RES_Y) - 0.5f);
+	glm::vec3 xComp = xe * w * (((float)x / (float)SS_RES_X) - 0.5f);
+	glm::vec3 yComp = ye * h * (((float)y / (float)SS_RES_Y) - 0.5f);
 	glm::vec3 zComp = -df * ze;
 
 	glm::vec3 d = xComp + yComp + zComp;
@@ -224,7 +227,7 @@ glm::vec3 calculatePrimaryRay(int x, int y, glm::vec3 ze, glm::vec3 xe, glm::vec
 
 void initCameraVectors(Camera * camera, glm::vec3& ze, glm::vec3& xe, glm::vec3& ye, float & df, float & h, float & w ) {
 	float angle = (camera->getFovY() * (float)M_PI) / 180.0f; //in degrees, must be converted
-	float aspectratio = RES_X / (float)RES_Y;
+	float aspectratio = SS_RES_X / (float)SS_RES_Y;
 	float angleTan = tanf(angle / 2);
 	glm::vec3 dir = *camera->getEye() - *camera->getCenter();
 	df = glm::length(dir);
@@ -377,21 +380,21 @@ void destroyBufferObjects()
 }
 
 glm::vec3 averageColors(int y, int x) {
-	int idx = y * RES_Y + x;
+	int idx = y * SS_RES_Y + x;
 	glm::vec3 samples[ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING];
 	int idxColor = 0;
 	for (int i = y; i < y + ANTIALIASING_SAMPLING; ++i) {
 		for (int j = x; j < x + ANTIALIASING_SAMPLING; ++j) {
 			glm::vec3 color;
-			color.r = colors[idx++];
-			color.g = colors[idx++];
-			color.b = colors[idx++];
+			color.r = ss_colors[idx++];
+			color.g = ss_colors[idx++];
+			color.b = ss_colors[idx++];
 			samples[idxColor++] = color;
 
 		}
 	}
 
-	glm::vec3 resultColor;
+	glm::vec3 resultColor(0);
 	for (auto color : samples) {
 		resultColor += color;
 	}
@@ -400,8 +403,6 @@ glm::vec3 averageColors(int y, int x) {
 	resultColor.g /= colorSize;
 	resultColor.b /= colorSize;
 	return resultColor;
-
-
 }
 
 void drawPoints()
@@ -411,38 +412,49 @@ void drawPoints()
 
 	//Antialiasing
 
-	int finalResY = RES_Y / ANTIALIASING_SAMPLING;
-	int finalResX = RES_X / ANTIALIASING_SAMPLING;
-	int index = 0;
-	int superSampledIndex = 0;
+	int index = 0, index_pos = 0;
 	if (ANTIALIASING_SAMPLING > 1) {
-		for (int y = 0; y < finalResY; y++)
-		{
-			for (int x = 0; x < finalResX; x++)
-			{
 
-				int superSampledY = y * ANTIALIASING_SAMPLING;
-				int superSampledX = x * ANTIALIASING_SAMPLING;
-				
-				glm::vec3 color = averageColors(superSampledY, superSampledX);
+		//if (draw_mode == 0) {
+		//	for()
+		//	for (int j = 0; j < size_colors; j += 3) {
+		//		float r = ss_colors[j];
+		//		float g = ss_colors[j + 1];
+		//		float b = ss_colors[j + 2];
+		//	}
+		//}
+		
 
-				colors[index++] = (float)color.r;
-				colors[index++] = (float)color.g;
-				colors[index++] = (float)color.b;
-				
-			}
-		}
+		//for (int y = 0; y < RES_Y; y++)
+		//{
+		//	for (int x = 0; x < RES_X; x++)
+		//	{
+
+		//		int superSampledY = y * ANTIALIASING_SAMPLING;
+		//		int superSampledX = x * ANTIALIASING_SAMPLING;
+		//		
+		//		glm::vec3 color = averageColors(superSampledY, superSampledX);
+
+		//		vertices[index_pos++] = (float)x;
+		//		vertices[index_pos++] = (float)y;
+		//		//printf("vertices[%d] = %d,%d", index_pos - 2, x, y);
+		//		colors[index++] = (float)color.r;
+		//		colors[index++] = (float)color.g;
+		//		colors[index++] = (float)color.b;
+		//		
+		//	}
+		//}
 
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
 	glBufferData(GL_ARRAY_BUFFER, size_vertices, vertices, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[1]);
-	glBufferData(GL_ARRAY_BUFFER, size_colors, colors, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size_colors, ANTIALIASING_SAMPLING > 1 ? colors : ss_colors, GL_DYNAMIC_DRAW);
 
 	glUniformMatrix4fv(UniformId, 1, GL_FALSE, m);
 
-	glDrawArrays(GL_POINTS, 0, finalResX * finalResY);
+	glDrawArrays(GL_POINTS, 0, nPoints);
 	glFinish();
 
 	glUseProgram(0);
@@ -470,7 +482,7 @@ void renderScene()
 
 	for (int y = 0; y < RES_Y; y++)
 	{
-		printf("%d ", y);
+		printf("\r%d ", y);
 		for (int x = 0; x < RES_X; x++)
 		{
 
@@ -478,11 +490,13 @@ void renderScene()
 			Ray ray(*camera->getEye(), rayDir);
 			glm::vec3 color = rayTracing(ray, 0);
 
-			vertices[index_pos++] = (float)x;
-			vertices[index_pos++] = (float)y;
-			colors[index_col++] = (float)color.r;
-			colors[index_col++] = (float)color.g;
-			colors[index_col++] = (float)color.b;
+			if (ANTIALIASING_SAMPLING == 1) {
+				vertices[index_pos++] = (float)x;
+				vertices[index_pos++] = (float)y;
+			}
+			ss_colors[index_col++] = (float)color.r;
+			ss_colors[index_col++] = (float)color.g;
+			ss_colors[index_col++] = (float)color.b;
 
 			if (draw_mode == 0) {  // desenhar o conteúdo da janela ponto a ponto
 
@@ -514,6 +528,7 @@ void cleanup()
 
 	delete colors;
 	delete vertices;
+	delete ss_colors;
 	delete scene;
 }
 
@@ -578,7 +593,7 @@ void setupGLUT(int argc, char* argv[])
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	glutInitWindowPosition(640, 100);
-	glutInitWindowSize(RES_X/ANTIALIASING_SAMPLING, RES_Y/ANTIALIASING_SAMPLING);
+	glutInitWindowSize(RES_X, RES_Y);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
 	glDisable(GL_DEPTH_TEST);
 	WindowHandle = glutCreateWindow(CAPTION);
@@ -603,10 +618,11 @@ int main(int argc, char* argv[])
 {
 	scene = new Scene();
 
-	if (!(scene->loadSceneFromNFF("scene/mount_low.nff"))) return 0;
+	if (!(scene->loadSceneFromNFF("scene/test.nff"))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
-
+	SS_RES_X = RES_X * ANTIALIASING_SAMPLING;
+	SS_RES_Y = RES_Y * ANTIALIASING_SAMPLING;
 
 	background = *scene->getBackgroundColor();
 
@@ -631,6 +647,7 @@ int main(int argc, char* argv[])
 
 	size_vertices = 2 * nPoints * sizeof(float);
 	size_colors = 3 * nPoints * sizeof(float);
+	ss_size_colors = size_colors * ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING;
 
 	printf("resx = %d  resy= %d.\n", RES_X, RES_Y);
 
@@ -639,6 +656,9 @@ int main(int argc, char* argv[])
 
 	colors = (float*)malloc(size_colors);
 	if (colors == NULL) exit(1);
+
+	ss_colors = (float*)malloc(ss_size_colors);
+	if (ss_colors == NULL) exit(1);
 
 	init(argc, argv);
 	glutMainLoop();
