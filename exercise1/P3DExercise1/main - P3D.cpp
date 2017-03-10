@@ -35,9 +35,9 @@
 
 #define EPSILON 0.0001f
 
-#define MAX_DEPTH 1
+#define MAX_DEPTH 4
 #define BLACK_COLOR glm::vec3(0, 0, 0)
-#define ANTIALIASING_SAMPLING 3
+#define ANTIALIASING_SAMPLING 16
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -194,19 +194,19 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	//if object is refractive
 	//calculate refractive direction
-	if (transmitanceCoeff > 0) {
-		glm::vec3 refractedDir;
-		if (obj->isInside((ray.getInitialPoint()+ intersectionPoint)/2.0f)) {
-			refractedDir = refract(-ray.getDirection(), normal, mat->getIndexOfRefraction()/1.0f);
+	//if (transmitanceCoeff > 0) {
+	//	glm::vec3 refractedDir;
+	//	if (obj->isInside((ray.getInitialPoint()+ intersectionPoint)/2.0f)) {
+	//		refractedDir = refract(-ray.getDirection(), normal, mat->getIndexOfRefraction()/1.0f);
 
-		}
-		else {
-			refractedDir = refract(-ray.getDirection(), normal, 1.0f/mat->getIndexOfRefraction());
-		}
-		Ray refractedRay(intersectionPoint + EPSILON*refractedDir, refractedDir);
-		glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
-		color += refractedColor * transmitanceCoeff;
-	}
+	//	}
+	//	else {
+	//		refractedDir = refract(-ray.getDirection(), normal, 1.0f/mat->getIndexOfRefraction());
+	//	}
+	//	Ray refractedRay(intersectionPoint + EPSILON*refractedDir, refractedDir);
+	//	glm::vec3 refractedColor = rayTracing(refractedRay, depth + 1);
+	//	color += refractedColor * transmitanceCoeff;
+	//}
 
 
 	return color;
@@ -332,38 +332,26 @@ void destroyShaderProgram()
 void createBufferObjects()
 {
 	glGenVertexArrays(1, &VaoId);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glBindVertexArray(VaoId);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glGenBuffers(2, VboId);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 
 	/* Não é necessário fazer glBufferData, ou seja o envio dos pontos para a placa gráfica pois isso
 	é feito na drawPoints em tempo de execução com GL_DYNAMIC_DRAW */
 
 	glEnableVertexAttribArray(VERTEX_COORD_ATTRIB);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glVertexAttribPointer(VERTEX_COORD_ATTRIB, 2, GL_FLOAT, 0, 0, 0);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[1]);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glEnableVertexAttribArray(COLOR_ATTRIB);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glVertexAttribPointer(COLOR_ATTRIB, 3, GL_FLOAT, 0, 0, 0);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 
 	// unbind the VAO
 	glBindVertexArray(0);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
 	/*glDisableVertexAttribArray(VERTEX_COORD_ATTRIB);
+	glDisableVertexAttribArray(COLOR_ATTRIB);*/
 	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");
-	glDisableVertexAttribArray(COLOR_ATTRIB);
-	checkOpenGLError("ERROR: Could not create VAOs and VBOs.");*/
 }
 
 void destroyBufferObjects()
@@ -380,11 +368,12 @@ void destroyBufferObjects()
 }
 
 glm::vec3 averageColors(int y, int x) {
-	int idx = y * SS_RES_Y + x;
+	
 	glm::vec3 samples[ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING];
 	int idxColor = 0;
 	for (int i = y; i < y + ANTIALIASING_SAMPLING; ++i) {
 		for (int j = x; j < x + ANTIALIASING_SAMPLING; ++j) {
+			int idx = (i * SS_RES_Y + j) * 3;
 			glm::vec3 color;
 			color.r = ss_colors[idx++];
 			color.g = ss_colors[idx++];
@@ -402,7 +391,7 @@ glm::vec3 averageColors(int y, int x) {
 	resultColor.r /= colorSize;
 	resultColor.g /= colorSize;
 	resultColor.b /= colorSize;
-	return resultColor;
+	return samples[0];
 }
 
 void drawPoints()
@@ -414,16 +403,6 @@ void drawPoints()
 
 	int index = 0, index_pos = 0;
 	if (ANTIALIASING_SAMPLING > 1) {
-
-		//if (draw_mode == 0) {
-		//	for()
-		//	for (int j = 0; j < size_colors; j += 3) {
-		//		float r = ss_colors[j];
-		//		float g = ss_colors[j + 1];
-		//		float b = ss_colors[j + 2];
-		//	}
-		//}
-		
 
 		for (int y = 0; y < RES_Y; y++)
 		{
@@ -450,7 +429,7 @@ void drawPoints()
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
 	glBufferData(GL_ARRAY_BUFFER, size_vertices, vertices, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[1]);
-	glBufferData(GL_ARRAY_BUFFER, size_colors, ANTIALIASING_SAMPLING > 1 ? colors : ss_colors, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size_colors,  ANTIALIASING_SAMPLING > 1 ? colors : ss_colors, GL_DYNAMIC_DRAW);
 
 	glUniformMatrix4fv(UniformId, 1, GL_FALSE, m);
 
@@ -482,10 +461,9 @@ void renderScene()
 
 	for (int y = 0; y < SS_RES_Y; y++)
 	{
-		printf("\r%d ", y);
+		
 		for (int x = 0; x < SS_RES_X; x++)
 		{
-
 			glm::vec3 rayDir = calculatePrimaryRay(x, y, ze, xe, ye, df, w, h);
 			Ray ray(*camera->getEye(), rayDir);
 			glm::vec3 color = rayTracing(ray, 0);
@@ -618,7 +596,7 @@ int main(int argc, char* argv[])
 {
 	scene = new Scene();
 
-	if (!(scene->loadSceneFromNFF("scene/test.nff"))) return 0;
+	if (!(scene->loadSceneFromNFF("scene/balls_low.nff"))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
 	SS_RES_X = RES_X * ANTIALIASING_SAMPLING;
@@ -644,12 +622,19 @@ int main(int argc, char* argv[])
 		printf("Draw mode not valid \n");
 		exit(0);
 	}
+	printf("MAX_DEPTH x%d\n", MAX_DEPTH);
+	if (ANTIALIASING_SAMPLING > 1 && draw_mode != 2) {
+		printf("DRAW MODE UNSUPPORTED WITH ANTIALIASING\n");
+	}
+	else {
+		printf("ANTIALIASING x%d\n", ANTIALIASING_SAMPLING);
+	}
 
-	size_vertices = 2 * nPoints * sizeof(float);
+	size_vertices = 2 * nPoints  * sizeof(float) ;
 	size_colors = 3 * nPoints * sizeof(float);
 	ss_size_colors = size_colors * ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING;
 
-	printf("resx = %d  resy= %d.\n", RES_X, RES_Y);
+	printf("RESX = %d  RESY= %d.\n", RES_X, RES_Y);
 
 	vertices = (float*)malloc(size_vertices);
 	if (vertices == NULL) exit(1);
