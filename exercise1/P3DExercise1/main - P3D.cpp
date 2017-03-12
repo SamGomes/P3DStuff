@@ -37,7 +37,7 @@
 
 #define MAX_DEPTH 4
 #define BLACK_COLOR glm::vec3(0, 0, 0)
-#define ANTIALIASING_SAMPLING 16
+#define ANTIALIASING_SAMPLING 2
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -391,7 +391,7 @@ glm::vec3 averageColors(int y, int x) {
 	resultColor.r /= colorSize;
 	resultColor.g /= colorSize;
 	resultColor.b /= colorSize;
-	return samples[0];
+	return resultColor;
 }
 
 void drawPoints()
@@ -461,7 +461,7 @@ void renderScene()
 
 	for (int y = 0; y < SS_RES_Y; y++)
 	{
-		
+		printf("\r%d", y);
 		for (int x = 0; x < SS_RES_X; x++)
 		{
 			glm::vec3 rayDir = calculatePrimaryRay(x, y, ze, xe, ye, df, w, h);
@@ -625,6 +625,8 @@ int main(int argc, char* argv[])
 	printf("MAX_DEPTH x%d\n", MAX_DEPTH);
 	if (ANTIALIASING_SAMPLING > 1 && draw_mode != 2) {
 		printf("DRAW MODE UNSUPPORTED WITH ANTIALIASING\n");
+		getchar();
+		return -1;
 	}
 	else {
 		printf("ANTIALIASING x%d\n", ANTIALIASING_SAMPLING);
