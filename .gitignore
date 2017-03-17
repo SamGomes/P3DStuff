@@ -1,10 +1,6 @@
 # Created by https://www.gitignore.io/api/c++,visualstudio
 
-!glew32.dll
-!freeglut.dll
 
-!glew32.lib
-!freeglut.lib
 
 ### C++ ###
 # Prerequisites
@@ -34,6 +30,12 @@
 *.la
 *.a
 *.lib
+
+!glew32.dll
+!freeglut.dll
+
+!glew32.lib
+!freeglut.lib
 
 # Executables
 *.exe
