@@ -138,10 +138,10 @@ void Camera::setProjection(float fovY, float zNear, float zFar, int resX, int re
 	this->pixelWidth = ((float)resX / (float)resY) * this->pixelHeight;
 }
 
-glm::vec3 Camera::calculatePrimaryRay(int x, int y)
+glm::vec3 Camera::calculatePrimaryRay(int x, int y, int antiAliasingSample)
 {
-	glm::vec3 xComp = (*this->eyeX) * this->pixelWidth * (((float)x / (float)this->resX) - 0.5f);
-	glm::vec3 yComp = (*this->eyeY) * this->pixelHeight * (((float)y / (float)this->resY) - 0.5f);
+	glm::vec3 xComp = (*this->eyeX) * this->pixelWidth * (((float)x / ((float)this->resX*antiAliasingSample)) - 0.5f);
+	glm::vec3 yComp = (*this->eyeY) * this->pixelHeight * (((float)y / ((float)this->resY*antiAliasingSample)) - 0.5f);
 	glm::vec3 zComp = -this->focusDistance * (*this->eyeZ);
 
 	glm::vec3 d = xComp + yComp + zComp;

@@ -38,7 +38,7 @@
 
 #define MAX_DEPTH 6
 #define BLACK_COLOR glm::vec3(0, 0, 0)
-#define ANTIALIASING_SAMPLING 1
+#define ANTIALIASING_SAMPLING 2
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -65,7 +65,7 @@ int RES_X, RES_Y;
 int SS_RES_X, SS_RES_Y;
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode = 1;
+int draw_mode = 2;
 
 int WindowHandle = 0;
 
@@ -419,7 +419,7 @@ void renderScene()
 		printf("\rDrawing line: %d. Image processing progress: %.2f%%", y+1, (float)y/(float)SS_RES_Y * 100.0f);
 		for (int x = 0; x < SS_RES_X; x++)
 		{
-			glm::vec3 rayDir = camera->calculatePrimaryRay(x, y);
+			glm::vec3 rayDir = camera->calculatePrimaryRay(x, y,ANTIALIASING_SAMPLING);
 			Ray ray(*camera->getEye(), rayDir);
 			glm::vec3 color = rayTracing(ray, 0);
 

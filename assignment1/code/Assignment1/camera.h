@@ -27,7 +27,7 @@ public:
 
 	void setProjection(float fovY, float zNear, float zFar, int resX, int resY);
 
-	glm::vec3 calculatePrimaryRay(int x, int y);
+	glm::vec3 calculatePrimaryRay(int x, int y, int antiAliasingSample);
 
 private:
 	glm::vec3 *eye, *center, *up;
