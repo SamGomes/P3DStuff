@@ -30,15 +30,19 @@
 
 #define CAPTION "ray tracer"
 
+char* filePath = "scene/mount_low.nff";
+/* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
+int draw_mode = 1;
+#define MAX_DEPTH 6
+#define ANTIALIASING_SAMPLING 1
+
 #define M_PI 3.14159265358979323846
 #define VERTEX_COORD_ATTRIB 0
 #define COLOR_ATTRIB 1
 
 #define EPSILON 0.0001f
 
-#define MAX_DEPTH 6
 #define BLACK_COLOR glm::vec3(0, 0, 0)
-#define ANTIALIASING_SAMPLING 2
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
@@ -63,9 +67,6 @@ GLint UniformId;
 Scene* scene = NULL;
 int RES_X, RES_Y;
 int SS_RES_X, SS_RES_Y;
-
-/* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
-int draw_mode = 2;
 
 int WindowHandle = 0;
 
@@ -416,7 +417,7 @@ void renderScene()
 	Camera * camera = scene->getCamera();
 	for (int y = 0; y < SS_RES_Y; y++)
 	{
-		printf("\rDrawing line: %d. Image processing progress: %.2f%%", y+1, (float)y/(float)SS_RES_Y * 100.0f);
+		printf("\rDrawing line: %d. Image processing progress: %.2f%%", (y/ANTIALIASING_SAMPLING)+1, (float)y/(float)SS_RES_Y * 100.0f);
 		for (int x = 0; x < SS_RES_X; x++)
 		{
 			glm::vec3 rayDir = camera->calculatePrimaryRay(x, y,ANTIALIASING_SAMPLING);
@@ -553,7 +554,9 @@ int main(int argc, char* argv[])
 {
 	scene = new Scene();
 
-	if (!(scene->loadSceneFromNFF("scene/mount_low.nff"))) return 0;
+	printf("LOADING FILE: \"%s\"\n", filePath);
+
+	if (!(scene->loadSceneFromNFF(filePath))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
 	SS_RES_X = RES_X * ANTIALIASING_SAMPLING;
