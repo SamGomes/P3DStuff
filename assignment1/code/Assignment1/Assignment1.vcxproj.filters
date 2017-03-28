@@ -25,14 +25,14 @@
     <ClCompile Include="plane.cpp">
       <Filter>Source Files\Scene\Object</Filter>
     </ClCompile>
-    <ClCompile Include="scene.cpp">
-      <Filter>Source Files\Scene\Object</Filter>
-    </ClCompile>
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files\Scene\Object</Filter>
     </ClCompile>
     <ClCompile Include="triangle.cpp">
       <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
