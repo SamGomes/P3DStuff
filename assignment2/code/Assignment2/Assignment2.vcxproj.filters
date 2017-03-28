@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main - P3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="color.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="plane.cpp">
+      <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere.cpp">
+      <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="triangle.cpp">
+      <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>Header Files\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="plane.h">
+      <Filter>Header Files\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.h">
+      <Filter>Header Files\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="triangle.h">
+      <Filter>Header Files\Scene\Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{24c15756-13ec-4b22-9d0a-e3056ad13166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{49cfd753-01cd-446a-a69b-6f54038a40f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{7fac76b9-4594-467d-a796-0a199f2f0172}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{a8eb85ad-a2a5-4801-9294-884b05b1eae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Object">
+      <UniqueIdentifier>{2daba0b7-74e6-4bb6-9ff7-8726e54ecfaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Exercise1">
+      <UniqueIdentifier>{e697e99d-78fd-4313-9097-cf0d0483d7f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Balls">
+      <UniqueIdentifier>{c1a2626e-4695-479f-88d6-4cc98f142cb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Mount">
+      <UniqueIdentifier>{2f18fcba-d0f9-49b8-8c56-ec93639b678e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{87752366-6c8f-4276-bce7-2f01a0c465a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Object">
+      <UniqueIdentifier>{6e027d48-45fb-44b5-83d8-b41e4aac9f41}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="scene\test.nff">
+      <Filter>Resource Files\Exercise1</Filter>
+    </None>
+    <None Include="scene\test2.nff">
+      <Filter>Resource Files\Exercise1</Filter>
+    </None>
+    <None Include="scene\test3.nff">
+      <Filter>Resource Files\Exercise1</Filter>
+    </None>
+    <None Include="scene\balls_high.nff">
+      <Filter>Resource Files\Balls</Filter>
+    </None>
+    <None Include="scene\balls_low.nff">
+      <Filter>Resource Files\Balls</Filter>
+    </None>
+    <None Include="scene\balls_medium.nff">
+      <Filter>Resource Files\Balls</Filter>
+    </None>
+    <None Include="scene\mount_high.nff">
+      <Filter>Resource Files\Mount</Filter>
+    </None>
+    <None Include="scene\mount_low.nff">
+      <Filter>Resource Files\Mount</Filter>
+    </None>
+    <None Include="scene\mount_very_high.nff">
+      <Filter>Resource Files\Mount</Filter>
+    </None>
+  </ItemGroup>
+</Project>
