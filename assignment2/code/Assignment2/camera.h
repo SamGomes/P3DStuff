@@ -3,6 +3,7 @@
 #include "glm\vec3.hpp"
 #include "sampler.h"
 #include "regularSampler.h"
+#include "randomSampler.h"
 
 class Camera
 {

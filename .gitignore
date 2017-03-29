@@ -31,11 +31,6 @@
 *.a
 *.lib
 
-!glew32.dll
-!freeglut.dll
-
-!glew32.lib
-!freeglut.lib
 
 # Executables
 *.exe
@@ -68,6 +63,13 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+
+!glew32.dll
+!freeglut.dll
+
+!glew32.lib
+!freeglut.lib
+
 
 # Visual Studio 2015 cache/options directory
 .vs/
