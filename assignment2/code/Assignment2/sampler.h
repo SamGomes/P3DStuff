@@ -12,6 +12,7 @@ class Sampler {
 protected:
 
 	std::vector<glm::vec2> samples;
+	std::vector<int> sampleIndexes;
 	virtual void generateSamples() = 0;
 
 	float unitaryRandom();
@@ -20,7 +21,7 @@ protected:
 	int numSets;
 
 	int jump;
-	int count;
+	unsigned long count;
 
 public:
 

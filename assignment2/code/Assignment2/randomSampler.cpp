@@ -3,6 +3,7 @@
 
 RandomSampler::RandomSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps) {
 	this->generateSamples();
+	this->shuffleSamples();
 }
 
 void RandomSampler::generateSamples() {
