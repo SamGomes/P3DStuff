@@ -13,7 +13,10 @@ void Sampler::shuffleSamples() {
 }
 
 glm::vec2 Sampler::nextSample() {
-	return samples[count++ % (numSamples) ];
+	if (count % numSamples == 0) {
+		jump = (rand() % numSets) * numSamples;
+	}
+	return (samples[jump + count++ % numSamples]);
 }
 
 

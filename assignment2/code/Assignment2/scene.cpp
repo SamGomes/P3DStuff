@@ -9,14 +9,21 @@
 
 #include "scene.h"
 
-Scene::Scene()
+Scene::Scene(int numSamplesAA, int numSamplesDOF)
 {
 	std::vector<int> a = { 4, 5, 6, 7 };
-	this->camera = new Camera();
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
 	this->lights = new std::vector<Light*>();
 	this->materials = new std::vector<Material*>();
 	this->objects = new std::vector<Object*>();
+	
+	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
+	this->numSamplesAA = numSamplesAA*numSamplesAA;
+	samplerAA = new JitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it
+	samplerDOF = new JitteredSampler(this->numSamplesDOF, 83); 
+
+	this->camera = new Camera(samplerAA,samplerDOF);
+
 }
 
 Scene::~Scene()
@@ -39,13 +46,26 @@ Scene::~Scene()
 		delete *it;
 	}
 	delete objects;
-	
+
+	if (samplerAA != NULL) delete samplerAA;
+	if (samplerDOF != NULL) delete samplerDOF;
 }
 
 glm::vec3 * Scene::getBackgroundColor()
 {
 	return this->backgroundColor;
 }
+
+Sampler* Scene::getSamplerAA()
+{
+	return samplerAA;
+}
+
+Sampler* Scene::getSamplerDOF()
+{
+	return samplerDOF;
+}
+
 
 Camera* Scene::getCamera()
 {

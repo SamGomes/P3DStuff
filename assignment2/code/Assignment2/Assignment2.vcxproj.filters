@@ -40,7 +40,10 @@
     <ClCompile Include="regularSampler.cpp">
       <Filter>Source Files\Scene\Camera\Sampler</Filter>
     </ClCompile>
-    <ClCompile Include="multiJitteredSampler.cpp">
+    <ClCompile Include="jitteredSampler.cpp">
+      <Filter>Source Files\Scene\Camera\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="randomSampler.cpp">
       <Filter>Source Files\Scene\Camera\Sampler</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,7 +84,10 @@
     <ClInclude Include="regularSampler.h">
       <Filter>Header Files\Scene\Camera\Sampler</Filter>
     </ClInclude>
-    <ClInclude Include="multiJitteredSampler.h">
+    <ClInclude Include="jitteredSampler.h">
+      <Filter>Header Files\Scene\Camera\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="randomSampler.h">
       <Filter>Header Files\Scene\Camera\Sampler</Filter>
     </ClInclude>
   </ItemGroup>
