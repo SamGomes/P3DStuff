@@ -3,6 +3,7 @@
 MultiJitteredSampler::MultiJitteredSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps)
 {
 	this->generateSamples();
+	this->shuffleSamples();
 }
 
 void MultiJitteredSampler::generateSamples()
