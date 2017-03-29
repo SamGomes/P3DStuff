@@ -31,20 +31,23 @@
     <ClCompile Include="scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
-      <Filter>Source Files\Scene\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="sampler.cpp">
-      <Filter>Source Files\Scene\Camera\Sampler</Filter>
+      <Filter>Source Files\Scene\Sampler</Filter>
     </ClCompile>
     <ClCompile Include="regularSampler.cpp">
-      <Filter>Source Files\Scene\Camera\Sampler</Filter>
+      <Filter>Source Files\Scene\Sampler</Filter>
     </ClCompile>
     <ClCompile Include="jitteredSampler.cpp">
-      <Filter>Source Files\Scene\Camera\Sampler</Filter>
+      <Filter>Source Files\Scene\Sampler</Filter>
     </ClCompile>
     <ClCompile Include="randomSampler.cpp">
-      <Filter>Source Files\Scene\Camera\Sampler</Filter>
+      <Filter>Source Files\Scene\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="multiJitteredSampler.cpp">
+      <Filter>Source Files\Scene\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,20 +78,23 @@
     <ClInclude Include="triangle.h">
       <Filter>Header Files\Scene\Object</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
-      <Filter>Header Files\Scene\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="sampler.h">
-      <Filter>Header Files\Scene\Camera\Sampler</Filter>
+      <Filter>Header Files\Scene\Sampler</Filter>
     </ClInclude>
     <ClInclude Include="regularSampler.h">
-      <Filter>Header Files\Scene\Camera\Sampler</Filter>
+      <Filter>Header Files\Scene\Sampler</Filter>
     </ClInclude>
     <ClInclude Include="jitteredSampler.h">
-      <Filter>Header Files\Scene\Camera\Sampler</Filter>
+      <Filter>Header Files\Scene\Sampler</Filter>
     </ClInclude>
     <ClInclude Include="randomSampler.h">
-      <Filter>Header Files\Scene\Camera\Sampler</Filter>
+      <Filter>Header Files\Scene\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="multiJitteredSampler.h">
+      <Filter>Header Files\Scene\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,17 +128,11 @@
     <Filter Include="Source Files\Scene\Object">
       <UniqueIdentifier>{6e027d48-45fb-44b5-83d8-b41e4aac9f41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scene\Camera">
-      <UniqueIdentifier>{eb555c71-4357-4687-83b8-7e0cf5eaabf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Scene\Camera\Sampler">
-      <UniqueIdentifier>{7473f06b-23b6-49b8-be69-733015bad84e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene\Camera">
-      <UniqueIdentifier>{6370c498-1de8-405d-b27c-4e96e7342201}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene\Camera\Sampler">
+    <Filter Include="Header Files\Scene\Sampler">
       <UniqueIdentifier>{dbbc5521-c685-42a1-b263-674a9d708db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Sampler">
+      <UniqueIdentifier>{7473f06b-23b6-49b8-be69-733015bad84e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

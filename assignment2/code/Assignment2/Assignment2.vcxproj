@@ -73,6 +73,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="jitteredSampler.cpp" />
+    <ClCompile Include="multiJitteredSampler.cpp" />
     <ClCompile Include="randomSampler.cpp" />
     <ClCompile Include="regularSampler.cpp" />
     <ClCompile Include="light.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="jitteredSampler.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="material.h" />
+    <ClInclude Include="multiJitteredSampler.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="plane.h" />
     <ClInclude Include="randomSampler.h" />

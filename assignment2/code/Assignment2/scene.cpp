@@ -5,6 +5,8 @@
 #include "sphere.h"
 #include "plane.h"
 #include "triangle.h"
+#include "multiJitteredSampler.h"
+#include "jitteredSampler.h"
 
 
 #include "scene.h"
@@ -19,8 +21,8 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	
 	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
 	this->numSamplesAA = numSamplesAA*numSamplesAA;
-	samplerAA = new JitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it
-	samplerDOF = new JitteredSampler(this->numSamplesDOF, 83); 
+	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
+	samplerDOF = new MultiJitteredSampler(this->numSamplesDOF, 83);
 
 	this->camera = new Camera(samplerAA,samplerDOF);
 
