@@ -40,6 +40,9 @@
     <ClCompile Include="regularSampler.cpp">
       <Filter>Source Files\Scene\Camera\Sampler</Filter>
     </ClCompile>
+    <ClCompile Include="jitteredSampler.cpp">
+      <Filter>Source Files\Scene\Camera\Sampler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ray.h">
@@ -76,6 +79,9 @@
       <Filter>Header Files\Scene\Camera\Sampler</Filter>
     </ClInclude>
     <ClInclude Include="regularSampler.h">
+      <Filter>Header Files\Scene\Camera\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="jitteredSampler.h">
       <Filter>Header Files\Scene\Camera\Sampler</Filter>
     </ClInclude>
   </ItemGroup>
