@@ -72,6 +72,7 @@
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="color.cpp" />
+    <ClCompile Include="multiJitteredSampler.cpp" />
     <ClCompile Include="regularSampler.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main - P3D.cpp" />
@@ -89,6 +90,7 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="material.h" />
+    <ClInclude Include="multiJitteredSampler.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="plane.h" />
     <ClInclude Include="ray.h" />

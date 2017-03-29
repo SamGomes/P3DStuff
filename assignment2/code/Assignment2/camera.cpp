@@ -12,7 +12,7 @@ Camera::Camera()
 	this->eyeX = NULL;
 	this->eyeY = NULL;
 	this->eyeZ = NULL;
-	this->sampler = new RegularSampler(4,83);
+	this->sampler = new MultiJitteredSampler(9,83);
 }
 
 Camera::~Camera()

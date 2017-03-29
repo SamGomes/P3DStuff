@@ -2,7 +2,7 @@
 
 #include "glm\vec3.hpp"
 #include "sampler.h"
-#include "regularSampler.h"
+#include "multiJitteredSampler.h"
 
 class Camera
 {
