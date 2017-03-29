@@ -157,8 +157,6 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		}
 
 	}
-
-	
 			
 	float transmitanceCoeff = mat->getTransmittance();
 	float reflectionCoeff = mat->getSpecular();
@@ -366,9 +364,10 @@ void renderScene()
 			vertices[index_pos++] = (float)x;
 			vertices[index_pos++] = (float)y;
 			glm::vec3 color;
-			int numSamples = camera->sampler->getNumSamples();
+			Sampler* samplerAA = scene->getSamplerAA();
+			int numSamples =  samplerAA->getNumSamples();
 			for (int j = 0; j < numSamples; j++) {
-				glm::vec2 offset = camera->sampler->nextSample();
+				glm::vec2 offset = samplerAA->nextSample();
 				glm::vec3 rayDir = camera->calculatePrimaryRay(x, y, offset);
 				Ray ray(*camera->getEye(), rayDir);
 				color += rayTracing(ray, 0);
@@ -498,7 +497,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene();
+	scene = new Scene(2,2);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 

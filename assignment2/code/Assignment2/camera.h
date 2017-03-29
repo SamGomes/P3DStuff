@@ -2,15 +2,18 @@
 
 #include "glm\vec3.hpp"
 #include "sampler.h"
-#include "regularSampler.h"
+#include "jitteredSampler.h"
 
 class Camera
 {
-public:
-	Camera();
-	~Camera();
 
-	Sampler* sampler;
+private:
+	Sampler* samplerAA;
+	Sampler* samplerDOF;
+
+public:
+	Camera(Sampler* samplerAA, Sampler* samplerDOF);
+	~Camera();
 
 	glm::vec3* getEye();
 	glm::vec3* getCenter();
@@ -20,8 +23,6 @@ public:
 	glm::vec3* getEyeZ();
 
 	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
-	void setSampler(Sampler* sampler);
-
 
 	float getFovY();
 	int getResX();

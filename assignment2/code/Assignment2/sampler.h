@@ -12,13 +12,16 @@ class Sampler {
 protected:
 
 	std::vector<glm::vec2> samples;
-	unsigned long count;
 	virtual void generateSamples() = 0;
 
 	float unitaryRandom();
 
 	int numSamples;
 	int numSets;
+
+	int jump;
+	int count;
+
 public:
 
 	Sampler(int numSamples,int numSets);

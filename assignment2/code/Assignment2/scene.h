@@ -18,8 +18,14 @@ private:
 	std::vector<Material*>* materials;
 	std::vector<Object*>* objects;
 
+	Sampler* samplerAA;
+	Sampler* samplerDOF;
+
+	int numSamplesAA;
+	int numSamplesDOF;
+
 public:
-	Scene();
+	Scene(int numSamplesAA, int numSamplesDOF);
 	~Scene();
 
 	glm::vec3* getBackgroundColor();
@@ -27,6 +33,9 @@ public:
 	std::vector<Light*>* getLights();
 	std::vector<Material*>* getMaterials();
 	std::vector<Object*>* getObjects();
+
+	Sampler* getSamplerAA();
+	Sampler* getSamplerDOF();
 
 	bool loadSceneFromNFF(char* path);
 

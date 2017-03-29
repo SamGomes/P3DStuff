@@ -4,7 +4,8 @@
 
 #define M_PI 3.14159265358979323846
 
-Camera::Camera()
+
+Camera::Camera(Sampler* samplerAA, Sampler* samplerDOF)
 {
 	this->eye = NULL;
 	this->center = NULL;
@@ -12,7 +13,8 @@ Camera::Camera()
 	this->eyeX = NULL;
 	this->eyeY = NULL;
 	this->eyeZ = NULL;
-	this->sampler = new RegularSampler(4,83);
+	this->samplerAA = samplerAA;
+	this->samplerDOF = samplerDOF;
 }
 
 Camera::~Camera()
@@ -29,16 +31,9 @@ Camera::~Camera()
 		delete this->eyeY;
 	if (this->eyeZ != NULL)
 		delete this->eyeZ;
-	if (this->sampler != NULL)
-		delete this->sampler;
 }
 
-void Camera::setSampler(Sampler* sampler) {
-	if (this->sampler != NULL)
-		delete this->sampler;
 
-	this->sampler = sampler;
-}
 
 glm::vec3 * Camera::getEye()
 {
