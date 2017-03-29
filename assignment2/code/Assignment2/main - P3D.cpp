@@ -161,7 +161,6 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	float transmitanceCoeff = mat->getTransmittance();
 	float reflectionCoeff = mat->getSpecular();
 
-
 	//if object is reflective
 	//calculate reflective direction
 	
@@ -172,7 +171,6 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		color += reflectedColor * reflectionCoeff;
 	}
 			
-
 	//if object is refractive
 	//calculate refractive direction
 	if (transmitanceCoeff > 0) {
