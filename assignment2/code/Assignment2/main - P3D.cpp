@@ -30,11 +30,10 @@
 
 #define CAPTION "ray tracer"
 
-char* filePath = "scene/mount_low.nff";
+char* filePath = "scene/balls_low.nff";
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
-#define MAX_DEPTH 6
-#define ANTIALIASING_SAMPLING 1
+#define MAX_DEPTH 2
 
 #define M_PI 3.14159265358979323846
 #define VERTEX_COORD_ATTRIB 0
@@ -46,13 +45,11 @@ int draw_mode = 1;
 
 // Points defined by 2 attributes: positions which are stored in vertices array and colors which are stored in colors array
 float *colors;
-float *ss_colors;   //super sampling antialiasing
 float *vertices;
 
 int nPoints;
 int size_vertices;
 int size_colors;
-int ss_size_colors;
 
 glm::vec3 background;
 
@@ -66,7 +63,6 @@ GLint UniformId;
 
 Scene* scene = NULL;
 int RES_X, RES_Y;
-int SS_RES_X, SS_RES_Y;
 
 int WindowHandle = 0;
 
@@ -327,68 +323,15 @@ void destroyBufferObjects()
 	checkOpenGLError("ERROR: Could not destroy VAOs and VBOs.");
 }
 
-glm::vec3 averageColors(int y, int x) {
-	
-	glm::vec3 samples[ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING];
-	int idxColor = 0;
-	for (int i = y; i < y + ANTIALIASING_SAMPLING; ++i) {
-		for (int j = x; j < x + ANTIALIASING_SAMPLING; ++j) {
-			int idx = (i * SS_RES_Y + j) * 3;
-			glm::vec3 color;
-			color.r = ss_colors[idx++];
-			color.g = ss_colors[idx++];
-			color.b = ss_colors[idx++];
-			samples[idxColor++] = color;
-
-		}
-	}
-
-	glm::vec3 resultColor(0);
-	for (auto color : samples) {
-		resultColor += color;
-	}
-	int colorSize = ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING;
-	resultColor.r /= colorSize;
-	resultColor.g /= colorSize;
-	resultColor.b /= colorSize;
-	return resultColor;
-}
-
 void drawPoints()
 {
 	glBindVertexArray(VaoId);
 	glUseProgram(ProgramId);
 
-	//Antialiasing
-
-	int index = 0, index_pos = 0;
-	if (ANTIALIASING_SAMPLING > 1) {
-
-		for (int y = 0; y < RES_Y; y++)
-		{
-			for (int x = 0; x < RES_X; x++)
-			{
-
-				int superSampledY = y * ANTIALIASING_SAMPLING;
-				int superSampledX = x * ANTIALIASING_SAMPLING;
-				
-				glm::vec3 color = averageColors(superSampledY, superSampledX);
-
-				vertices[index_pos++] = (float)x;
-				vertices[index_pos++] = (float)y;
-				colors[index++] = (float)color.r;
-				colors[index++] = (float)color.g;
-				colors[index++] = (float)color.b;
-				
-			}
-		}
-
-	}
-
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
 	glBufferData(GL_ARRAY_BUFFER, size_vertices, vertices, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, VboId[1]);
-	glBufferData(GL_ARRAY_BUFFER, size_colors,  ANTIALIASING_SAMPLING > 1 ? colors : ss_colors, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size_colors, colors, GL_DYNAMIC_DRAW);
 
 	glUniformMatrix4fv(UniformId, 1, GL_FALSE, m);
 
@@ -415,23 +358,27 @@ void renderScene()
 	begin = clock();
 
 	Camera * camera = scene->getCamera();
-	for (int y = 0; y < SS_RES_Y; y++)
+	for (int y = 0; y < RES_Y; y++)
 	{
-		printf("\rDrawing line: %d. Image processing progress: %.2f%%", (y/ANTIALIASING_SAMPLING)+1, (float)y/(float)SS_RES_Y * 100.0f);
-		for (int x = 0; x < SS_RES_X; x++)
+		for (int x = 0; x < RES_X; x++)
 		{
-			glm::vec3 rayDir = camera->calculatePrimaryRay(x, y,ANTIALIASING_SAMPLING);
-			Ray ray(*camera->getEye(), rayDir);
-			glm::vec3 color = rayTracing(ray, 0);
-
-			if (ANTIALIASING_SAMPLING == 1) {
-				vertices[index_pos++] = (float)x;
-				vertices[index_pos++] = (float)y;
+		
+			vertices[index_pos++] = (float)x;
+			vertices[index_pos++] = (float)y;
+			glm::vec3 color;
+			int numSamples = camera->sampler->getNumSamples();
+			for (int j = 0; j < numSamples; j++) {
+				glm::vec2 offset = camera->sampler->nextSample();
+				glm::vec3 rayDir = camera->calculatePrimaryRay(x, y, offset);
+				Ray ray(*camera->getEye(), rayDir);
+				color += rayTracing(ray, 0);
 			}
-			ss_colors[index_col++] = (float)color.r;
-			ss_colors[index_col++] = (float)color.g;
-			ss_colors[index_col++] = (float)color.b;
+			color /= numSamples;
 
+			colors[index_col++] = (float)color.r;
+			colors[index_col++] = (float)color.g;
+			colors[index_col++] = (float)color.b;
+			
 			if (draw_mode == 0) {  // desenhar o conteúdo da janela ponto a ponto
 
 				drawPoints();
@@ -463,7 +410,6 @@ void cleanup()
 
 	delete colors;
 	delete vertices;
-	delete ss_colors;
 	delete scene;
 }
 
@@ -559,8 +505,6 @@ int main(int argc, char* argv[])
 	if (!(scene->loadSceneFromNFF(filePath))) return 0;
 	RES_X = scene->getCamera()->getResX();
 	RES_Y = scene->getCamera()->getResY();
-	SS_RES_X = RES_X * ANTIALIASING_SAMPLING;
-	SS_RES_Y = RES_Y * ANTIALIASING_SAMPLING;
 
 	background = *scene->getBackgroundColor();
 
@@ -583,18 +527,11 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 	printf("MAX_DEPTH: %d\n", MAX_DEPTH);
-	if (ANTIALIASING_SAMPLING > 1 && draw_mode != 2) {
-		printf("DRAW MODE UNSUPPORTED WITH ANTIALIASING\n");
-		getchar();
-		return -1;
-	}
-	else {
-		printf("ANTIALIASING: x%d\n", ANTIALIASING_SAMPLING);
-	}
+	
 
 	size_vertices = 2 * nPoints  * sizeof(float) ;
 	size_colors = 3 * nPoints * sizeof(float);
-	ss_size_colors = size_colors * ANTIALIASING_SAMPLING * ANTIALIASING_SAMPLING;
+	
 
 	printf("RESX = %d  RESY= %d.\n", RES_X, RES_Y);
 
@@ -603,9 +540,6 @@ int main(int argc, char* argv[])
 
 	colors = (float*)malloc(size_colors);
 	if (colors == NULL) exit(1);
-
-	ss_colors = (float*)malloc(ss_size_colors);
-	if (ss_colors == NULL) exit(1);
 
 	init(argc, argv);
 	glutMainLoop();

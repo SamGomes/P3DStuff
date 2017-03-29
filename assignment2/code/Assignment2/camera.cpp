@@ -12,6 +12,7 @@ Camera::Camera()
 	this->eyeX = NULL;
 	this->eyeY = NULL;
 	this->eyeZ = NULL;
+	this->sampler = new RegularSampler(4,83);
 }
 
 Camera::~Camera()
@@ -28,6 +29,15 @@ Camera::~Camera()
 		delete this->eyeY;
 	if (this->eyeZ != NULL)
 		delete this->eyeZ;
+	if (this->sampler != NULL)
+		delete this->sampler;
+}
+
+void Camera::setSampler(Sampler* sampler) {
+	if (this->sampler != NULL)
+		delete this->sampler;
+
+	this->sampler = sampler;
 }
 
 glm::vec3 * Camera::getEye()
@@ -138,10 +148,10 @@ void Camera::setProjection(float fovY, float zNear, float zFar, int resX, int re
 	this->pixelWidth = ((float)resX / (float)resY) * this->pixelHeight;
 }
 
-glm::vec3 Camera::calculatePrimaryRay(int x, int y, int antiAliasingSample)
+glm::vec3 Camera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 {
-	glm::vec3 xComp = (*this->eyeX) * this->pixelWidth * (((float)x / ((float)this->resX*antiAliasingSample)) - 0.5f);
-	glm::vec3 yComp = (*this->eyeY) * this->pixelHeight * (((float)y / ((float)this->resY*antiAliasingSample)) - 0.5f);
+	glm::vec3 xComp = (*this->eyeX) * this->pixelWidth * ((((float)x + offset.x) / ((float)this->resX)) - 0.5f);
+	glm::vec3 yComp = (*this->eyeY) * this->pixelHeight * ((((float)y + offset.y) / ((float)this->resY)) - 0.5f);
 	glm::vec3 zComp = -this->focusDistance * (*this->eyeZ);
 
 	glm::vec3 d = xComp + yComp + zComp;

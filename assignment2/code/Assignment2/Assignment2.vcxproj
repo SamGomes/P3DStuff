@@ -72,12 +72,14 @@
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="color.cpp" />
+    <ClCompile Include="regularSampler.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main - P3D.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="plane.cpp" />
     <ClCompile Include="ray.cpp" />
+    <ClCompile Include="sampler.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="triangle.cpp" />
@@ -90,9 +92,11 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="plane.h" />
     <ClInclude Include="ray.h" />
+    <ClInclude Include="sampler.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="triangle.h" />
+    <ClInclude Include="regularSampler.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scene\balls_high.nff" />
