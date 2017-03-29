@@ -81,9 +81,9 @@ bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vec
 
 	for (int count = 0; count < numObjects; count++) {
 		glm::vec3 auxPoint;
-		if (objects[count]->getIntersectionPoint(auxPoint, ray)){
+		if (objects[count]->getIntersectionPoint(auxPoint, ray)) {
 			float dist = glm::distance(ray.getInitialPoint(), auxPoint);
-			if(dist < minDist) {
+			if (dist < minDist) {
 				targetPoint = auxPoint;
 				targetObject = objects[count];
 				changed = 1;
@@ -135,17 +135,17 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		return background;
 	}
 
-	Material* mat = obj->getMaterial(); 
-			
+	Material* mat = obj->getMaterial();
+
 	glm::vec3 color = glm::vec3(0, 0, 0);
 	glm::vec3 objcolor = *mat->getColor();
-	glm::vec3 normal = obj->getNormal(intersectionPoint,ray);
+	glm::vec3 normal = obj->getNormal(intersectionPoint, ray);
 	for (auto light : *scene->getLights()) {
-		glm::vec3 L = glm::normalize(intersectionPoint-*light->getPosition());
+		glm::vec3 L = glm::normalize(intersectionPoint - *light->getPosition());
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
-			Ray shadowRay(intersectionPoint-EPSILON*L, -L);
-			if (!inShadow(shadowRay, obj)){ //trace shadow ray
+			Ray shadowRay(intersectionPoint - EPSILON*L, -L);
+			if (!inShadow(shadowRay, obj)) { //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
 				glm::vec3 reflect = glm::reflect(glm::normalize(-L), normal);
 				float dot = glm::dot(reflect, ray.getDirection());
@@ -157,29 +157,29 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		}
 
 	}
-			
+
 	float transmitanceCoeff = mat->getTransmittance();
 	float reflectionCoeff = mat->getSpecular();
 
 	//if object is reflective
 	//calculate reflective direction
-	
+
 	if (reflectionCoeff > 0) {
 		glm::vec3 reflectedDir = glm::reflect(ray.getDirection(), normal);
 		Ray reflectedRay(intersectionPoint + EPSILON*reflectedDir, reflectedDir);
 		glm::vec3 reflectedColor = rayTracing(reflectedRay, depth + 1);
 		color += reflectedColor * reflectionCoeff;
 	}
-			
+
 	//if object is refractive
 	//calculate refractive direction
 	if (transmitanceCoeff > 0) {
 		glm::vec3 refractedDir;
-		if (obj->isInside((ray.getInitialPoint()+ intersectionPoint)/2.0f)) {
-			refractedDir = refract(-ray.getDirection(), normal, mat->getIndexOfRefraction()/1.0f);
+		if (obj->isInside((ray.getInitialPoint() + intersectionPoint) / 2.0f)) {
+			refractedDir = refract(-ray.getDirection(), normal, mat->getIndexOfRefraction() / 1.0f);
 		}
 		else {
-			refractedDir = refract(-ray.getDirection(), normal, 1.0f/mat->getIndexOfRefraction());
+			refractedDir = refract(-ray.getDirection(), normal, 1.0f / mat->getIndexOfRefraction());
 		}
 		if (refractedDir.x != -INFINITY) {
 			Ray refractedRay(intersectionPoint + EPSILON*refractedDir, refractedDir);
@@ -189,7 +189,7 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	}
 
 	return color;
-	
+
 }
 
 /////////////////////////////////////////////////////////////////////// ERRORS
@@ -356,14 +356,12 @@ void renderScene()
 	Camera * camera = scene->getCamera();
 	for (int y = 0; y < RES_Y; y++)
 	{
+		printf("\rDrawing line: %d. Image processing progress: %.2f%%", (y)+1, (float)y / (float)RES_Y * 100.0f);
 		for (int x = 0; x < RES_X; x++)
 		{
-		
-			vertices[index_pos++] = (float)x;
-			vertices[index_pos++] = (float)y;
 			glm::vec3 color;
 			Sampler* samplerAA = scene->getSamplerAA();
-			int numSamples =  samplerAA->getNumSamples();
+			int numSamples = samplerAA->getNumSamples();
 			for (int j = 0; j < numSamples; j++) {
 				glm::vec2 offset = samplerAA->nextSample();
 				glm::vec3 rayDir = camera->calculatePrimaryRay(x, y, offset);
@@ -372,10 +370,12 @@ void renderScene()
 			}
 			color /= numSamples;
 
+			vertices[index_pos++] = (float)x;
+			vertices[index_pos++] = (float)y;
 			colors[index_col++] = (float)color.r;
 			colors[index_col++] = (float)color.g;
 			colors[index_col++] = (float)color.b;
-			
+
 			if (draw_mode == 0) {  // desenhar o conteúdo da janela ponto a ponto
 
 				drawPoints();
@@ -495,7 +495,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(2,2);
+	scene = new Scene(2, 2);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 
@@ -511,7 +511,7 @@ int main(int argc, char* argv[])
 	}
 	else if (draw_mode == 1) { // desenhar o conteúdo da janela linha a linha
 		nPoints = RES_X;
-		
+
 		printf("DRAWING MODE: LINE BY LINE\n");
 	}
 	else if (draw_mode == 2) { // preencher o conteúdo da janela com uma imagem completa
@@ -524,11 +524,11 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 	printf("MAX_DEPTH: %d\n", MAX_DEPTH);
-	
 
-	size_vertices = 2 * nPoints  * sizeof(float) ;
+
+	size_vertices = 2 * nPoints  * sizeof(float);
 	size_colors = 3 * nPoints * sizeof(float);
-	
+
 
 	printf("RESX = %d  RESY= %d.\n", RES_X, RES_Y);
 
