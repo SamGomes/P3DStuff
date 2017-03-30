@@ -27,6 +27,7 @@
 #include "color.h"
 #include "ray.h"
 #include "object.h"
+#include "jitteredSampler.h"
 
 #define CAPTION "ray tracer"
 
@@ -140,11 +141,19 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	glm::vec3 color = glm::vec3(0, 0, 0);
 	glm::vec3 objcolor = *mat->getColor();
 	glm::vec3 normal = obj->getNormal(intersectionPoint, ray);
+
 	for (auto light : *scene->getLights()) {
-		glm::vec3 L = glm::normalize(intersectionPoint - *light->getPosition());
+		Sampler* sampler = light->getSampler();
+		glm::vec3 lightPos = *light->getPosition();
+
+		glm::vec2 sp = sampler->nextSample();
+		glm::vec3 lightPosSampled = lightPos;
+		lightPosSampled.x += 1*(sp.x - 0.5);
+		lightPosSampled.y += 1*(sp.y - 0.5);
+		glm::vec3 L = glm::normalize(intersectionPoint - lightPosSampled);
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
-			Ray shadowRay(intersectionPoint - EPSILON*L, -L);
+			Ray shadowRay(intersectionPoint - EPSILON * L, -L);
 			if (!inShadow(shadowRay, obj)) { //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
 				glm::vec3 reflect = glm::reflect(glm::normalize(-L), normal);
@@ -155,6 +164,7 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 			}
 
 		}
+
 
 	}
 
@@ -495,7 +505,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(2, 2);
+	scene = new Scene(6, 1);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 
@@ -525,10 +535,8 @@ int main(int argc, char* argv[])
 	}
 	printf("MAX_DEPTH: %d\n", MAX_DEPTH);
 
-
 	size_vertices = 2 * nPoints  * sizeof(float);
 	size_colors = 3 * nPoints * sizeof(float);
-
 
 	printf("RESX = %d  RESY= %d.\n", RES_X, RES_Y);
 

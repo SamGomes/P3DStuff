@@ -1,7 +1,7 @@
 
 #include "randomSampler.h"
 
-RandomSampler::RandomSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps) {
+RandomSampler::RandomSampler(int numSamples, int numSets) : Sampler(numSamples, numSets) {
 	this->generateSamples();
 	this->shuffleSamples();
 }

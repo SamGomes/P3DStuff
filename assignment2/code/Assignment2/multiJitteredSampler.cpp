@@ -1,6 +1,6 @@
 #include "multiJitteredSampler.h"
 
-MultiJitteredSampler::MultiJitteredSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps)
+MultiJitteredSampler::MultiJitteredSampler(int numSamples, int numSets) : Sampler(numSamples, numSets)
 {
 	this->generateSamples();
 	this->shuffleSamples();

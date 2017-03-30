@@ -8,7 +8,7 @@ class JitteredSampler : public Sampler {
 protected:
 	void generateSamples();
 public:
-	JitteredSampler(int numSamples, int numSteps);
+	JitteredSampler(int numSamples, int numSets);
 };
 
 

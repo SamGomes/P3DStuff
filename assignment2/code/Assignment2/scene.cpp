@@ -11,7 +11,7 @@
 
 #include "scene.h"
 
-Scene::Scene(int numSamplesAA, int numSamplesDOF, int numSamplesLights)
+Scene::Scene(int numSamplesAA, int numSamplesDOF)
 {
 	std::vector<int> a = { 4, 5, 6, 7 };
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
@@ -21,10 +21,8 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF, int numSamplesLights)
 	
 	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
 	this->numSamplesAA = numSamplesAA*numSamplesAA;
-	this->numSamplesLights = numSamplesLights * numSamplesLights;
 	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
 	samplerDOF = new MultiJitteredSampler(this->numSamplesDOF, 83);
-	samplerLights = new MultiJitteredSampler(this->numSamplesLights, 83);
 
 	this->camera = new Camera(samplerAA,samplerDOF);
 
@@ -53,7 +51,6 @@ Scene::~Scene()
 
 	if (samplerAA != NULL) delete samplerAA;
 	if (samplerDOF != NULL) delete samplerDOF;
-	if (samplerLights != NULL) delete samplerLights;
 }
 
 glm::vec3 * Scene::getBackgroundColor()
@@ -69,11 +66,6 @@ Sampler* Scene::getSamplerAA()
 Sampler* Scene::getSamplerDOF()
 {
 	return samplerDOF;
-}
-
-Sampler* Scene::getSamplerLights()
-{
-	return samplerLights;
 }
 
 Camera* Scene::getCamera()
@@ -290,6 +282,12 @@ bool Scene::loadSceneFromNFF(char * path)
 
 		}
 
+	}
+
+	for (size_t i = 0; i < lights->size(); i++)
+	{
+		Light * light = (*lights)[i];
+		light->setSampler(new MultiJitteredSampler(numSamplesAA, 83));
 	}
 
 	return true;

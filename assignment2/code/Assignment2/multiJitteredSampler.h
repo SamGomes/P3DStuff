@@ -11,5 +11,5 @@ private:
 protected:
 	void generateSamples();
 public:
-	MultiJitteredSampler(int numSamples, int numSteps);
+	MultiJitteredSampler(int numSamples, int numSets);
 };
