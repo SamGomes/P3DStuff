@@ -2,6 +2,7 @@
 
 #include "glm\vec3.hpp"
 #include "sampler.h"
+#include "ray.h"
 
 class Camera
 {
@@ -13,6 +14,7 @@ private:
 public:
 	Camera(Sampler* samplerAA, Sampler* samplerDOF);
 	~Camera();
+
 
 	glm::vec3* getEye();
 	glm::vec3* getCenter();
@@ -31,8 +33,9 @@ public:
 	float getPixelHeight();
 
 	void setProjection(float fovY, float zNear, float zFar, int resX, int resY);
-
-	glm::vec3 calculatePrimaryRay(int x, int y, glm::vec2 offset);
+	glm::vec2 computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint);
+	Ray calculatePerspectivePrimaryRay(int x, int y, glm::vec2 offset);
+	Ray calculateAperturedPrimaryRay(int x, int y, glm::vec2 offset);
 
 private:
 	glm::vec3 *eye, *center, *up;
@@ -40,4 +43,9 @@ private:
 	float fovY, zNear, zFar;
 	int resX, resY;
 	float focusDistance, pixelWidth, pixelHeight;
+
+	float lensRadius;
+	float viewPlaneDistance;
+	float zoom;
+
 };

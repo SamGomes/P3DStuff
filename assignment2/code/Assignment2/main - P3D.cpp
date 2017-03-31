@@ -364,8 +364,7 @@ void renderScene()
 			int numSamples = samplerAA->getNumSamples();
 			for (int j = 0; j < numSamples; j++) {
 				glm::vec2 offset = samplerAA->nextSample();
-				glm::vec3 rayDir = camera->calculatePrimaryRay(x, y, offset);
-				Ray ray(*camera->getEye(), rayDir);
+				Ray ray = camera->calculateAperturedPrimaryRay(x, y, offset);
 				color += rayTracing(ray, 0);
 			}
 			color /= numSamples;

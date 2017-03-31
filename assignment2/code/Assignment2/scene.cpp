@@ -7,6 +7,7 @@
 #include "triangle.h"
 #include "multiJitteredSampler.h"
 #include "jitteredSampler.h"
+#include "circleSampler.h"
 
 
 #include "scene.h"
@@ -22,7 +23,7 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
 	this->numSamplesAA = numSamplesAA*numSamplesAA;
 	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
-	samplerDOF = new MultiJitteredSampler(this->numSamplesDOF, 83);
+	samplerDOF = new CircleSampler(this->numSamplesDOF, 83);
 
 	this->camera = new Camera(samplerAA,samplerDOF);
 
