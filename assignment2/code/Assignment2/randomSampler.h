@@ -7,7 +7,7 @@ class RandomSampler : public Sampler {
 protected:
 	void generateSamples();
 public:
-	RandomSampler(int numSamples, int numSteps);
+	RandomSampler(int numSamples, int numSets);
 
 
 };

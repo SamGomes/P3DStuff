@@ -1,7 +1,8 @@
 #include "jitteredSampler.h"
 
-JitteredSampler::JitteredSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps) {
+JitteredSampler::JitteredSampler(int numSamples, int numSets) : Sampler(numSamples, numSets) {
 	this->generateSamples();
+	this->shuffleSamples();
 }
 
 void JitteredSampler::generateSamples() {

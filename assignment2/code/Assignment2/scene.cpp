@@ -69,7 +69,6 @@ Sampler* Scene::getSamplerDOF()
 	return samplerDOF;
 }
 
-
 Camera* Scene::getCamera()
 {
 	return this->camera;
@@ -284,6 +283,12 @@ bool Scene::loadSceneFromNFF(char * path)
 
 		}
 
+	}
+
+	for (size_t i = 0; i < lights->size(); i++)
+	{
+		Light * light = (*lights)[i];
+		light->setSampler(new MultiJitteredSampler(numSamplesAA, 83));
 	}
 
 	return true;

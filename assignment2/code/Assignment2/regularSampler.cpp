@@ -1,8 +1,9 @@
 
 #include "regularSampler.h"
 
-RegularSampler::RegularSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps){
+RegularSampler::RegularSampler(int numSamples, int numSets) : Sampler(numSamples, numSets){
 	this->generateSamples();
+	this->shuffleSamples();
 }
 
 void RegularSampler::generateSamples() {
