@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CAMERA_H
+#define CAMERA_H
 
 #include "glm\vec3.hpp"
 #include "sampler.h"
@@ -7,12 +8,17 @@
 class Camera
 {
 
-private:
+protected: //vars
 	Sampler* samplerAA;
-	Sampler* samplerDOF;
+	glm::vec3 *eye, *center, *up;
+	glm::vec3 *eyeX, *eyeY, *eyeZ;
+	float fovY, zNear, zFar;
+	int resX, resY;
+	float focusDistance, pixelWidth, pixelHeight;
 
-public:
-	Camera(Sampler* samplerAA, Sampler* samplerDOF);
+
+public: //methods
+	Camera(Sampler* samplerAA);
 	~Camera();
 
 
@@ -33,19 +39,8 @@ public:
 	float getPixelHeight();
 
 	void setProjection(float fovY, float zNear, float zFar, int resX, int resY);
-	glm::vec2 computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint);
-	Ray calculatePerspectivePrimaryRay(int x, int y, glm::vec2 offset);
-	Ray calculateAperturedPrimaryRay(int x, int y, glm::vec2 offset);
-
-private:
-	glm::vec3 *eye, *center, *up;
-	glm::vec3 *eyeX, *eyeY, *eyeZ;
-	float fovY, zNear, zFar;
-	int resX, resY;
-	float focusDistance, pixelWidth, pixelHeight;
-
-	float lensRadius;
-	float viewPlaneDistance;
-	float zoom;
+	virtual Ray calculatePrimaryRay(int x, int y, glm::vec2 offset) = 0;
 
 };
+
+#endif

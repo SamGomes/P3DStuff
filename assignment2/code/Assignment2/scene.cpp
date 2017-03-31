@@ -5,11 +5,14 @@
 #include "sphere.h"
 #include "plane.h"
 #include "triangle.h"
+
 #include "multiJitteredSampler.h"
 #include "jitteredSampler.h"
+#include "regularSampler.h"
 #include "circleSampler.h"
 
-
+#include "DOFCamera.h"
+#include "perspectiveCamera.h"
 #include "scene.h"
 
 Scene::Scene(int numSamplesAA, int numSamplesDOF)
@@ -22,10 +25,10 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	
 	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
 	this->numSamplesAA = numSamplesAA*numSamplesAA;
-	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
+	samplerAA = new RegularSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
 	samplerDOF = new CircleSampler(this->numSamplesDOF, 83);
 
-	this->camera = new Camera(samplerAA,samplerDOF);
+	this->camera = new DOFCamera(samplerAA,samplerDOF,0.2,50);
 
 }
 
@@ -288,7 +291,7 @@ bool Scene::loadSceneFromNFF(char * path)
 	for (size_t i = 0; i < lights->size(); i++)
 	{
 		Light * light = (*lights)[i];
-		light->setSampler(new MultiJitteredSampler(numSamplesAA, 83));
+		light->setSampler(new RegularSampler(numSamplesAA, 83));
 	}
 
 	return true;

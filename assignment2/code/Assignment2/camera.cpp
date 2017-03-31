@@ -1,3 +1,4 @@
+
 #include "glm\common.hpp"
 #include "glm\glm.hpp"
 #include "camera.h"
@@ -5,7 +6,7 @@
 #define M_PI 3.14159265358979323846
 
 
-Camera::Camera(Sampler* samplerAA, Sampler* samplerDOF)
+Camera::Camera(Sampler* samplerAA)
 {
 	this->eye = NULL;
 	this->center = NULL;
@@ -14,10 +15,7 @@ Camera::Camera(Sampler* samplerAA, Sampler* samplerDOF)
 	this->eyeY = NULL;
 	this->eyeZ = NULL;
 	this->samplerAA = samplerAA;
-	this->samplerDOF = samplerDOF;
-	this->lensRadius = 1;
-	this->viewPlaneDistance = 1;
-	this->zoom = 1;
+	
 }
 
 Camera::~Camera()
@@ -37,16 +35,6 @@ Camera::~Camera()
 }
 
 
-glm::vec2 Camera::computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint) {
-	glm::vec2 p;
-
-	p.x = pixelPoint.x *  this->focusDistance/ this->viewPlaneDistance;
-	p.y = pixelPoint.y * this->focusDistance / this->viewPlaneDistance;
-
-	glm::vec3 dir = (p.x - lensPoint.x)*(*this->eyeX) + (p.y - lensPoint.y) * (*this->eyeY) - focusDistance*(*this->eyeZ);
-	dir = glm::normalize(dir);
-	return dir;
-}
 
 glm::vec3 * Camera::getEye()
 {
@@ -156,28 +144,4 @@ void Camera::setProjection(float fovY, float zNear, float zFar, int resX, int re
 	this->pixelWidth = ((float)resX / (float)resY) * this->pixelHeight;
 }
 
-Ray Camera::calculatePerspectivePrimaryRay(int x, int y, glm::vec2 offset)
-{
-	glm::vec3 xComp = (*this->eyeX) * this->pixelWidth * ((((float)x + offset.x) / ((float)this->resX)) - 0.5f);
-	glm::vec3 yComp = (*this->eyeY) * this->pixelHeight * ((((float)y + offset.y) / ((float)this->resY)) - 0.5f);
-	glm::vec3 zComp = -this->focusDistance * (*this->eyeZ);
 
-	glm::vec3 d = xComp + yComp + zComp;
-	d = glm::normalize(d);
-	return  Ray(*this->getEye(), d);
-}
-
-Ray Camera::calculateAperturedPrimaryRay(int x, int y, glm::vec2 offset)
-{
-	glm::vec3 pixelPoint;
-	pixelPoint.x =  ((((float)x + offset.x) / ((float)this->resX)) - 0.5f) * this->pixelWidth / this->zoom;
-	pixelPoint.y =  ((((float)y + offset.y) / ((float)this->resY)) - 0.5f) * this->pixelHeight / this->zoom;
-
-	glm::vec2 samplePoint = samplerDOF->nextSample();
-	glm::vec2 lensPoint = samplePoint*lensRadius;
-
-	glm::vec3 origin = *this->getEye() + lensPoint.x*(*this->eyeX) + lensPoint.y*(*this->eyeY);
-
-	glm::vec3 dir = glm::vec3(this->computeRayDirection(pixelPoint, samplePoint),0);
-	return  Ray(origin, dir);
-}

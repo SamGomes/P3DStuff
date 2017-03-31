@@ -142,6 +142,25 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	glm::vec3 objcolor = *mat->getColor();
 	glm::vec3 normal = obj->getNormal(intersectionPoint, ray);
 
+
+	//for (auto light : *scene->getLights()) {
+	//	glm::vec3 L = glm::normalize(intersectionPoint - *light->getPosition());
+	//	float diffuse = glm::dot(-L, normal);
+	//	if (diffuse > 0) {
+	//		Ray shadowRay(intersectionPoint - EPSILON*L, -L);
+	//		if (!inShadow(shadowRay, obj)) { //trace shadow ray
+	//			color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
+	//			glm::vec3 reflect = glm::reflect(glm::normalize(-L), normal);
+	//			float dot = glm::dot(reflect, ray.getDirection());
+	//			float base = std::fmaxf(dot, 0.0f);
+	//			float specular = glm::pow(base, mat->getShininess());
+	//			color += mat->getSpecular() * specular*(*light->getColor());
+	//		}
+
+	//	}
+
+	//}
+
 	for (auto light : *scene->getLights()) {
 		Sampler* sampler = light->getSampler();
 		glm::vec3 lightPos = *light->getPosition();
@@ -374,7 +393,7 @@ void renderScene()
 			int numSamples = samplerAA->getNumSamples();
 			for (int j = 0; j < numSamples; j++) {
 				glm::vec2 offset = samplerAA->nextSample();
-				Ray ray = camera->calculateAperturedPrimaryRay(x, y, offset);
+				Ray ray = camera->calculatePrimaryRay(x, y, offset);
 				color += rayTracing(ray, 0);
 			}
 			color /= numSamples;
@@ -504,7 +523,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(6, 1);
+	scene = new Scene(2, 1);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 
