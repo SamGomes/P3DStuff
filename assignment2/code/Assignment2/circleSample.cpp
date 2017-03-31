@@ -1,23 +1,29 @@
 #include "circleSampler.h"
 
-CircleSampler::CircleSampler(int numSamples, int numSteps) : Sampler(numSamples, numSteps) {
+CircleSampler::CircleSampler(Sampler* baseSampler) : Sampler(baseSampler->getNumSamples(), baseSampler->getNumSets()) {
+	this->baseSampler = baseSampler;	
+	this->numSamples = baseSampler->getNumSamples();
+	this->numSets = baseSampler->getNumSets();
 	this->generateSamples();
 	this->shuffleSamples();
+
 }
 
 void CircleSampler::generateSamples() {
 
 	int n = (int)sqrt(this->numSamples);
 
-	for (int p = 0; p < numSets; p++) {
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < n; k++) {
-				glm::vec2 samplePoint((k + unitaryRandom()) / n, (j + unitaryRandom()) / n);
-				samples.push_back(samplePoint);
-			}
-		}
-	}
+	baseSampler->generateSamples();
+	baseSampler->shuffleSamples();
+
+	samples = baseSampler->samples;
+
 	samples = mapSampleToUnitDisk(samples);
+}
+
+CircleSampler::~CircleSampler() {
+	if (this->baseSampler != NULL) 
+		delete this->baseSampler;
 }
 
 std::vector<glm::vec2> CircleSampler::mapSampleToUnitDisk(std::vector<glm::vec2> samples) {
@@ -32,13 +38,13 @@ std::vector<glm::vec2> CircleSampler::mapSampleToUnitDisk(std::vector<glm::vec2>
 		
 		glm::vec2 samplePoint;
 
-		samplePoint.x = 2.0 * samples[j].x - 1.0;
-		samplePoint.y = 2.0 * samples[j].y - 1.0;
+		samplePoint.x = 2.0f * samples[j].x - 1.0f;
+		samplePoint.y = 2.0f * samples[j].y - 1.0f;
 
 		if (samplePoint.x > -samplePoint.y) {
-			if (samplePoint.x > -samplePoint.y) {
+			if (samplePoint.x > samplePoint.y) {
 				r = samplePoint.x;
-				phi = 2 - samplePoint.x / samplePoint.y;
+				phi = samplePoint.y / samplePoint.x;
 			}
 			else {
 				r = samplePoint.y;
@@ -63,7 +69,7 @@ std::vector<glm::vec2> CircleSampler::mapSampleToUnitDisk(std::vector<glm::vec2>
 				
 			}
 		}
-		phi = M_PI / 4.0;
+		phi *= (float) M_PI / 4.0f;
 
 		diskSamples.push_back(glm::vec2(r * cos(phi), r * sin(phi)));
 	}

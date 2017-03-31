@@ -16,8 +16,8 @@ private:
 	float zoom;
 
 public:
-	DOFCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float zoom);
-
+	DOFCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom);
+	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
 	Ray calculatePrimaryRay(int x, int y, glm::vec2 offset);
 
 private:

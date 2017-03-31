@@ -7,7 +7,7 @@ Sampler::Sampler(int numSamples, int numSets) {
 	this->count = 0;
 	this->jump = 0;
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 void Sampler::shuffleSamples() {

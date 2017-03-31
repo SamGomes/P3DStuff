@@ -1,10 +1,11 @@
 #include "DOFCamera.h"
 
-DOFCamera::DOFCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float zoom) : Camera(samplerAA)
+DOFCamera::DOFCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom) : Camera(samplerAA)
 {
 	this->samplerDOF = samplerDOF;
-	this->lensRadius = 1.0;
-	this->viewPlaneDistance = 5.0;
+	this->lensRadius = lensRadius;
+	this->viewPlaneDistance = viewPlaneDistance;
+	this->focusDistance = focusDistance;
 	this->zoom = 1;
 }
 
@@ -19,11 +20,12 @@ Ray DOFCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 
 	glm::vec3 origin = *this->getEye() + lensPoint.x*(*this->eyeX) + lensPoint.y*(*this->eyeY);
 
-	glm::vec3 dir = this->computeRayDirection(pixelPoint, samplePoint);
+	glm::vec3 dir = this->computeRayDirection(pixelPoint, lensPoint);
 	return  Ray(origin, dir);
 }
 
 glm::vec3 DOFCamera::computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint) {
+	
 	glm::vec2 p;
 
 	p.x = pixelPoint.x *  this->focusDistance / this->viewPlaneDistance;
@@ -34,3 +36,7 @@ glm::vec3 DOFCamera::computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoi
 	return dir;
 }
 
+void DOFCamera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
+{
+	Camera::setView(eye, center, up);
+}

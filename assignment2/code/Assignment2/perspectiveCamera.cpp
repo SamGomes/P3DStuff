@@ -15,3 +15,9 @@ Ray PerspectiveCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 	d = glm::normalize(d);
 	return  Ray(*this->getEye(), d);
 }
+
+void PerspectiveCamera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
+{
+	Camera::setView(eye, center, up);
+	this->focusDistance = glm::length(*this->eye - *this->center);
+}

@@ -25,10 +25,10 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	
 	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
 	this->numSamplesAA = numSamplesAA*numSamplesAA;
-	samplerAA = new RegularSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
-	samplerDOF = new CircleSampler(this->numSamplesDOF, 83);
+	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
+	samplerDOF = new CircleSampler(new MultiJitteredSampler(this->numSamplesDOF,83));
 
-	this->camera = new DOFCamera(samplerAA,samplerDOF,0.2,50);
+	this->camera = new DOFCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
 
 }
 

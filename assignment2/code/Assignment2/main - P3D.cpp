@@ -31,7 +31,7 @@
 
 #define CAPTION "ray tracer"
 
-char* filePath = "scene/balls_low.nff";
+char* filePath = "scene/DOFTest.nff";
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
 #define MAX_DEPTH 2
@@ -143,32 +143,14 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	glm::vec3 normal = obj->getNormal(intersectionPoint, ray);
 
 
-	//for (auto light : *scene->getLights()) {
-	//	glm::vec3 L = glm::normalize(intersectionPoint - *light->getPosition());
-	//	float diffuse = glm::dot(-L, normal);
-	//	if (diffuse > 0) {
-	//		Ray shadowRay(intersectionPoint - EPSILON*L, -L);
-	//		if (!inShadow(shadowRay, obj)) { //trace shadow ray
-	//			color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
-	//			glm::vec3 reflect = glm::reflect(glm::normalize(-L), normal);
-	//			float dot = glm::dot(reflect, ray.getDirection());
-	//			float base = std::fmaxf(dot, 0.0f);
-	//			float specular = glm::pow(base, mat->getShininess());
-	//			color += mat->getSpecular() * specular*(*light->getColor());
-	//		}
-
-	//	}
-
-	//}
-
 	for (auto light : *scene->getLights()) {
 		Sampler* sampler = light->getSampler();
 		glm::vec3 lightPos = *light->getPosition();
 
 		glm::vec2 sp = sampler->nextSample();
 		glm::vec3 lightPosSampled = lightPos;
-		lightPosSampled.x += 1*(sp.x - 0.5);
-		lightPosSampled.y += 1*(sp.y - 0.5);
+		lightPosSampled.x += 1*(sp.x - 0.5f);
+		lightPosSampled.y += 1*(sp.y - 0.5f);
 		glm::vec3 L = glm::normalize(intersectionPoint - lightPosSampled);
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
@@ -523,7 +505,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(2, 1);
+	scene = new Scene(2, 4);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 

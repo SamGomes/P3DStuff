@@ -11,7 +11,7 @@ class PerspectiveCamera : public Camera
 public: //methods
 	PerspectiveCamera(Sampler * samplerAA);
 	Ray calculatePrimaryRay(int x, int y, glm::vec2 offset);
-
+	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
 }; 
 
 #endif

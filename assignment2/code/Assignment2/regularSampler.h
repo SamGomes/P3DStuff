@@ -5,11 +5,9 @@
 
 class RegularSampler : public Sampler {
 
-protected:
-	void generateSamples();
 public:
 	RegularSampler(int numSamples, int numSets);
-
+	void generateSamples();
 	
 };
 

@@ -9,22 +9,23 @@
 
 class Sampler {
 
-protected:
-
+public: //vars
 	std::vector<glm::vec2> samples;
+
+protected: //vars
 	std::vector<int> sampleIndexes;
-	virtual void generateSamples() = 0;
-
-	float unitaryRandom();
-
 	int numSamples;
 	int numSets;
-
 	int jump;
 	unsigned long count;
 
-public:
 
+
+protected: //methods
+	float unitaryRandom();
+
+
+public: //methods
 	Sampler(int numSamples,int numSets);
 	void shuffleSamples();
 	glm::vec2 nextSample();
@@ -32,6 +33,7 @@ public:
 	int getNumSamples();
 	int getNumSets();
 
+	virtual void generateSamples() = 0;
 
 };
 

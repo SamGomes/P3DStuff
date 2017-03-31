@@ -8,12 +8,16 @@
 
 class CircleSampler : public Sampler {
 
+private:
+	Sampler* baseSampler;
+
 protected:
-	void generateSamples();
 	std::vector<glm::vec2> CircleSampler::mapSampleToUnitDisk(std::vector<glm::vec2> samples);
 
 public:
-	CircleSampler(int numSamples, int numSteps);
+	CircleSampler(Sampler* baseSampler);
+	~CircleSampler();
+	void generateSamples();
 };
 
 
