@@ -6,10 +6,10 @@
 #include "ray.h"
 #include "Camera.h"
 
-class PerspectiveCamera : public Camera
+class PinHoleCamera : public Camera
 {
 public: //methods
-	PerspectiveCamera(Sampler * samplerAA);
+	PinHoleCamera(Sampler * samplerAA);
 	Ray calculatePrimaryRay(int x, int y, glm::vec2 offset);
 	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
 }; 

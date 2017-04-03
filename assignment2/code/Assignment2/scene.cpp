@@ -11,8 +11,8 @@
 #include "regularSampler.h"
 #include "circleSampler.h"
 
-#include "DOFCamera.h"
-#include "perspectiveCamera.h"
+#include "thinLensCamera.h"
+#include "pinHoleCamera.h"
 #include "scene.h"
 
 Scene::Scene(int numSamplesAA, int numSamplesDOF)
@@ -28,7 +28,7 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
 	samplerDOF = new CircleSampler(new MultiJitteredSampler(this->numSamplesDOF,83));
 
-	this->camera = new DOFCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
+	this->camera = new ThinLensCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
 
 }
 

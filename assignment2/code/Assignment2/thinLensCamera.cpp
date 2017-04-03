@@ -1,6 +1,6 @@
-#include "DOFCamera.h"
+#include "thinLensCamera.h"
 
-DOFCamera::DOFCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom) : Camera(samplerAA)
+ThinLensCamera::ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom) : Camera(samplerAA)
 {
 	this->samplerDOF = samplerDOF;
 	this->lensRadius = lensRadius;
@@ -9,7 +9,7 @@ DOFCamera::DOFCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius
 	this->zoom = 1;
 }
 
-Ray DOFCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
+Ray ThinLensCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 {
 	glm::vec3 pixelPoint;
 	pixelPoint.x = ((((float)x + offset.x) / ((float)this->resX)) - 0.5f) * this->pixelWidth / this->zoom;
@@ -24,7 +24,7 @@ Ray DOFCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 	return  Ray(origin, dir);
 }
 
-glm::vec3 DOFCamera::computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint) {
+glm::vec3 ThinLensCamera::computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint) {
 	
 	glm::vec2 p;
 
@@ -36,7 +36,7 @@ glm::vec3 DOFCamera::computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoi
 	return dir;
 }
 
-void DOFCamera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
+void ThinLensCamera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
 {
 	Camera::setView(eye, center, up);
 }
