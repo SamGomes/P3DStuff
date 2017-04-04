@@ -46,8 +46,17 @@
     <ClCompile Include="multiJitteredSampler.cpp">
       <Filter>Source Files\Scene\Sampler</Filter>
     </ClCompile>
+    <ClCompile Include="circleSample.cpp">
+      <Filter>Source Files\Scene\Sampler</Filter>
+    </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>Source Files\Scene</Filter>
+      <Filter>Source Files\Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="pinHoleCamera.cpp">
+      <Filter>Source Files\Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="thinLensCamera.cpp">
+      <Filter>Source Files\Scene\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,8 +102,17 @@
     <ClInclude Include="multiJitteredSampler.h">
       <Filter>Header Files\Scene\Sampler</Filter>
     </ClInclude>
+    <ClInclude Include="circleSampler.h">
+      <Filter>Header Files\Scene\Sampler</Filter>
+    </ClInclude>
     <ClInclude Include="camera.h">
-      <Filter>Header Files\Scene</Filter>
+      <Filter>Header Files\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="thinLensCamera.h">
+      <Filter>Header Files\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="pinHoleCamera.h">
+      <Filter>Header Files\Scene\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +151,12 @@
     </Filter>
     <Filter Include="Source Files\Scene\Sampler">
       <UniqueIdentifier>{7473f06b-23b6-49b8-be69-733015bad84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Camera">
+      <UniqueIdentifier>{6cb44daa-6450-4588-8d90-a00bcaf3a53e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Camera">
+      <UniqueIdentifier>{6b1fce1a-a46b-4b7f-87f3-4faefd0cc2e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
