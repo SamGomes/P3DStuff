@@ -20,8 +20,54 @@ void BoundingBox::setPoints(glm::vec3 min, glm::vec3 max) {
 	maxPos = max;
 }
 
-bool BoundingBox::getIntersection(Ray ray, glm::vec3 & tMin, glm::vec3 & tMax)
+
+bool BoundingBox::intersectionLoop(float& tProx, float& tDist, float v0, float vd, float vMin, float vMax) {
+	if (v0 == 0) {
+		if (v0 < vMin || v0 > vMax) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	float tMin = (vMin - v0) / vd;
+	float tMax = (vMax - v0) / vd;
+
+	if (tMin > tMax) {
+		float minAux = tMin;
+		tMin = tMax;
+		tMax = minAux;
+	}
+	if (tMin > tProx) tProx = tMin;
+	if (tMax < tDist) tDist = tMax;
+
+	if (tProx > tDist) {
+		return false;
+	}
+	//6.
+	if (tDist < 0) {
+		return false;
+	}
+	return true;
+}
+
+bool BoundingBox::getIntersection(Ray ray, float& tProx, float& tDist)
 {
-	//TODO: Everything!!
-	return false;
+	tProx = -INFINITY;
+	tDist = INFINITY;
+
+	glm::vec3 v0 = ray.getInitialPoint();
+	glm::vec3 vd = ray.getDirection();
+	
+
+	if (glm::length(v0) == 0) return false;
+
+	return intersectionLoop(tProx, tDist, v0.x, vd.x, minPos.x, maxPos.x)
+		&& intersectionLoop(tProx, tDist, v0.y, vd.y, minPos.y, maxPos.y)
+		&& intersectionLoop(tProx, tDist, v0.z, vd.z, minPos.z, maxPos.z);
+
+
+	
+	
+	return true;
 }

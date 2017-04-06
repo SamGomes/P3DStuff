@@ -23,9 +23,33 @@ Triangle::Triangle(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3
 
 	//set bounding box
 	
+	std::vector<glm::vec3> points;
+	points.push_back(position); points.push_back(position2); points.push_back(position3);
 
+	glm::vec3 p0(INFINITY), p1 (-INFINITY);
 
-	//this->boundingBox
+	for (auto point : points) {
+		if (point.x < p0.x) {
+			p0.x = point.x;
+		}
+		else if(point.x > p1.x){
+			p1.x = point.x;
+		}
+		if (point.y < p0.y) {
+			p0.y = point.y;
+		}
+		else if (point.y > p1.y) {
+			p1.y = point.y;
+		}
+		if (point.z < p0.z) {
+			p0.z = point.z;
+		}
+		else if (point.z > p1.z) {
+			p1.z = point.z;
+		}
+	}
+
+	this->boundingBox.setPoints(p0, p1);
 
 }
 

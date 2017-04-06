@@ -1,7 +1,10 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include"object.h"
+#include <vector>
+
+#include "object.h"
+
 
 class Triangle : public Object {
 

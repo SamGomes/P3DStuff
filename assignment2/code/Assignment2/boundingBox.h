@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "glm\vec3.hpp"
 #include "ray.h"
 
@@ -16,5 +17,10 @@ public:
 
 	void setPoints(glm::vec3 min, glm::vec3 max);
 
-	bool getIntersection(Ray ray, glm::vec3& tMin, glm::vec3& tMax);
+	
+
+	bool getIntersection(Ray ray, float& tMin, float& tMax);
+
+private:
+	bool intersectionLoop(float & tProx, float & tDist, float v0, float vd, float vMin, float vMax);
 };
