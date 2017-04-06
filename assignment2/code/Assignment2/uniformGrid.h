@@ -16,7 +16,7 @@ class UniformGrid
 public:
 	UniformGrid(float mFactor, std::vector<Object*> objects);
 	bool rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject);
-	GridCell getCell(int x, int y, int z);
+	int getCellIndex(int x, int y, int z);
 
 private:
 	int nObjects;
@@ -26,5 +26,7 @@ private:
 	std::vector<GridCell> cells;
 
 	void setupBoundingBox(std::vector<Object*> objects);
+	void createCells(float mFactor);
+	void fillCells(std::vector<Object*> objects);
 
 };

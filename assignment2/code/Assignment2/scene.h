@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "uniformGrid.h"
 #include "camera.h"
 #include "light.h"
 #include "material.h"
@@ -12,6 +13,7 @@
 class Scene {
 
 private:
+
 	glm::vec3* backgroundColor;
 	Camera* camera;
 	std::vector<Light*>* lights;
@@ -23,6 +25,9 @@ private:
 
 	int numSamplesAA;
 	int numSamplesDOF;
+
+
+	UniformGrid* uniformGrid;
 
 public:
 	Scene(int numSamplesAA, int numSamplesDOF);
@@ -36,6 +41,8 @@ public:
 
 	Sampler* getSamplerAA();
 	Sampler* getSamplerDOF();
+
+	UniformGrid* getUniformGrid();
 
 	bool loadSceneFromNFF(char* path);
 

@@ -30,6 +30,7 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 
 	this->camera = new PinHoleCamera(samplerAA);// new ThinLensCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
 
+	this->uniformGrid = NULL;
 }
 
 Scene::~Scene()
@@ -55,6 +56,7 @@ Scene::~Scene()
 
 	if (samplerAA != NULL) delete samplerAA;
 	if (samplerDOF != NULL) delete samplerDOF;
+	if (this->uniformGrid != NULL) delete uniformGrid;
 }
 
 glm::vec3 * Scene::getBackgroundColor()
@@ -70,6 +72,11 @@ Sampler* Scene::getSamplerAA()
 Sampler* Scene::getSamplerDOF()
 {
 	return samplerDOF;
+}
+
+UniformGrid * Scene::getUniformGrid()
+{
+	return this->uniformGrid;
 }
 
 Camera* Scene::getCamera()
@@ -230,6 +237,7 @@ bool Scene::loadSceneFromNFF(char * path)
 		
 		}
 
+		/*
 		//check pl for plane info
 		else if (line.substr(0, 3) == "pl ") {
 
@@ -249,6 +257,7 @@ bool Scene::loadSceneFromNFF(char * path)
 			newPlane->setMaterial(currentMaterial);
 			this->objects->push_back(newPlane);
 		}
+		*/
 
 		//check p for triangulized polygon
 		else if (line.substr(0, 2) == "p ") {
@@ -293,6 +302,8 @@ bool Scene::loadSceneFromNFF(char * path)
 		Light * light = (*lights)[i];
 		light->setSampler(new MultiJitteredSampler(numSamplesAA, 83));
 	}
+
+	this->uniformGrid = new UniformGrid(2.0f, *objects);
 
 	return true;
 }
