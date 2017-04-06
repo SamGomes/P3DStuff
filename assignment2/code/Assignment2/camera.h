@@ -29,7 +29,7 @@ public: //methods
 	glm::vec3* getEyeY();
 	glm::vec3* getEyeZ();
 
-	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
+	virtual void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
 
 	float getFovY();
 	int getResX();

@@ -16,7 +16,8 @@ Ray PinHoleCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 	return  Ray(*this->getEye(), d);
 }
 
-void PinHoleCamera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
+
+void PinHoleCamera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up) 
 {
 	Camera::setView(eye, center, up);
 	this->focusDistance = glm::length(*this->eye - *this->center);

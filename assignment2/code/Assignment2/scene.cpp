@@ -28,7 +28,7 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
 	samplerDOF = new CircleSampler(new JitteredSampler(this->numSamplesDOF,83));
 
-	this->camera = new ThinLensCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
+	this->camera = new PinHoleCamera(samplerAA);// new ThinLensCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
 
 }
 
