@@ -13,4 +13,5 @@ public:
 	glm::vec3 getMaxPos();
 
 	bool getIntersection(Ray ray, glm::vec3& tMin, glm::vec3& tMax);
+	bool isInside(glm::vec3 point);
 };
