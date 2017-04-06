@@ -1,8 +1,11 @@
 #include "UniformGrid.h"
 
+#define GRID_EPSILON 0.00001f
+
 UniformGrid::UniformGrid(float mFactor, std::vector<Object*> objects)
 {
 	setupBoundingBox(objects);
+
 }
 
 bool UniformGrid::rayCast(Ray ray, glm::vec3 & targetPoint, Object *& targetObject)
@@ -20,28 +23,32 @@ void UniformGrid::setupBoundingBox(std::vector<Object*> objects)
 {
 	nObjects = objects.size();
 
-	boundingBox.getMinPos = glm::vec3(INFINITY, INFINITY, INFINITY);
-	boundingBox.getMaxPos = glm::vec3(-INFINITY, -INFINITY, -INFINITY);
+	glm::vec3 newMinPos(INFINITY, INFINITY, INFINITY);
+	glm::vec3 newMaxPos(-INFINITY, -INFINITY, -INFINITY);
 
 	for (auto object : objects) {
 		BoundingBox objectBox = object->getBoundingBox();
 
-		if (objectBox.getMinPos().x < boundingBox.getMinPos.x)
-			boundingBox.getMinPos.x = objectBox.getMinPos().x;
+		if (objectBox.getMinPos().x < boundingBox.getMinPos().x){
+			newMinPos.x = objectBox.getMinPos().x;
+		}
 
-		if (objectBox.getMinPos().y < boundingBox.getMinPos.y)
-			boundingBox.getMinPos.y = objectBox.getMinPos().y;
+		if (objectBox.getMinPos().y < boundingBox.getMinPos().y)
+			newMinPos.y = objectBox.getMinPos().y;
 
-		if (objectBox.getMinPos().z < boundingBox.getMinPos.z)
-			boundingBox.getMinPos.z = objectBox.getMinPos().z;
+		if (objectBox.getMinPos().z < boundingBox.getMinPos().z)
+			newMinPos.z = objectBox.getMinPos().z;
 
-		if (objectBox.getMaxPos().x > boundingBox.getMaxPos.x)
-			boundingBox.getMaxPos.x = objectBox.getMaxPos().x;
+		if (objectBox.getMaxPos().x > boundingBox.getMaxPos().x)
+			newMaxPos.x = objectBox.getMaxPos().x;
 
-		if (objectBox.getMaxPos().y > boundingBox.getMaxPos.y)
-			boundingBox.getMaxPos.y = objectBox.getMaxPos().y;
+		if (objectBox.getMaxPos().y > boundingBox.getMaxPos().y)
+			newMaxPos.y = objectBox.getMaxPos().y;
 
-		if (objectBox.getMaxPos().z > boundingBox.getMaxPos.z)
-			boundingBox.getMaxPos.z = objectBox.getMaxPos().z;
+		if (objectBox.getMaxPos().z > boundingBox.getMaxPos().z)
+			newMaxPos.z = objectBox.getMaxPos().z;
 	}
+	
+	newMinPos -= GRID_EPSILON;
+	newMaxPos += GRID_EPSILON;
 }

@@ -90,7 +90,7 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="triangle.cpp" />
-    <ClCompile Include="UniformGrid.cpp" />
+    <ClCompile Include="uniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="boundingBox.h" />
@@ -112,7 +112,7 @@
     <ClInclude Include="sphere.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="regularSampler.h" />
-    <ClInclude Include="UniformGrid.h" />
+    <ClInclude Include="uniformGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scene\balls_high.nff" />
