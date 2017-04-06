@@ -21,7 +21,7 @@ GridCell UniformGrid::getCell(int x, int y, int z)
 
 void UniformGrid::setupBoundingBox(std::vector<Object*> objects)
 {
-	nObjects = objects.size();
+	this->nObjects = objects.size();
 
 	glm::vec3 newMinPos(INFINITY, INFINITY, INFINITY);
 	glm::vec3 newMaxPos(-INFINITY, -INFINITY, -INFINITY);
@@ -29,9 +29,8 @@ void UniformGrid::setupBoundingBox(std::vector<Object*> objects)
 	for (auto object : objects) {
 		BoundingBox objectBox = object->getBoundingBox();
 
-		if (objectBox.getMinPos().x < boundingBox.getMinPos().x){
+		if (objectBox.getMinPos().x < boundingBox.getMinPos().x)
 			newMinPos.x = objectBox.getMinPos().x;
-		}
 
 		if (objectBox.getMinPos().y < boundingBox.getMinPos().y)
 			newMinPos.y = objectBox.getMinPos().y;
@@ -51,4 +50,6 @@ void UniformGrid::setupBoundingBox(std::vector<Object*> objects)
 	
 	newMinPos -= GRID_EPSILON;
 	newMaxPos += GRID_EPSILON;
+
+	this->boundingBox.setPoints(newMinPos, newMaxPos);
 }

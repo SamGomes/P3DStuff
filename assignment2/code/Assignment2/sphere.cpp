@@ -132,6 +132,14 @@ Sphere::Sphere(glm::vec3 position, float radius)
 	this->position = position;
 	this->radius = radius;
 	this->material = NULL;
+
+
+	//set bounding box
+	
+	glm::vec3 p0 = position - radius;
+	glm::vec3 p1 = position + radius;
+	
+	this->boundingBox.setPoints(p0, p1);
 }
 
 float Sphere::getRadius() {
