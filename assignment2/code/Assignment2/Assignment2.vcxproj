@@ -70,6 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="boundingBox.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="circleSample.cpp" />
     <ClCompile Include="color.cpp" />
@@ -89,8 +90,10 @@
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="triangle.cpp" />
+    <ClCompile Include="UniformGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="boundingBox.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="circleSampler.h" />
     <ClInclude Include="color.h" />
@@ -109,6 +112,7 @@
     <ClInclude Include="sphere.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="regularSampler.h" />
+    <ClInclude Include="UniformGrid.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scene\balls_high.nff" />

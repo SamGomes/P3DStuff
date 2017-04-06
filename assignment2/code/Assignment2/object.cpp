@@ -10,6 +10,11 @@ Material * Object::getMaterial()
 	return this->material;
 }
 
+BoundingBox Object::getBoundingBox()
+{
+	return this->boundingBox;
+}
+
 void Object::setMaterial(Material* material)
 {
 	this->material = material;

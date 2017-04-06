@@ -58,6 +58,12 @@
     <ClCompile Include="thinLensCamera.cpp">
       <Filter>Source Files\Scene\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="boundingBox.cpp">
+      <Filter>Source Files\Scene\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformGrid.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ray.h">
@@ -113,6 +119,12 @@
     </ClInclude>
     <ClInclude Include="pinHoleCamera.h">
       <Filter>Header Files\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="boundingBox.h">
+      <Filter>Header Files\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformGrid.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

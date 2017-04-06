@@ -1,9 +1,10 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include"glm\glm.hpp"
-#include"Ray.h"
-#include"Material.h"
+#include "glm\glm.hpp"
+#include "Ray.h"
+#include "Material.h"
+#include "boundingBox.h"
 
 enum objType
 {
@@ -17,11 +18,13 @@ class Object{
 protected:
 	glm::vec3 position;
 	Material* material;
+	BoundingBox boundingBox;
 	objType type;
 public:
 
 	glm::vec3 getPosition();
 	Material* getMaterial();
+	BoundingBox getBoundingBox();
 	
 	void setMaterial(Material* material);
 	
