@@ -21,6 +21,12 @@ Triangle::Triangle(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3
 
 	this->d = -glm::dot(this->position, this->normal);
 
+	//set bounding box
+	
+
+
+	//this->boundingBox
+
 }
 
 bool Triangle::hasIntersection(Ray ray)
