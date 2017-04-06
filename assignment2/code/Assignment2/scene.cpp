@@ -291,7 +291,7 @@ bool Scene::loadSceneFromNFF(char * path)
 	for (size_t i = 0; i < lights->size(); i++)
 	{
 		Light * light = (*lights)[i];
-		light->setSampler(new RegularSampler(numSamplesAA, 83));
+		light->setSampler(new MultiJitteredSampler(numSamplesAA, 83));
 	}
 
 	return true;
