@@ -25,4 +25,6 @@ private:
 	BoundingBox boundingBox;
 	std::vector<GridCell> cells;
 
+	void setupBoundingBox(std::vector<Object*> objects);
+
 };
