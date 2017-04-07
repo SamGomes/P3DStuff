@@ -21,6 +21,36 @@ Triangle::Triangle(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3
 
 	this->d = -glm::dot(this->position, this->normal);
 
+	//set bounding box
+	
+	std::vector<glm::vec3> points;
+	points.push_back(position); points.push_back(position2); points.push_back(position3);
+
+	glm::vec3 p0(INFINITY), p1 (-INFINITY);
+
+	for (auto point : points) {
+		if (point.x < p0.x) {
+			p0.x = point.x;
+		}
+		else if(point.x > p1.x){
+			p1.x = point.x;
+		}
+		if (point.y < p0.y) {
+			p0.y = point.y;
+		}
+		else if (point.y > p1.y) {
+			p1.y = point.y;
+		}
+		if (point.z < p0.z) {
+			p0.z = point.z;
+		}
+		else if (point.z > p1.z) {
+			p1.z = point.z;
+		}
+	}
+
+	this->boundingBox.setPoints(p0, p1);
+
 }
 
 bool Triangle::hasIntersection(Ray ray)
@@ -71,7 +101,7 @@ glm::vec3 Triangle::getPosition3()
 	return position3;
 }
 
-bool Triangle::getIntersectionPoint(glm::vec3& intersect, Ray ray)
+bool Triangle::getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray)
 {
 	//---------------------------- calc plane intersection ----------------------------
 
@@ -83,7 +113,7 @@ bool Triangle::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 		return false;
 	}
 
-	float t = -(glm::dot(rayInitPoint, normal) + d) / denom;
+	t = -(glm::dot(rayInitPoint, normal) + d) / denom;
 
 	if (t <= 0.0f)
 		return false;

@@ -31,7 +31,7 @@
 
 #define CAPTION "ray tracer"
 
-char* filePath = "scene/DOFTest.nff";
+char* filePath = "scene/balls_low.nff";
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
 #define MAX_DEPTH 2
@@ -82,7 +82,8 @@ bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vec
 
 	for (int count = 0; count < numObjects; count++) {
 		glm::vec3 auxPoint;
-		if (objects[count]->getIntersectionPoint(auxPoint, ray)) {
+		float t;
+		if (objects[count]->getIntersectionPoint(auxPoint,t, ray)) {
 			float dist = glm::distance(ray.getInitialPoint(), auxPoint);
 			if (dist < minDist) {
 				targetPoint = auxPoint;

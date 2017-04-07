@@ -61,7 +61,7 @@
     <ClCompile Include="boundingBox.cpp">
       <Filter>Source Files\Scene\Object</Filter>
     </ClCompile>
-    <ClCompile Include="UniformGrid.cpp">
+    <ClCompile Include="uniformGrid.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,7 +123,7 @@
     <ClInclude Include="boundingBox.h">
       <Filter>Header Files\Scene\Object</Filter>
     </ClInclude>
-    <ClInclude Include="UniformGrid.h">
+    <ClInclude Include="uniformGrid.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>

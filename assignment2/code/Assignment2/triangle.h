@@ -1,7 +1,10 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include"object.h"
+#include <vector>
+
+#include "object.h"
+
 
 class Triangle : public Object {
 
@@ -23,7 +26,7 @@ public:
 	glm::vec3 getPosition3();
 
 	bool hasIntersection(Ray ray);
-	bool getIntersectionPoint(glm::vec3& intersect, Ray ray);
+	bool getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray);
 	glm::vec3 getNormal(glm::vec3 intersectionPoint, Ray ray);
 	bool isInside(glm::vec3 point);
 };

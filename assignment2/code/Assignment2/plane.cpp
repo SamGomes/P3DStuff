@@ -34,7 +34,7 @@ bool Plane::hasIntersection(Ray ray)
 	return false;
 }
 
-bool Plane::getIntersectionPoint(glm::vec3& intersect, Ray ray)
+bool Plane::getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray)
 {
 	glm::vec3 rayDir = ray.getDirection();
 	glm::vec3 rayInitPoint = ray.getInitialPoint();
@@ -44,7 +44,7 @@ bool Plane::getIntersectionPoint(glm::vec3& intersect, Ray ray)
 		return false;
 	}
 
-	float t = -(glm::dot(rayInitPoint, normal) + d) / denom;
+	t = -(glm::dot(rayInitPoint, normal) + d) / denom;
 
 	if (t <= 0.0f)
 		return false;
