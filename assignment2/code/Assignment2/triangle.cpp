@@ -103,6 +103,15 @@ glm::vec3 Triangle::getPosition3()
 
 bool Triangle::getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray)
 {
+
+	if (this->lastRayId == ray.getId()) {
+		if (lastT < 0) return false;
+		t = lastT;
+		intersect = ray.getInitialPoint() + t * ray.getDirection();
+		return true;
+	}
+	lastRayId = ray.getId();
+	lastT = -1;
 	//---------------------------- calc plane intersection ----------------------------
 
 	glm::vec3 rayDir = ray.getDirection();
@@ -136,7 +145,12 @@ bool Triangle::getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray)
 	float l2 = a2 / at;
 	float l3 = a3 / at;
 
-	return (l1 >= 0 && l1 <= 1) && (l2 >= 0 && l2 <= 1) && (l3 >= 0 && l3 <= 1);
+	bool intersection = (l1 >= 0 && l1 <= 1) && (l2 >= 0 && l2 <= 1) && (l3 >= 0 && l3 <= 1);
+	if (intersection) {
+		lastT = t;
+	}
+
+	return intersection;
 }
 
 glm::vec3 Triangle::getNormal(glm::vec3 intersectionPoint, Ray ray)

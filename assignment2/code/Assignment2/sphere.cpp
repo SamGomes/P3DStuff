@@ -4,6 +4,7 @@
 
 bool Sphere::hasIntersection(Ray ray)
 {
+
 	glm::vec3 c = this->getPosition();
 	glm::vec3 e = ray.getInitialPoint();
 
@@ -49,6 +50,14 @@ bool Sphere::hasIntersection(Ray ray)
 
 bool Sphere::getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray)
 {
+	if (this->lastRayId == ray.getId()) {
+		if (lastT < 0) return false;
+		t = lastT;
+		intersect = ray.getInitialPoint() + t * ray.getDirection();
+		return true;
+	}
+	lastRayId = ray.getId();
+	lastT = -1;
 
 	glm::vec3 c = this->getPosition();
 	glm::vec3 e = ray.getInitialPoint();
@@ -105,6 +114,8 @@ bool Sphere::getIntersectionPoint(glm::vec3& intersect, float& t, Ray ray)
 	intersect.x = e.x + t*d.x;
 	intersect.y = e.y + t*d.y;
 	intersect.z = e.z + t*d.z;
+
+	lastT = t;
 	return true;
 	
 }

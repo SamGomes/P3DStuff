@@ -20,6 +20,9 @@ protected:
 	Material* material;
 	BoundingBox boundingBox;
 	objType type;
+	float lastT = 0;
+	unsigned long lastRayId = LONG_MAX;
+
 public:
 
 	glm::vec3 getPosition();

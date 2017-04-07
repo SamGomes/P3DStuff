@@ -1,5 +1,7 @@
 #include "object.h"
 
+
+
 glm::vec3 Object::getPosition()
 {
 	return this->position;
