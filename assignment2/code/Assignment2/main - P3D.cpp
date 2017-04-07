@@ -132,7 +132,8 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	glm::vec3 intersectionPoint;
 	Object* obj = nullptr;
-	bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
+	bool intersection = scene->rayCast(ray, intersectionPoint, obj);
+	//bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
 	if (!intersection) {
 		return background;
 	}

@@ -17,7 +17,7 @@ glm::ivec3 UniformGrid::worldPosToIdx(glm::vec3 point) {
 	return i;
 }
 
-void UniformGrid::calcInitialTxNext(float& tNext, int& iStep, int& iStop, float pMin, float dt, float rayDir, int i) {
+void UniformGrid::calcInitialTNext(float& tNext, int& iStep, int& iStop, float pMin, float dt, float rayDir, int i) {
 	if (rayDir > 0) {
 		tNext = pMin + (i + 1) * dt;
 		iStep = 1;
@@ -36,7 +36,9 @@ void UniformGrid::calcInitialTxNext(float& tNext, int& iStep, int& iStop, float 
 	}
 }
 
-Object* UniformGrid::traverseGrid(glm::vec3& minIntersection, glm::vec3 pNext, glm::ivec3 iStep, glm::ivec3 iStop, glm::ivec3 i, glm::vec3 dt, Ray ray) {
+Object* UniformGrid::traverseGrid(
+	glm::vec3& minIntersection, glm::vec3 pNext, glm::ivec3 iStep, glm::ivec3 iStop, 
+	glm::ivec3 i, glm::vec3 dt, Ray ray) {
 
 	//cell traversal
 	while (true) {
@@ -138,13 +140,16 @@ bool UniformGrid::rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject
 	//calc initial txNext
 	pNext = pMin;
 
-	calcInitialTxNext(pNext.x, iStep.x, iStop.x, pMin.x, dt.x, rayDir.x, i.x);
-	calcInitialTxNext(pNext.y, iStep.y, iStop.y, pMin.y, dt.y, rayDir.y, i.y);
-	calcInitialTxNext(pNext.z, iStep.z, iStop.z, pMin.z, dt.z, rayDir.z, i.z);
+	calcInitialTNext(pNext.x, iStep.x, iStop.x, pMin.x, dt.x, rayDir.x, i.x);
+	calcInitialTNext(pNext.y, iStep.y, iStop.y, pMin.y, dt.y, rayDir.y, i.y);
+	calcInitialTNext(pNext.z, iStep.z, iStop.z, pMin.z, dt.z, rayDir.z, i.z);
 
 	targetObject = (traverseGrid(targetPoint, pNext, iStep, iStop, i, dt, ray));
 
-	return (targetObject!=NULL);
+	if (targetObject != NULL)
+		return true;
+	return false;
+	//return (targetObject!=NULL);
 }
 
 int UniformGrid::getCellIndex(int x, int y, int z)

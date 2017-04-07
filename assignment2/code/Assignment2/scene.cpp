@@ -307,3 +307,10 @@ bool Scene::loadSceneFromNFF(char * path)
 
 	return true;
 }
+
+bool Scene::rayCast(Ray ray, glm::vec3 & targetPoint, Object *& targetObject)
+{
+	if (this->uniformGrid != NULL)
+		return this->uniformGrid->rayCast(ray, targetPoint, targetObject);
+	return false;
+}

@@ -45,6 +45,7 @@ public:
 	UniformGrid* getUniformGrid();
 
 	bool loadSceneFromNFF(char* path);
+	bool rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject);
 
 };
 
