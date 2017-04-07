@@ -17,19 +17,18 @@ glm::ivec3 UniformGrid::worldPosToIdx(glm::vec3 point) {
 	return i;
 }
 
-void UniformGrid::calcInitialTNext(float& tNext, int& iStep, int& iStop, float pMin, float dt, float rayDir, int i) {
+void UniformGrid::calcInitialTNext(float& tNext, int& iStep, int& iStop, float pMin, float dt, float rayDir, int i, int nCells) {
 	if (rayDir > 0) {
 		tNext = pMin + (i + 1) * dt;
 		iStep = 1;
-		iStop = nCells.x;
+		iStop = nCells;
 	}
-	else {
-		tNext = pMin + (i + 1) * dt;
+	else if (rayDir < 0) {
+		tNext = pMin + (nCells - i) * dt;
 		iStep = -1;
 		iStop = -1;
 	}
-
-	if (rayDir < GRID_EPSILON) {
+	else  {
 		tNext = INFINITY;
 		iStep = -1;
 		iStop = -1;
@@ -52,8 +51,9 @@ Object* UniformGrid::traverseGrid(
 		for (auto object : objects) {
 			float currT;
 			glm::vec3 currIntersection;
-			object->getIntersectionPoint(currIntersection, currT, ray);
-			if (currT < minT) {
+			
+			if (object->getIntersectionPoint(currIntersection, currT, ray)
+				&& currT < minT) {
 				minIntersection = currIntersection;
 				minT = currT;
 				minTObject = object;
@@ -62,7 +62,7 @@ Object* UniformGrid::traverseGrid(
 
 
 		if (pNext.x < pNext.y && pNext.x < pNext.z) {
-			if (minTObject && minT < pNext.y) {
+			if (minTObject && minT < pNext.x) {
 				return minTObject;
 			}
 			pNext.x += dt.x;
@@ -107,22 +107,14 @@ bool UniformGrid::rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject
 	glm::ivec3 iStep;
 	glm::ivec3 iStop;
 	
-	glm::vec3 pMin, pMax;
-	
+	float tProx, tDist;
+	glm::vec3 tMin, tMax;
 
-	float tMin, tMax;
-
-	bool rayInsideBB = this->boundingBox.getIntersection(ray,tMin,tMax);
+	bool rayInsideBB = this->boundingBox.getIntersection(ray, tProx, tDist, tMin, tMax);
 	if (!rayInsideBB) {
 		return false;
 	}
 
-
-	pMin = ray.getInitialPoint() + tMin*ray.getDirection();
-	pMax = ray.getInitialPoint() + tMax*ray.getDirection();
-
-
-	//calculo starting cell
 	glm::ivec3 i;
 	glm::vec3 rayOrigin = ray.getInitialPoint();
 	glm::vec3 rayDir = ray.getDirection();
@@ -130,21 +122,21 @@ bool UniformGrid::rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject
 		i = worldPosToIdx(rayOrigin);
 	}
 	else {
+		glm::vec3 pMin = rayOrigin + tProx * rayDir;
 		i = worldPosToIdx(pMin);
 	}
-	GridCell startingCell = this->cells[this->getCellIndex(i.x, i.y, i.z)];
 
 	//dt calc does this work?
-	dt = (pMax - pMin) / (glm::vec3) nCells;
+	dt = (tMax - tMin) / (glm::vec3) nCells;
 
 	//calc initial txNext
-	pNext = pMin;
+	pNext = tMin;
 
-	calcInitialTNext(pNext.x, iStep.x, iStop.x, pMin.x, dt.x, rayDir.x, i.x);
-	calcInitialTNext(pNext.y, iStep.y, iStop.y, pMin.y, dt.y, rayDir.y, i.y);
-	calcInitialTNext(pNext.z, iStep.z, iStop.z, pMin.z, dt.z, rayDir.z, i.z);
+	calcInitialTNext(pNext.x, iStep.x, iStop.x, tMin.x, dt.x, rayDir.x, i.x, nCells.x);
+	calcInitialTNext(pNext.y, iStep.y, iStop.y, tMin.y, dt.y, rayDir.y, i.y, nCells.y);
+	calcInitialTNext(pNext.z, iStep.z, iStop.z, tMin.z, dt.z, rayDir.z, i.z, nCells.z);
 
-	targetObject = (traverseGrid(targetPoint, pNext, iStep, iStop, i, dt, ray));
+	targetObject = traverseGrid(targetPoint, pNext, iStep, iStop, i, dt, ray);
 
 	if (targetObject != NULL)
 		return true;

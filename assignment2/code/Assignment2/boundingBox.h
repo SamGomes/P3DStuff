@@ -18,10 +18,11 @@ public:
 	bool isInside(glm::vec3 point);
 
 	void setPoints(glm::vec3 min, glm::vec3 max);
-	bool getIntersection(Ray ray, float& tMin, float& tMax);
+	bool getIntersection(Ray ray, float& tProx, float& tDist, glm::vec3& tMin, glm::vec3& tMax);
 
 
 private:
-	bool intersectionLoop(float & tProx, float & tDist, float v0, float vd, float vMin, float vMax);
+	bool intersectionLoop(float& tMin, float& tMax, float& tProx,
+		float& tDist, float v0, float vd, float vMin, float vMax);
 
 };

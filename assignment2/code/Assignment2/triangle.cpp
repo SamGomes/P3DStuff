@@ -32,19 +32,19 @@ Triangle::Triangle(glm::vec3 position1, glm::vec3 position2, glm::vec3 position3
 		if (point.x < p0.x) {
 			p0.x = point.x;
 		}
-		else if(point.x > p1.x){
+		if(point.x > p1.x){
 			p1.x = point.x;
 		}
 		if (point.y < p0.y) {
 			p0.y = point.y;
 		}
-		else if (point.y > p1.y) {
+		if (point.y > p1.y) {
 			p1.y = point.y;
 		}
 		if (point.z < p0.z) {
 			p0.z = point.z;
 		}
-		else if (point.z > p1.z) {
+		if (point.z > p1.z) {
 			p1.z = point.z;
 		}
 	}

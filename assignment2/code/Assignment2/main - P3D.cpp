@@ -31,10 +31,10 @@
 
 #define CAPTION "ray tracer"
 
-char* filePath = "scene/balls_low.nff";
+char* filePath = "scene/mount_low.nff";
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
-#define MAX_DEPTH 2
+#define MAX_DEPTH 6
 
 #define M_PI 3.14159265358979323846
 #define VERTEX_COORD_ATTRIB 0
@@ -372,6 +372,7 @@ void renderScene()
 		printf("\rDrawing line: %d. Image processing progress: %.2f%%", (y)+1, (float)y / (float)RES_Y * 100.0f);
 		for (int x = 0; x < RES_X; x++)
 		{
+			//printf("\rDrawing line: %d. point : %d Image processing progress: %.2f%%", (y)+1, x + 1, (float)y / (float)RES_Y * 100.0f);
 			glm::vec3 color;
 			Sampler* samplerAA = scene->getSamplerAA();
 			int numSamples = samplerAA->getNumSamples();
@@ -507,7 +508,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(4, 4);
+	scene = new Scene(1, 1);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 

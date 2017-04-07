@@ -30,7 +30,7 @@ private:
 	void fillCells(std::vector<Object*> objects);
 
 	glm::ivec3 worldPosToIdx(glm::vec3 point);
-	void calcInitialTNext(float& tNext, int& iStep, int& iStop, float pMin, float dt, float rayDir, int i);
+	void calcInitialTNext(float& tNext, int& iStep, int& iStop, float pMin, float dt, float rayDir, int i, int nCells);
 
 	Object* traverseGrid(glm::vec3& minIntersection, glm::vec3 pNext, glm::ivec3 iStep, glm::ivec3 iStop, glm::ivec3 i, glm::vec3 dt, Ray ray);
 };
