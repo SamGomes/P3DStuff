@@ -23,7 +23,7 @@ private:
 	UniformGrid* uniformGrid;
 
 public:
-	Scene(int numSamplesAA);
+	Scene(int numSamples, bool useDOF);
 	~Scene();
 
 	glm::vec3* getBackgroundColor();
