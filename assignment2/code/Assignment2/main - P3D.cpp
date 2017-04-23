@@ -502,8 +502,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(4);
-
+	scene = new Scene(4,false);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 

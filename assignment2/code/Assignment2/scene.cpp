@@ -15,7 +15,7 @@
 #include "pinHoleCamera.h"
 #include "scene.h"
 
-Scene::Scene(int numSamplesAA)
+Scene::Scene(int numSamples, bool useDOF)
 {
 	std::vector<int> a = { 4, 5, 6, 7 };
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
@@ -23,15 +23,15 @@ Scene::Scene(int numSamplesAA)
 	this->materials = new std::vector<Material*>();
 	this->objects = new std::vector<Object*>();
 	
-	numSamplesAA = numSamplesAA*numSamplesAA;
+	numSamples = numSamples*numSamples;
 	
-	Sampler* samplerAA = new MultiJitteredSampler(numSamplesAA, 83); //83 is the magic number, or is it?
-	Sampler* samplerDOF = new CircleSampler(new MultiJitteredSampler(numSamplesAA,83));
+	Sampler* samplerAA = new MultiJitteredSampler(numSamples, 83); //83 is the magic number, or is it?
+	Sampler* samplerDOF = new CircleSampler(new MultiJitteredSampler(numSamples,83));
 
-	if (samplerAA == 0) {
+	if (!useDOF) {
 		this->camera = new PinHoleCamera(samplerAA);
 	}else
-		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.1f, 2.4f, 5.0f, 1.0f);
+		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.3f, 9.0f, 7.0f, 1.0f);
 
 	this->uniformGrid = NULL;
 }
