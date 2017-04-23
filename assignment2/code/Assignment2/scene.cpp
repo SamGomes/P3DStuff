@@ -23,12 +23,15 @@ Scene::Scene(int numSamplesAA, int numSamplesDOF)
 	this->materials = new std::vector<Material*>();
 	this->objects = new std::vector<Object*>();
 	
-	this->numSamplesDOF = numSamplesDOF*numSamplesDOF;
-	this->numSamplesAA = numSamplesAA*numSamplesAA;
-	samplerAA = new MultiJitteredSampler(this->numSamplesAA, 83); //83 is the magic number, or is it?
-	samplerDOF = new CircleSampler(new MultiJitteredSampler(this->numSamplesDOF,83));
+	numSamplesDOF = numSamplesDOF*numSamplesDOF;
+	numSamplesAA = numSamplesAA*numSamplesAA;
+	Sampler* samplerAA = new MultiJitteredSampler(numSamplesAA, 83); //83 is the magic number, or is it?
+	Sampler* samplerDOF = new CircleSampler(new MultiJitteredSampler(numSamplesDOF,83));
 
-	this->camera = new PinHoleCamera(samplerAA);// new ThinLensCamera(samplerAA,samplerDOF,0.1f,2.4f,5.0f,1.0f);
+	if (numSamplesDOF == 0) {
+		this->camera = new PinHoleCamera(samplerAA);
+	}else
+		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.1f, 2.4f, 5.0f, 1.0f);
 
 	this->uniformGrid = NULL;
 }
@@ -54,24 +57,12 @@ Scene::~Scene()
 	}
 	delete objects;
 
-	if (samplerAA != NULL) delete samplerAA;
-	if (samplerDOF != NULL) delete samplerDOF;
 	if (this->uniformGrid != NULL) delete uniformGrid;
 }
 
 glm::vec3 * Scene::getBackgroundColor()
 {
 	return this->backgroundColor;
-}
-
-Sampler* Scene::getSamplerAA()
-{
-	return samplerAA;
-}
-
-Sampler* Scene::getSamplerDOF()
-{
-	return samplerDOF;
 }
 
 UniformGrid * Scene::getUniformGrid()
@@ -237,28 +228,6 @@ bool Scene::loadSceneFromNFF(char * path)
 		
 		}
 
-		/*
-		//check pl for plane info
-		else if (line.substr(0, 3) == "pl ") {
-
-			std::istringstream planeStream(line.substr(3));
-			glm::vec3 planePosition1, planePosition2, planePosition3;
-
-			planeStream >> x; planeStream >> y; planeStream >> z;
-			planePosition1 = glm::vec3(x, y, z);
-
-			planeStream >> x; planeStream >> y; planeStream >> z;
-			planePosition2 = glm::vec3(x, y, z);
-
-			planeStream >> x; planeStream >> y; planeStream >> z;
-			planePosition3 = glm::vec3(x, y, z);
-
-			Plane * newPlane = new Plane(planePosition1, planePosition2, planePosition3);
-			newPlane->setMaterial(currentMaterial);
-			this->objects->push_back(newPlane);
-		}
-		*/
-
 		//check p for triangulized polygon
 		else if (line.substr(0, 2) == "p ") {
 
@@ -300,7 +269,7 @@ bool Scene::loadSceneFromNFF(char * path)
 	for (size_t i = 0; i < lights->size(); i++)
 	{
 		Light * light = (*lights)[i];
-		light->setSampler(new MultiJitteredSampler(numSamplesAA, 83));
+		light->setSampler(new MultiJitteredSampler(this->camera->getSamplerAA()->getNumSamples(), 83));
 	}
 
 	this->uniformGrid = new UniformGrid(5.0f, *objects);

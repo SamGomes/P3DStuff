@@ -32,6 +32,9 @@ Camera::~Camera()
 		delete this->eyeY;
 	if (this->eyeZ != NULL)
 		delete this->eyeZ;
+
+
+	if (samplerAA != NULL) delete samplerAA;
 }
 
 
@@ -125,6 +128,11 @@ float Camera::getPixelWidth()
 float Camera::getPixelHeight()
 {
 	return this->pixelHeight;
+}
+
+Sampler* Camera::getSamplerAA()
+{
+	return this->samplerAA;
 }
 
 void Camera::setProjection(float fovY, float zNear, float zFar, int resX, int resY)

@@ -36,7 +36,7 @@ void BoundingBox::setPoints(glm::vec3 min, glm::vec3 max) {
 
 bool BoundingBox::intersectionLoop(float& tMin, float& tMax, float& tProx, 
 	float& tDist, float v0, float vd, float vMin, float vMax) {
-	if (v0 == 0) {
+	if (vd == 0) {
 		if (v0 < vMin || v0 > vMax) {
 			return false;
 		}
@@ -73,8 +73,6 @@ bool BoundingBox::getIntersection(Ray ray, float& tProx, float& tDist, glm::vec3
 	glm::vec3 v0 = ray.getInitialPoint();
 	glm::vec3 vd = ray.getDirection();
 	
-
-	if (glm::length(v0) == 0) return false;
 
 	bool xIntersection = intersectionLoop(tMin.x, tMax.x, tProx, tDist, v0.x, vd.x, minPos.x, maxPos.x);
 	bool yIntersection = intersectionLoop(tMin.y, tMax.y, tProx, tDist, v0.y, vd.y, minPos.y, maxPos.y);
