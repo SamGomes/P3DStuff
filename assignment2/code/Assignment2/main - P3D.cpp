@@ -69,47 +69,6 @@ int WindowHandle = 0;
 
 std::clock_t begin, end;
 
-///////////////////////////////////////////////////////////////////////  RAY-TRACE SCENE
-
-
-bool rayCasting(Ray ray, glm::vec3& targetPoint, Object*& targetObject, std::vector<Object*> objects) {
-
-	int count = 0;
-	int numObjects = objects.size();
-	float minDist = INFINITY;
-
-	int changed = 0;
-
-	for (int count = 0; count < numObjects; count++) {
-		glm::vec3 auxPoint;
-		float t;
-		if (objects[count]->getIntersectionPoint(auxPoint,t, ray)) {
-			float dist = glm::distance(ray.getInitialPoint(), auxPoint);
-			if (dist < minDist) {
-				targetPoint = auxPoint;
-				targetObject = objects[count];
-				changed = 1;
-				minDist = dist;
-			}
-		}
-	}
-	if (changed == 0)
-		return false;
-	return true;
-}
-
-bool inShadow(Ray ray, Object* targetObject) {
-	std::vector<Object*>* objects = scene->getObjects();
-
-	int numObjects = objects->size();
-
-	for (std::vector<Object*>::iterator it = objects->begin(); it != objects->end(); ++it) {
-		if ((*it)->hasIntersection(ray)) {
-			return true;
-		}
-	}
-	return false;
-}
 
 glm::vec3 refract(glm::vec3 incidentVec, glm::vec3 normal, float eta) {
 
@@ -151,7 +110,9 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
 			Ray shadowRay(intersectionPoint - EPSILON * L, -L);
-			if (!inShadow(shadowRay, obj)) { //trace shadow ray
+			glm::vec3 shadowIntersection;
+			Object* auxObj;
+			if (!scene->rayCast(shadowRay, shadowIntersection, auxObj)) { //trace shadow ray
 				color += *light->getColor() * diffuse *mat->getDiffuse()*objcolor;
 				glm::vec3 reflect = glm::reflect(glm::normalize(-L), normal);
 				float dot = glm::dot(reflect, ray.getDirection());
@@ -502,7 +463,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(4,false);
+	scene = new Scene(4,true);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 

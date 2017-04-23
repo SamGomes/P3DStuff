@@ -1,20 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Assignment2", "Assignment2\Assignment2.vcxproj", "{739D6E4D-C60A-45D7-8032-DCE77247EB7C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NFFPlaneGenerator", "NFFPlaneGenerator\NFFPlaneGenerator.vcxproj", "{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{739D6E4D-C60A-45D7-8032-DCE77247EB7C}.Debug|Win32.ActiveCfg = Debug|Win32
 		{739D6E4D-C60A-45D7-8032-DCE77247EB7C}.Debug|Win32.Build.0 = Debug|Win32
+		{739D6E4D-C60A-45D7-8032-DCE77247EB7C}.Debug|x64.ActiveCfg = Debug|Win32
 		{739D6E4D-C60A-45D7-8032-DCE77247EB7C}.Release|Win32.ActiveCfg = Release|Win32
 		{739D6E4D-C60A-45D7-8032-DCE77247EB7C}.Release|Win32.Build.0 = Release|Win32
+		{739D6E4D-C60A-45D7-8032-DCE77247EB7C}.Release|x64.ActiveCfg = Release|Win32
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Debug|Win32.Build.0 = Debug|Win32
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Debug|x64.ActiveCfg = Debug|x64
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Debug|x64.Build.0 = Debug|x64
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Release|Win32.ActiveCfg = Release|Win32
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Release|Win32.Build.0 = Release|Win32
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Release|x64.ActiveCfg = Release|x64
+		{CCB86EAD-355E-40D1-8611-AEEE8F412FFE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -29,6 +29,23 @@ bool BoundingBox::isInside(glm::vec3 point)
 
 
 void BoundingBox::setPoints(glm::vec3 min, glm::vec3 max) {
+	float epsilon = 0.00001f;
+
+	if (min.x >= max.x) {
+		min.x -= epsilon;
+		max.x += epsilon;
+	}
+
+	if (min.y >= max.y) {
+		min.y -= epsilon;
+		max.y += epsilon;
+	}
+
+	if (min.z >= max.z) {
+		min.z -= epsilon;
+		max.z += epsilon;
+	}
+
 	minPos = min;
 	maxPos = max;
 }

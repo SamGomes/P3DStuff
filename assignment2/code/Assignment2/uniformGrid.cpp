@@ -126,7 +126,6 @@ bool UniformGrid::rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject
 		i = worldPosToIdx(pMin);
 	}
 
-	//dt calc does this work?
 	dt = (tMax - tMin) / (glm::vec3) nCells;
 
 	//calc initial txNext
