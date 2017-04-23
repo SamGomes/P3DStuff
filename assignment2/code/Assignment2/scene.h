@@ -21,9 +21,10 @@ private:
 	std::vector<Object*>* objects;
 
 	UniformGrid* uniformGrid;
+	float uniformGridM;
 
 public:
-	Scene(int numSamples, bool useDOF);
+	Scene(int numSamples, bool useDOF, float uniformGridM);
 	~Scene();
 
 	glm::vec3* getBackgroundColor();
