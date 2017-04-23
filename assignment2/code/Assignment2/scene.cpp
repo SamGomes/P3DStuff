@@ -17,7 +17,6 @@
 
 Scene::Scene(int numSamples, bool useDOF)
 {
-	std::vector<int> a = { 4, 5, 6, 7 };
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
 	this->lights = new std::vector<Light*>();
 	this->materials = new std::vector<Material*>();
@@ -229,7 +228,7 @@ bool Scene::loadSceneFromNFF(char * path)
 		}
 
 		//check p for triangulized polygon
-		else if (line.substr(0, 2) == "p ") {
+		else if (line.substr(0, 3) == "p 3") {
 
 			int totalVertices = std::stoi(line.substr(2, 3));
 
