@@ -10,6 +10,7 @@ public:
 	~Light();
 
 	glm::vec3* getPosition();
+	glm::vec3 getSampledPosition();
 	glm::vec3* getColor();
 	void setSampler(Sampler * sampler);
 	Sampler * getSampler();

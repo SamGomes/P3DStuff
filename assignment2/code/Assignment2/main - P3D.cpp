@@ -146,12 +146,7 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 
 	for (auto light : *scene->getLights()) {
 		Sampler* sampler = light->getSampler();
-		glm::vec3 lightPos = *light->getPosition();
-
-		glm::vec2 sp = sampler->nextSample();
-		glm::vec3 lightPosSampled = lightPos;
-		lightPosSampled.x += 1*(sp.x - 0.5f);
-		lightPosSampled.y += 1*(sp.y - 0.5f);
+		glm::vec3 lightPosSampled = light->getSampledPosition();
 		glm::vec3 L = glm::normalize(intersectionPoint - lightPosSampled);
 		float diffuse = glm::dot(-L, normal);
 		if (diffuse > 0) {
@@ -507,7 +502,8 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(1, 0);
+	scene = new Scene(4);
+
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 
@@ -523,7 +519,6 @@ int main(int argc, char* argv[])
 	}
 	else if (draw_mode == 1) { // desenhar o conteúdo da janela linha a linha
 		nPoints = RES_X;
-
 		printf("DRAWING MODE: LINE BY LINE\n");
 	}
 	else if (draw_mode == 2) { // preencher o conteúdo da janela com uma imagem completa

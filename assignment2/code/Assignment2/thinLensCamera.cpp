@@ -15,7 +15,7 @@ ThinLensCamera::~ThinLensCamera() {
 
 Ray ThinLensCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 {
-	glm::vec3 centerPoint;
+	glm::vec2 centerPoint;
 	centerPoint.x = ((((float)x + offset.x) / ((float)this->resX)) - 0.5f) * this->pixelWidth / this->zoom;
 	centerPoint.y = ((((float)y + offset.y) / ((float)this->resY)) - 0.5f) * this->pixelHeight / this->zoom;
 
