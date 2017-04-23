@@ -140,7 +140,6 @@ bool UniformGrid::rayCast(Ray ray, glm::vec3& targetPoint, Object*& targetObject
 	if (targetObject != NULL)
 		return true;
 	return false;
-	//return (targetObject!=NULL);
 }
 
 int UniformGrid::getCellIndex(int x, int y, int z)

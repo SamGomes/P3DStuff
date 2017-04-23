@@ -29,9 +29,9 @@ Scene::Scene(int numSamples, bool useDOF)
 
 	if (!useDOF) {
 		this->camera = new PinHoleCamera(samplerAA);
-	}else
-		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.3f, 9.0f, 7.0f, 1.0f);
-
+	}else{
+		this->camera = new ThinLensCamera(samplerAA, samplerDOF, 0.3f, 9.0f, 7.0f, 1.0f);
+	}
 	this->uniformGrid = NULL;
 }
 

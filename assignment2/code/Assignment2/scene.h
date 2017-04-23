@@ -21,6 +21,7 @@ private:
 	std::vector<Object*>* objects;
 
 	UniformGrid* uniformGrid;
+	float mFactor;
 
 public:
 	Scene(int numSamples, bool useDOF);
