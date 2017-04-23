@@ -272,7 +272,7 @@ bool Scene::loadSceneFromNFF(char * path)
 		light->setSampler(new MultiJitteredSampler(this->camera->getSamplerAA()->getNumSamples(), 83));
 	}
 
-	this->uniformGrid = new UniformGrid(2.0f, *objects);
+	this->uniformGrid = new UniformGrid(0.1f, *objects);
 
 	return true;
 }
