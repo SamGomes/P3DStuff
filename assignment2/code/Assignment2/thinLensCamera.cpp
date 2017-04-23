@@ -11,7 +11,7 @@ ThinLensCamera::ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, float 
 
 Ray ThinLensCamera::calculatePrimaryRay(int x, int y, glm::vec2 offset)
 {
-	glm::vec3 pixelPoint;
+	glm::vec2 pixelPoint;
 	pixelPoint.x = ((((float)x + offset.x) / ((float)this->resX)) - 0.5f) * this->pixelWidth / this->zoom;
 	pixelPoint.y = ((((float)y + offset.y) / ((float)this->resY)) - 0.5f) * this->pixelHeight / this->zoom;
 
