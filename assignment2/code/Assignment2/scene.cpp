@@ -17,7 +17,6 @@
 
 Scene::Scene(int numSamplesAA)
 {
-	std::vector<int> a = { 4, 5, 6, 7 };
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
 	this->lights = new std::vector<Light*>();
 	this->materials = new std::vector<Material*>();
@@ -28,7 +27,7 @@ Scene::Scene(int numSamplesAA)
 	Sampler* samplerAA = new MultiJitteredSampler(numSamplesAA, 83); //83 is the magic number, or is it?
 	Sampler* samplerDOF = new CircleSampler(new MultiJitteredSampler(numSamplesAA,83));
 
-	if (samplerAA == 0) {
+	if (numSamplesAA == 1) {
 		this->camera = new PinHoleCamera(samplerAA);
 	}else
 		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.1f, 2.4f, 5.0f, 1.0f);
@@ -229,7 +228,7 @@ bool Scene::loadSceneFromNFF(char * path)
 		}
 
 		//check p for triangulized polygon
-		else if (line.substr(0, 2) == "p ") {
+		else if (line.substr(0, 3) == "p 3") {
 
 			int totalVertices = std::stoi(line.substr(2, 3));
 
