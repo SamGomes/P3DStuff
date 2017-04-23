@@ -32,6 +32,15 @@ glm::vec3 * Light::getPosition()
 	return this->position;
 }
 
+glm::vec3 Light::getSampledPosition()
+{
+	glm::vec2 sp = sampler->nextSample();
+	glm::vec3 lightPosSampled = *position;
+	lightPosSampled.x += 1 * (sp.x - 0.5f);
+	lightPosSampled.y += 1 * (sp.y - 0.5f);
+	return lightPosSampled;
+}
+
 glm::vec3 * Light::getColor()
 {
 	return this->color;
