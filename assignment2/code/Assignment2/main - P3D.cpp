@@ -133,7 +133,6 @@ glm::vec3 rayTracing(Ray ray, int depth) {
 	glm::vec3 intersectionPoint;
 	Object* obj = nullptr;
 	bool intersection = scene->rayCast(ray, intersectionPoint, obj);
-	//bool intersection = rayCasting(ray, intersectionPoint, obj, *scene->getObjects());
 	if (!intersection) {
 		return background;
 	}
@@ -369,14 +368,14 @@ void renderScene()
 		{
 			//printf("\rDrawing line: %d. point : %d Image processing progress: %.2f%%", (y)+1, x + 1, (float)y / (float)RES_Y * 100.0f);
 			glm::vec3 color;
-			Sampler* samplerAA = scene->getSamplerAA();
-			int numSamples = samplerAA->getNumSamples();
-			for (int j = 0; j < numSamples; j++) {
+			Sampler* samplerAA = camera->getSamplerAA();
+			int numSamplesAA = samplerAA->getNumSamples();
+			for (int j = 0; j < numSamplesAA; j++) {
 				glm::vec2 offset = samplerAA->nextSample();
 				Ray ray = camera->calculatePrimaryRay(x, y, offset);
 				color += rayTracing(ray, 0);
 			}
-			color /= numSamples;
+			color /= numSamplesAA;
 
 			vertices[index_pos++] = (float)x;
 			vertices[index_pos++] = (float)y;
@@ -503,7 +502,8 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(1, 1);
+	scene = new Scene(4);
+
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 

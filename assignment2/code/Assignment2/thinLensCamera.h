@@ -17,11 +17,13 @@ private:
 
 public:
 	ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom);
+	~ThinLensCamera();
 	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
 	Ray calculatePrimaryRay(int x, int y, glm::vec2 offset);
+	Sampler * getSamplerDOF();
 
 private:
-	glm::vec3 computeRayDirection(glm::vec2 pixelPoint, glm::vec2 lensPoint);
+	glm::vec3 computeRayDirection(glm::vec2 centerPoint, glm::vec2 lensPoint);
 	
 
 };

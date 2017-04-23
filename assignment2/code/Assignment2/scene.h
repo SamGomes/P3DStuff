@@ -20,17 +20,10 @@ private:
 	std::vector<Material*>* materials;
 	std::vector<Object*>* objects;
 
-	Sampler* samplerAA;
-	Sampler* samplerDOF;
-
-	int numSamplesAA;
-	int numSamplesDOF;
-
-
 	UniformGrid* uniformGrid;
 
 public:
-	Scene(int numSamplesAA, int numSamplesDOF);
+	Scene(int numSamplesAA);
 	~Scene();
 
 	glm::vec3* getBackgroundColor();
@@ -38,9 +31,6 @@ public:
 	std::vector<Light*>* getLights();
 	std::vector<Material*>* getMaterials();
 	std::vector<Object*>* getObjects();
-
-	Sampler* getSamplerAA();
-	Sampler* getSamplerDOF();
 
 	UniformGrid* getUniformGrid();
 

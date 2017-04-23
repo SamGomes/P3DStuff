@@ -37,9 +37,11 @@ public: //methods
 	float getFocusDistance();
 	float getPixelWidth();
 	float getPixelHeight();
+	Sampler* getSamplerAA();
 
 	void setProjection(float fovY, float zNear, float zFar, int resX, int resY);
 	virtual Ray calculatePrimaryRay(int x, int y, glm::vec2 offset) = 0;
+
 
 };
 
