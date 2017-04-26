@@ -30,10 +30,10 @@
 
 #define CAPTION "ray tracer"
 
-char* filePath = "scene/mount_low.nff";
+char* filePath = "scene/test.nff";
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
-#define MAX_DEPTH 6
+#define MAX_DEPTH 1
 #define ANTIALIASING_SAMPLING 1
 
 #define M_PI 3.14159265358979323846

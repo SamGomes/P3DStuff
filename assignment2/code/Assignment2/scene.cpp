@@ -15,7 +15,7 @@
 #include "pinHoleCamera.h"
 #include "scene.h"
 
-Scene::Scene(int numSamples, bool useDOF, float uniformGridM)
+Scene::Scene(int numSamples, bool useDOF, bool useSoftShadows, float uniformGridM)
 {
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
 	this->lights = new std::vector<Light*>();
@@ -31,7 +31,7 @@ Scene::Scene(int numSamples, bool useDOF, float uniformGridM)
 		this->camera = new PinHoleCamera(samplerAA);
 	}else
 		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.3f, 9.0f, 7.0f, 1.0f);
-
+	this->useSoftShadows = useSoftShadows;
 	this->uniformGrid = NULL;
 	this->uniformGridM = uniformGridM;
 }
@@ -266,10 +266,12 @@ bool Scene::loadSceneFromNFF(char * path)
 
 	}
 
-	for (size_t i = 0; i < lights->size(); i++)
-	{
-		Light * light = (*lights)[i];
-		light->setSampler(new MultiJitteredSampler(this->camera->getSamplerAA()->getNumSamples(), 83));
+	if (useSoftShadows) {
+		for (size_t i = 0; i < lights->size(); i++)
+		{
+			Light * light = (*lights)[i];
+			light->setSampler(new MultiJitteredSampler(this->camera->getSamplerAA()->getNumSamples(), 83));
+		}
 	}
 
 	this->uniformGrid = new UniformGrid(this->uniformGridM, *objects);

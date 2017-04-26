@@ -16,6 +16,7 @@ private:
 
 	glm::vec3* backgroundColor;
 	Camera* camera;
+	bool useSoftShadows;
 	std::vector<Light*>* lights;
 	std::vector<Material*>* materials;
 	std::vector<Object*>* objects;
@@ -24,7 +25,7 @@ private:
 	float uniformGridM;
 
 public:
-	Scene(int numSamples, bool useDOF, float uniformGridM);
+	Scene(int numSamples, bool useDOF, bool useSoftShadows, float uniformGridM);
 	~Scene();
 
 	glm::vec3* getBackgroundColor();

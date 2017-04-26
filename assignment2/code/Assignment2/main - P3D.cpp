@@ -31,7 +31,7 @@
 
 #define CAPTION "ray tracer"
 
-char* filePath = "scene/testAA.nff";
+char* filePath = "scene/mount_very_high.nff";
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
 #define MAX_DEPTH 6
@@ -463,7 +463,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(4,false, 0.1f);
+	scene = new Scene(1, false, false, 2.0f);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 
