@@ -11,26 +11,32 @@
 #include "regularSampler.h"
 #include "circleSampler.h"
 
-#include "thinLensCamera.h"
 #include "pinHoleCamera.h"
 #include "scene.h"
 
-Scene::Scene(int numSamples, bool useDOF, bool useSoftShadows, float uniformGridM)
+Scene::Scene(int numSamples, bool useDOF, bool useSoftShadows, float uniformGridM) :
+	Scene::Scene(numSamples, useDOF, ThinLensParameters{0.3f, 9.0f, 7.0f, 1.0f}, useSoftShadows, uniformGridM)
+{
+
+}
+
+Scene::Scene(int numSamples, bool useDOF, ThinLensParameters thinLensParameters, bool useSoftShadows, float uniformGridM)
 {
 	this->backgroundColor = new glm::vec3(0.0f, 0.0f, 0.0f);
 	this->lights = new std::vector<Light*>();
 	this->materials = new std::vector<Material*>();
 	this->objects = new std::vector<Object*>();
-	
+
 	numSamples = numSamples*numSamples;
-	
+
 	Sampler* samplerAA = new MultiJitteredSampler(numSamples, 83); //83 is the magic number, or is it?
-	Sampler* samplerDOF = new CircleSampler(new MultiJitteredSampler(numSamples,83));
+	Sampler* samplerDOF = new CircleSampler(new MultiJitteredSampler(numSamples, 83));
 
 	if (!useDOF) {
 		this->camera = new PinHoleCamera(samplerAA);
-	}else
-		this->camera =  new ThinLensCamera(samplerAA, samplerDOF, 0.3f, 9.0f, 7.0f, 1.0f);
+	}
+	else
+		this->camera = new ThinLensCamera(samplerAA, samplerDOF, thinLensParameters);
 	this->useSoftShadows = useSoftShadows;
 	this->uniformGrid = NULL;
 	this->uniformGridM = uniformGridM;

@@ -5,6 +5,7 @@
 
 #include "uniformGrid.h"
 #include "camera.h"
+#include "thinLensCamera.h"
 #include "light.h"
 #include "material.h"
 #include "object.h"
@@ -25,6 +26,7 @@ private:
 	float uniformGridM;
 
 public:
+	Scene(int numSamples, bool useDOF, ThinLensParameters thinLensParameters, bool useSoftShadows, float uniformGridM);
 	Scene(int numSamples, bool useDOF, bool useSoftShadows, float uniformGridM);
 	~Scene();
 
