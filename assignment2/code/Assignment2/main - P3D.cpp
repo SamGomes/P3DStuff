@@ -29,7 +29,7 @@
 #include "object.h"
 #include "jitteredSampler.h"
 
-#define CAPTION "ray tracer"
+#define CAPTION "Ray Tracer"
 
 //////////////////////////////////////
 //			PARAMETERS				//
