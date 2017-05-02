@@ -5,6 +5,7 @@
 
 #include "uniformGrid.h"
 #include "camera.h"
+#include "thinLensCamera.h"
 #include "light.h"
 #include "material.h"
 #include "object.h"
@@ -16,15 +17,17 @@ private:
 
 	glm::vec3* backgroundColor;
 	Camera* camera;
+	bool useSoftShadows;
 	std::vector<Light*>* lights;
 	std::vector<Material*>* materials;
 	std::vector<Object*>* objects;
 
 	UniformGrid* uniformGrid;
-	float mFactor;
+	float uniformGridM;
 
 public:
-	Scene(int numSamples, bool useDOF);
+	Scene(int numSamples, bool useDOF, ThinLensParameters thinLensParameters, bool useSoftShadows, float uniformGridM);
+	Scene(int numSamples, bool useDOF, bool useSoftShadows, float uniformGridM);
 	~Scene();
 
 	glm::vec3* getBackgroundColor();

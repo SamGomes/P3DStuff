@@ -6,6 +6,14 @@
 #include "ray.h"
 #include "Camera.h"
 
+struct ThinLensParameters
+{
+	float lensRadius;
+	float focusDistance;
+	float viewPlaneDistance;
+	float zoom;
+};
+
 class ThinLensCamera: public Camera
 {
 
@@ -16,6 +24,7 @@ private:
 	float zoom;
 
 public:
+	ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, ThinLensParameters parameters);
 	ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom);
 	~ThinLensCamera();
 	void setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up);

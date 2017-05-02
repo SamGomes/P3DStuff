@@ -1,12 +1,16 @@
 #include "thinLensCamera.h"
 
+ThinLensCamera::ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, ThinLensParameters parameters) : 
+	ThinLensCamera::ThinLensCamera(samplerAA, samplerDOF, parameters.lensRadius, parameters.focusDistance, parameters.viewPlaneDistance, parameters.zoom)
+{}
+
 ThinLensCamera::ThinLensCamera(Sampler * samplerAA, Sampler * samplerDOF, float lensRadius, float focusDistance, float viewPlaneDistance, float zoom) : Camera(samplerAA)
 {
 	this->samplerDOF = samplerDOF;
 	this->lensRadius = lensRadius;
 	this->viewPlaneDistance = viewPlaneDistance;
 	this->focusDistance = focusDistance;
-	this->zoom = 1;
+	this->zoom = zoom;
 }
 
 ThinLensCamera::~ThinLensCamera() {

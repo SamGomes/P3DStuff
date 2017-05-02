@@ -29,12 +29,37 @@
 #include "object.h"
 #include "jitteredSampler.h"
 
-#define CAPTION "ray tracer"
+#define CAPTION "Ray Tracer"
 
-char* filePath = "scene/DOFTest.nff";
+//////////////////////////////////////
+//			PARAMETERS				//
+//////////////////////////////////////
+
+char* filePath = "scene/DOFtest.nff";
+
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
+
 #define MAX_DEPTH 6
+
+int nSamples = 4;
+bool useDOF = true;
+
+ThinLensParameters thinLensParameters =
+{
+	0.3f,	//lens radius
+	9.0f,	//focus distance
+	7.0f,	//view plane distance
+	1.0f	//zoom
+};
+
+bool useSoftShadows = false;
+
+/*If mGridFactor = 0, the grid has 1 cell*/
+float mGridFactor = 2.0f;
+
+//////////////////////////////////////
+
 
 #define M_PI 3.14159265358979323846
 #define VERTEX_COORD_ATTRIB 0
@@ -463,7 +488,7 @@ void init(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-	scene = new Scene(4,true);
+	scene = new Scene(nSamples, useDOF, thinLensParameters, useSoftShadows, mGridFactor);
 
 	printf("LOADING FILE: \"%s\"\n", filePath);
 
@@ -491,6 +516,29 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 	printf("MAX_DEPTH: %d\n", MAX_DEPTH);
+
+	if (useDOF) {
+		printf("Using DOF. DOF Parameters:\n");
+		printf("\tLens Radius: %.2f\n", thinLensParameters.lensRadius);
+		printf("\tFocus Distance: %.2f\n", thinLensParameters.focusDistance);
+		printf("\tView Plane Distance: %.2f\n", thinLensParameters.viewPlaneDistance);
+		printf("\tZoom: %.2f\n", thinLensParameters.zoom);
+	}
+	else
+	{
+		printf("Not Using DOF.\n");
+	}
+
+	if (useSoftShadows) {
+		printf("Using Soft Shadows.\n");
+	}
+	else {
+		printf("Not Using Soft Shadows.\n");
+	}
+	printf("Acceleration Grid M Factor: %.2f\n", mGridFactor);
+
+	/*If mGridFactor = 0, the grid has 1 cell*/
+	float mGridFactor = 2.0f;
 
 	size_vertices = 2 * nPoints  * sizeof(float);
 	size_colors = 3 * nPoints * sizeof(float);
