@@ -56,7 +56,7 @@ ThinLensParameters thinLensParameters =
 bool useSoftShadows = false;
 
 /*If mGridFactor = 0, the grid has 1 cell*/
-float mGridFactor = 2.0f;
+float mGridFactor = 0.01f;
 
 //////////////////////////////////////
 
@@ -516,7 +516,7 @@ int main(int argc, char* argv[])
 		exit(0);
 	}
 	printf("MAX_DEPTH: %d\n", MAX_DEPTH);
-
+	printf("Sample size: %dx%d\n", nSamples,nSamples);
 	if (useDOF) {
 		printf("Using DOF. DOF Parameters:\n");
 		printf("\tLens Radius: %.2f\n", thinLensParameters.lensRadius);
