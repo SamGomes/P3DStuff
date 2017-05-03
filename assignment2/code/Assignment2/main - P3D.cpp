@@ -35,7 +35,7 @@
 //			PARAMETERS				//
 //////////////////////////////////////
 
-char* filePath = "scene/balls_low.nff";
+char* filePath = "scene/testAA.nff";
 
 /* Draw Mode: 0 - point by point; 1 - line by line; 2 - full frame */
 int draw_mode = 1;
@@ -53,10 +53,10 @@ ThinLensParameters thinLensParameters =
 	1.0f	//zoom
 };
 
-bool useSoftShadows = true;
+bool useSoftShadows = false;
 
 /*If mGridFactor = 0, the grid has 1 cell*/
-float mGridFactor = 0.5f;
+float mGridFactor = 0.01f;
 
 //////////////////////////////////////
 

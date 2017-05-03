@@ -9,14 +9,14 @@ char* filename = "../Assignment2/scene/testAA.nff";
 glm::vec3 firstSquareColor(1.0f, 1.0f, 1.0f);
 glm::vec3 secondSquareColor(0.0f, 0.0f, 0.0f);
 
-int nSquaresH = 15;
-int nSquaresV = 15;
+int nSquaresH = 100;
+int nSquaresV = 100;
 
-float sizeH = 150;
-float sizeV = 150;
+float sizeH = 1000;
+float sizeV = 1000;
 
 float initialX = -50;
-float initialZ = -50;
+float initialZ = -500;
 
 void addSquaresToFile(FILE* file) {
 	float stepH = sizeH / (float)nSquaresH;
