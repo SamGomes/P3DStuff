@@ -1,6 +1,15 @@
 # Created by https://www.gitignore.io/api/c++,visualstudio
 
 
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Obj/
+UnityGenerated/
+Library/
+Assets/AssetStoreTools*
+
 
 ### C++ ###
 # Prerequisites
