@@ -12,7 +12,7 @@ public class MoveScript : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         playerMesh.transform.position = transform.position;
-        playerMesh.transform.Rotate(0, Input.GetAxis("Mouse X") * 2, 0);
+        playerMesh.transform.Rotate(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X") * 2, 0);
         float yComponent = Mathf.Deg2Rad * playerMesh.transform.rotation.eulerAngles.y;
         Vector3 movement = new Vector3(moveVertical * Mathf.Sin(yComponent) + moveHorizontal * Mathf.Cos(yComponent), 0.0f, moveVertical * Mathf.Cos(yComponent) + moveHorizontal * Mathf.Sin(yComponent));
 

@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Physics.gravity = new Vector3(0,-200.0f,0);
         offset = transform.position -  player.transform.position;
     }
 	
