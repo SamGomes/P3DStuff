@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Assets\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\HeadsUp\RotatePlayerArrow.cs" />
+    <Compile Include="Assets\HeadsUp\WeaponInfoGUI.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\MoveScript.cs" />
     <Compile Include="Assets\StartMenu\StartingMenuManager.cs" />

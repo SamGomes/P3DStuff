@@ -5,13 +5,11 @@ using UnityEngine.UI;
 
 public class RotatePlayerArrow : MonoBehaviour {
 
-    public Camera fromCamera = null;
+    public GameObject fromObject = null;
     public Image toImage = null;
 
 	// Use this for initialization
 	void Update () {
-        Debug.Log("lalal");
-        if(fromCamera != null && toImage != null)
-            toImage.rectTransform.rotation.Set(0,0, fromCamera.transform.rotation.y,1);	
+        toImage.rectTransform.rotation = Quaternion.Euler(0,0,-fromObject.transform.eulerAngles.y);	
 	}
 }
