@@ -24,18 +24,17 @@ public class Gun : MonoBehaviour {
 
     public void fire()
     {
-        //lastShot = Time.deltaTime;
-        //if ((lastShot - Time.deltaTime) < reloadSpeed)
-        //{
-        //    return;
-        //}
-
+        if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < reloadSpeed)
+        {
+            return;
+        }
+        lastShot = Time.realtimeSinceStartup;
         firing = true;
         GameObject newBullet = Instantiate(bulletMesh);
         newBullet.transform.position = transform.position;
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
-        newBullet.transform.Translate(new Vector3(20, 30, 0));
+        newBullet.transform.Translate(new Vector3(8, -25, 12));
         newBullet.transform.localScale = new Vector3(0.05f,0.05f,0.05f);
         bulletBuffer.Add(newBullet);
         
@@ -51,7 +50,7 @@ public class Gun : MonoBehaviour {
         {
             foreach(GameObject bullet in bulletBuffer)
             {
-               // bullet.transform.Translate(new Vector3(0, -100, 0) * Time.deltaTime);
+               bullet.transform.Translate(new Vector3(0, -300, 0) * Time.deltaTime);
             }
         }
     }

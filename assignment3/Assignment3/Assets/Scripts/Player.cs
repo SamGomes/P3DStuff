@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
                 invGun.SetActive(false);
             }
         }
+        //gun.transform.rotation = transform.rotation;
         gun.transform.parent = transform; //set gun as child of player
         gun.transform.position = transform.position + new Vector3(20, 0, 0);
         gun.SetActive(true);
@@ -63,7 +64,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Debug.Log("fire!");
             (inventory[currentGunIndex].GetComponent<Gun>()).fire();
