@@ -35,8 +35,10 @@ public class Player : MonoBehaviour {
             }
         }
         //gun.transform.rotation = transform.rotation;
-        gun.transform.parent = transform; //set gun as child of player
-        gun.transform.position = transform.position + new Vector3(20, 0, 0);
+        gun.transform.rotation = transform.rotation;
+        gun.transform.Rotate(new Vector3(-90, 0, 90));
+        gun.transform.position = transform.position + transform.forward*10 - transform.up*30;
+        gun.transform.parent = transform; //set gun as child of player     
         gun.SetActive(true);
     }
 
@@ -72,7 +74,6 @@ public class Player : MonoBehaviour {
 
         }
 
-        
         foreach (GameObject gun in allGuns.ToArray()){
             if( (gun.transform.position.x < transform.position.x + pickupMargin)&&
                 (gun.transform.position.z < transform.position.z + pickupMargin))
