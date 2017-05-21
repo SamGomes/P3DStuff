@@ -29,7 +29,6 @@ public class Gun : MonoBehaviour {
             return;
         }
         lastShot = Time.realtimeSinceStartup;
-        firing = true;
         GameObject newBullet = Instantiate(bulletMesh);
         newBullet.transform.position = transform.position;
         newBullet.transform.rotation = transform.rotation;
@@ -46,12 +45,6 @@ public class Gun : MonoBehaviour {
     {
         if(!picked)
             transform.Rotate(new Vector3(0, 0, 30) * Time.deltaTime);
-        if (firing)
-        {
-            foreach(GameObject bullet in bulletBuffer)
-            {
-               bullet.transform.Translate(new Vector3(0, -300, 0) * Time.deltaTime);
-            }
-        }
+        
     }
 }

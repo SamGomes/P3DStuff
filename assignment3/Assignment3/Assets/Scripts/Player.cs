@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
         if (!inventory.Contains(obj))
         {
             inventory.Add(obj);
+            currentGunIndex = inventory.Count - 1;
             allGuns.Remove(obj);
             setCurrentGun(obj);
            
@@ -62,14 +63,16 @@ public class Player : MonoBehaviour {
                 currentGunIndex = (currentGunIndex == 0 ? (inventory.Count - 1) : 0);
                 setCurrentGun(inventory[currentGunIndex]);
             }
+
+            if (Input.GetMouseButton(0))
+            {
+                Debug.Log("fire!");
+                (inventory[currentGunIndex].GetComponent<Gun>()).fire();
+            }
+
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            Debug.Log("fire!");
-            (inventory[currentGunIndex].GetComponent<Gun>()).fire();
-        }
-
+        
         foreach (GameObject gun in allGuns.ToArray()){
             if( (gun.transform.position.x < transform.position.x + pickupMargin)&&
                 (gun.transform.position.z < transform.position.z + pickupMargin))
