@@ -28,6 +28,7 @@ public class Gun : MonoBehaviour {
         {
             return;
         }
+        GetComponent<AudioSource>().Play();
         lastShot = Time.realtimeSinceStartup;
         GameObject newBullet = Instantiate(bulletMesh);
         newBullet.transform.position = transform.position;

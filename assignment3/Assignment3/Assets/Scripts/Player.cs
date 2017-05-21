@@ -68,7 +68,7 @@ public class Player : MonoBehaviour {
 
             if (Input.GetMouseButton(0))
             {
-                Debug.Log("fire!");
+                
                 (inventory[currentGunIndex].GetComponent<Gun>()).fire();
             }
 
