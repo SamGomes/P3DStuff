@@ -33,9 +33,9 @@ public class Gun : MonoBehaviour {
         GameObject newBullet = Instantiate(bulletMesh);
         newBullet.transform.position = transform.position;
         newBullet.transform.rotation = transform.rotation;
+        newBullet.transform.localScale = new Vector3(0.005f,0.005f,0.005f);
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
-        newBullet.transform.Translate(new Vector3(8, -25, 12));
-        newBullet.transform.localScale = new Vector3(0.05f,0.05f,0.05f);
+ 
         bulletBuffer.Add(newBullet);
         
         --numberOfBullets;
