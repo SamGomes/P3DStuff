@@ -5,7 +5,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour {
 
     public GameObject bulletMesh;
-    public float reloadSpeed;
+    public float firingDelay;
     public float bulletDamage;
     public bool picked;
     public int numberOfBullets;
@@ -24,16 +24,15 @@ public class Gun : MonoBehaviour {
 
     public void fire()
     {
-        if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < reloadSpeed)
+        if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < firingDelay)
         {
             return;
         }
         GetComponent<AudioSource>().Play();
         lastShot = Time.realtimeSinceStartup;
         GameObject newBullet = Instantiate(bulletMesh);
-        newBullet.transform.position = transform.position;
+        newBullet.transform.position = transform.position + new Vector3(0.3f,0,0);
         newBullet.transform.rotation = transform.rotation;
-        newBullet.transform.localScale = new Vector3(0.005f,0.005f,0.005f);
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
  
         bulletBuffer.Add(newBullet);

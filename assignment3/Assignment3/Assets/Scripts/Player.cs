@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
         //gun.transform.rotation = transform.rotation;
         gun.transform.rotation = transform.rotation;
         gun.transform.Rotate(new Vector3(-90, 0, 90));
-        gun.transform.position = transform.position + transform.forward*2 - transform.up*5;
+        gun.transform.position = transform.position + transform.forward + transform.up*-2;
         gun.transform.parent = transform; //set gun as child of player     
         gun.SetActive(true);
     }

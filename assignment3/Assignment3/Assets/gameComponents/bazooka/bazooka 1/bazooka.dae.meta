@@ -1,52 +1,47 @@
 fileFormatVersion: 2
-guid: 5e2ab167cb2ab194fbc7cde5ca019d74
-timeCreated: 1495478926
+guid: c72003115640308458f9f9ffbbd6a82c
+timeCreated: 1495472382
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: ID18
-    100002: ID28
-    100004: ID45
-    100006: ID53
-    100008: ID61
-    100010: ID67
-    100012: ID73
-    100014: //RootNode
-    100016: skp_camera_Last_Saved_SketchUp_View
-    400000: ID18
-    400002: ID28
-    400004: ID45
-    400006: ID53
-    400008: ID61
-    400010: ID67
-    400012: ID73
-    400014: //RootNode
-    400016: skp_camera_Last_Saved_SketchUp_View
-    2300000: ID18
-    2300002: ID28
-    2300004: ID45
-    2300006: ID53
-    2300008: ID61
-    2300010: ID67
-    2300012: ID73
-    2300014: //RootNode
-    3300000: ID18
-    3300002: ID28
-    3300004: ID45
-    3300006: ID53
-    3300008: ID61
-    3300010: ID67
-    3300012: ID73
-    3300014: //RootNode
+    100000: //RootNode
+    100002: ID20
+    100004: ID28
+    100006: ID36
+    100008: ID44
+    100010: ID50
+    100012: ID58
+    100014: skp_camera_Last_Saved_SketchUp_View
+    400000: //RootNode
+    400002: ID20
+    400004: ID28
+    400006: ID36
+    400008: ID44
+    400010: ID50
+    400012: ID58
+    400014: skp_camera_Last_Saved_SketchUp_View
+    2300000: //RootNode
+    2300002: ID20
+    2300004: ID28
+    2300006: ID36
+    2300008: ID44
+    2300010: ID50
+    2300012: ID58
+    3300000: //RootNode
+    3300002: ID20
+    3300004: ID28
+    3300006: ID36
+    3300008: ID44
+    3300010: ID50
+    3300012: ID58
     4300000: SketchUp
-    4300002: ID18
+    4300002: ID20
     4300004: ID28
-    4300006: ID45
-    4300008: ID53
-    4300010: ID61
-    4300012: ID67
-    4300014: ID73
+    4300006: ID36
+    4300008: ID44
+    4300010: ID50
+    4300012: ID58
     9500000: //RootNode
   materials:
     importMaterials: 1
