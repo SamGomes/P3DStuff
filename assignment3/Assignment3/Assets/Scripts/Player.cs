@@ -20,7 +20,6 @@ public class Player : MonoBehaviour {
             currentGunIndex = inventory.Count - 1;
             allGuns.Remove(obj);
             setCurrentGun(obj);
-           
         }
     }
 
@@ -62,13 +61,12 @@ public class Player : MonoBehaviour {
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                currentGunIndex = (currentGunIndex == 0 ? (inventory.Count - 1) : 0);
+                currentGunIndex = (currentGunIndex == 0 ? (inventory.Count - 1) : currentGunIndex - 1);
                 setCurrentGun(inventory[currentGunIndex]);
             }
 
             if (Input.GetMouseButton(0))
             {
-                
                 (inventory[currentGunIndex].GetComponent<Gun>()).fire();
             }
 

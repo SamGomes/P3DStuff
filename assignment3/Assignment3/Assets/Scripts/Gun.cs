@@ -45,6 +45,5 @@ public class Gun : MonoBehaviour {
     {
         if(!picked)
             transform.Rotate(new Vector3(0, 0, 30) * Time.deltaTime);
-        
     }
 }
