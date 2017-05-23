@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.LookAt( player.transform.position);
+        //Billboard effect always looks at the camera
+        transform.LookAt(transform.position + player.transform.rotation * Vector3.forward,
+            player.transform.rotation * Vector3.up);
     }
 }
