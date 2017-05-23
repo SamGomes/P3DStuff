@@ -3,45 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponInfoGUI : MonoBehaviour {
+public class WeaponInfoGUI : MonoBehaviour
+{
     public Image selectWeaponsPanel = null;
 
-    void Start()
+    void changeWeaponType(int weaponNumber)
     {
-        changeWeaponType(3);
-        Debug.Log("Hello");
-    }
-
-
-    IEnumerator test()
-    {
-        Debug.Log("Changing Weapon 1");
-        changeWeaponType(1);
-        yield return new WaitForSeconds(10);
-        Debug.Log("Changing Weapon 2");
-        changeWeaponType(2);
-        yield return new WaitForSeconds(10);
-        Debug.Log("Changing Weapon 3");
-        changeWeaponType(3);
-    }
-
-    void changeWeaponType(int weaponNumber) {
         float targetPosition = 0.0f;
-        switch(weaponNumber){
+        switch (weaponNumber)
+        {
             case 1:
-                targetPosition = -42.0f;
+                targetPosition = 164.0f;
                 break;
 
             case 2:
-                targetPosition = 0.0f;
+                targetPosition = 122.0f;
                 break;
 
             case 3:
-                targetPosition = 42.0f;
+                targetPosition = 80.0f;
                 break;
         }
         Vector3 oldPosition = selectWeaponsPanel.rectTransform.position;
-        selectWeaponsPanel.rectTransform.position.Set(oldPosition.x, targetPosition, oldPosition.z);
+        selectWeaponsPanel.rectTransform.position = new Vector3(oldPosition.x, targetPosition, oldPosition.z);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            changeWeaponType(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            changeWeaponType(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            changeWeaponType(3);
+        }
     }
 
 }
