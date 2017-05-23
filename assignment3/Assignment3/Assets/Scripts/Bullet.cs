@@ -24,6 +24,6 @@ public class Bullet : MonoBehaviour {
     {
         collided = true;
         this.GetComponent<ParticleSystem>().Play();
-        this.GetComponent<MeshRenderer>().gameObject.SetActive(false);
+       // this.GetComponent<MeshRenderer>().gameObject.SetActive(false);
     } 
 }
