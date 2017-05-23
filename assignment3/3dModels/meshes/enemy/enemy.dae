@@ -4,8 +4,8 @@
         <contributor>
             <authoring_tool>SketchUp 17.2.2555</authoring_tool>
         </contributor>
-        <created>2017-05-23T16:14:35Z</created>
-        <modified>2017-05-23T16:14:35Z</modified>
+        <created>2017-05-23T16:18:26Z</created>
+        <modified>2017-05-23T16:18:26Z</modified>
         <unit meter="0.0254" name="inch" />
         <up_axis>Z_UP</up_axis>
     </asset>
@@ -168,7 +168,7 @@
                     </bind_material>
                 </instance_geometry>
                 <node name="skp_camera_Last_Saved_SketchUp_View">
-                    <matrix>0.3289892 0.02835761 0.9439078 378.7766 0.9443337 -0.009879291 -0.3288409 -112.0303 0 0.999549 -0.03002923 -2.736662 0 0 0 1</matrix>
+                    <matrix>0.7355494 -0.1060937 0.6691123 270.6933 0.6774711 0.115189 -0.726474 -266.9984 -1.387779e-17 0.9876617 0.1566026 70.34534 0 0 0 1</matrix>
                     <instance_camera url="#ID1" />
                 </node>
             </node>
@@ -798,10 +798,10 @@
     </library_effects>
     <library_images>
         <image id="ID16">
-            <init_from>machinegun/material_1.jpg</init_from>
+            <init_from>enemy/material_1.jpg</init_from>
         </image>
         <image id="ID67">
-            <init_from>machinegun/material_2.png</init_from>
+            <init_from>enemy/material_2.png</init_from>
         </image>
     </library_images>
     <scene>

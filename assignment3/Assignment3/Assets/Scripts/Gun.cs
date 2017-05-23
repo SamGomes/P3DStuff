@@ -16,9 +16,7 @@ public class Gun : MonoBehaviour {
     private float lastShot;
     void Start()
     {
-        this.picked = false;
         this.firing = false;
-
         bulletBuffer = new List<GameObject>();
     }
 
