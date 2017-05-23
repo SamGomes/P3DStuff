@@ -17,6 +17,7 @@ public class Player : MonoBehaviour {
         if (!inventory.Contains(obj))
         {
             inventory.Add(obj);
+            currentGunIndex = inventory.Count - 1;
             allGuns.Remove(obj);
             setCurrentGun(obj);
            
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour {
 
     private void setCurrentGun(GameObject gun)
     {
+        (gun.GetComponent<Gun>()).picked = true;
         foreach (GameObject invGun in inventory.ToArray())
         {
             if (!invGun.Equals(gun))
@@ -32,10 +34,11 @@ public class Player : MonoBehaviour {
                 invGun.SetActive(false);
             }
         }
-
-        gun.transform.position = transform.position + new Vector3(20, 0, 0);
-        gun.transform.parent = transform; //set gun as child of player
-        gun.transform.Rotate(0, 0, 0);
+        //gun.transform.rotation = transform.rotation;
+        gun.transform.rotation = transform.rotation;
+        gun.transform.Rotate(new Vector3(-90, 0, 90));
+        gun.transform.position = transform.position + transform.forward + transform.up*-2;
+        gun.transform.parent = transform; //set gun as child of player     
         gun.SetActive(true);
     }
 
@@ -46,21 +49,35 @@ public class Player : MonoBehaviour {
         inventory = new List<GameObject>();
         currentGunIndex = 0;
         allGuns.AddRange(GameObject.FindGameObjectsWithTag("gun"));
-        addToInventory(allGuns[0]);
     }
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(changeGunKeyName))
+        if (inventory.Count > 0)
         {
-            currentGunIndex = (currentGunIndex + 1) % inventory.Count;
-            setCurrentGun(inventory[currentGunIndex]);
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                currentGunIndex = (currentGunIndex + 1) % inventory.Count;
+                setCurrentGun(inventory[currentGunIndex]);
+            }
+
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                currentGunIndex = (currentGunIndex == 0 ? (inventory.Count - 1) : 0);
+                setCurrentGun(inventory[currentGunIndex]);
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                
+                (inventory[currentGunIndex].GetComponent<Gun>()).fire();
+            }
+
         }
 
-        foreach(GameObject gun in allGuns.ToArray()){
+        foreach (GameObject gun in allGuns.ToArray()){
             if( (gun.transform.position.x < transform.position.x + pickupMargin)&&
                 (gun.transform.position.z < transform.position.z + pickupMargin))
             {
-                Debug.Log("pick");
                 addToInventory(gun);
             }
         }
