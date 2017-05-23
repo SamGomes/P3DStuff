@@ -11,6 +11,14 @@ public class Player : MonoBehaviour {
     private List<GameObject> inventory;
     private List<GameObject> allGuns;
 
+    public List<GameObject> getInventory() {
+        return inventory;
+    }
+
+    public int getCurrentGun() {
+        return currentGunIndex;
+    }
+
 
     private void addToInventory(GameObject obj)
     {
