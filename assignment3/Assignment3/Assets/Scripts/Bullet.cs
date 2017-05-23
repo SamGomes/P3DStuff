@@ -6,14 +6,24 @@ public class Bullet : MonoBehaviour {
 
     public float bulletSpeed;
     public float maxBulletTime;
+    private bool collided;
 
     void Start()
     {
-        Destroy(gameObject, maxBulletTime);
+        collided = false;
+       // Destroy(gameObject, maxBulletTime);
     }
 
     void Update()
     {
-        transform.Translate(new Vector3(0, -bulletSpeed, 0) * Time.deltaTime);   
+        if(!collided)
+            transform.Translate(new Vector3(0, -bulletSpeed, 0) * Time.deltaTime);   
     }
+
+    void OnTriggerEnter()
+    {
+        collided = true;
+        this.GetComponent<ParticleSystem>().Play();
+        this.GetComponent<MeshRenderer>().gameObject.SetActive(false);
+    } 
 }

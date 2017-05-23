@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
+    <Compile Include="Assets\Enemy.cs" />
     <Compile Include="Assets\HeadsUp\RotatePlayerArrow.cs" />
     <Compile Include="Assets\HeadsUp\WeaponInfoGUI.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
