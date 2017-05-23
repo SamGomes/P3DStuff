@@ -2,21 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GunType {
+    Pistol, MachineGun, Bazooka
+}
+
 public class Gun : MonoBehaviour {
 
     public GameObject bulletMesh;
     public float firingDelay;
     public float bulletDamage;
     public bool picked;
-    public int numberOfBullets;
+    private int numberOfBullets;
+    public int maxNumberOfBullets;
+    public GunType gunType;
 
     private bool firing;
     private List<GameObject> bulletBuffer;
 
     private float lastShot;
+
+    public int getNumberOfBullets()
+    {
+        return numberOfBullets;
+    }
+
     void Start()
     {
+        numberOfBullets = maxNumberOfBullets;
+        this.picked = false;
         this.firing = false;
+
         bulletBuffer = new List<GameObject>();
     }
 
@@ -43,5 +58,6 @@ public class Gun : MonoBehaviour {
     {
         if(!picked)
             transform.Rotate(new Vector3(0, 0, 30) * Time.deltaTime);
+        
     }
 }
