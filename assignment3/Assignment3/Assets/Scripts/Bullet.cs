@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour {
     void Start()
     {
         collided = false;
-       // Destroy(gameObject, maxBulletTime);
+        Destroy(gameObject, maxBulletTime);
     }
 
     void Update()
