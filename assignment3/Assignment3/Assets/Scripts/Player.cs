@@ -84,6 +84,13 @@ public class Player : MonoBehaviour {
             if( !gun.GetComponent<Gun>().picked &&(gun.transform.position.x < transform.position.x + pickupMargin)&&
                 (gun.transform.position.z < transform.position.z + pickupMargin))
             {
+                foreach(GameObject invGun in inventory)
+                {
+                    if(gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
+                    {
+
+                    }
+                } 
                 addToInventory(gun);
             }
         }
