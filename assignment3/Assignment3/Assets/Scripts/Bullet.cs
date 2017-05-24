@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
 
     public float bulletSpeed;
+    public float massFactor;
     public float maxBulletTime;
     private bool collided;
 
@@ -16,14 +17,19 @@ public class Bullet : MonoBehaviour {
 
     void Update()
     {
-        if(!collided)
-            transform.Translate(new Vector3(0, -bulletSpeed, 0) * Time.deltaTime);   
+        if (!collided)
+        {
+            transform.Translate(new Vector3(0, -bulletSpeed, 0) * Time.deltaTime);
+            //hardcoded but better for collision detection
+            transform.Translate(new Vector3(0, -massFactor, 0) * Time.deltaTime, Space.World);
+        }
+
     }
 
     void OnTriggerEnter()
     {
         collided = true;
         this.GetComponent<ParticleSystem>().Play();
-       // this.GetComponent<MeshRenderer>().gameObject.SetActive(false);
+        //this.GetComponent<MeshRenderer>(). = false;
     } 
 }

@@ -5,9 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     public GameObject player;
+    public float firingDelay;
+    private float lastShot;
+    
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 
     }
 	
@@ -16,5 +19,10 @@ public class Enemy : MonoBehaviour {
         //Billboard effect always looks at the camera
         transform.LookAt(transform.position + player.transform.rotation * Vector3.forward,
             player.transform.rotation * Vector3.up);
+        if((Time.realtimeSinceStartup - lastShot) > firingDelay)
+        {
+            lastShot = Time.realtimeSinceStartup;
+            this.gameObject.GetComponentInChildren<Gun>().fire();
+        }
     }
 }
