@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
+        Debug.Log(col.gameObject);
         collided = true;
         this.GetComponent<ParticleSystem>().Play();
         if(col.gameObject.GetComponent<Player>())

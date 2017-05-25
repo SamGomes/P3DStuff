@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
-    private int life;
+    public int life;
 
     public string changeGunKeyName;
     public float pickupMargin;
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
         //gun.transform.rotation = transform.rotation;
         gun.transform.rotation = transform.rotation;
         gun.transform.Rotate(new Vector3(-90, 0, 90));
-        gun.transform.position = transform.position + transform.forward + transform.up*-2;
+        gun.transform.position = transform.position + transform.forward*4 + transform.up*-2;
         gun.transform.parent = transform; //set gun as child of player     
         gun.SetActive(true);
     }
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour {
 
         if (life <= 0)
         {
-            SceneManager.LoadScene("StartMenu");
+           //SceneManager.LoadScene("StartMenu");
         }
 
         if (inventory.Count > 0)

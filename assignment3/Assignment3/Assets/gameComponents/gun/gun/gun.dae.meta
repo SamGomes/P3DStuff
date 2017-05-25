@@ -1,57 +1,61 @@
 fileFormatVersion: 2
 guid: e0ce163efdaa9cc4f97da57ccddbdd73
-timeCreated: 1495136437
+timeCreated: 1495721626
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: ID22
-    100004: ID30
-    100006: ID38
-    100008: ID46
-    100010: ID54
-    100012: ID60
-    100014: ID68
-    100016: ID72
-    100018: ID76
-    100020: ID80
-    100022: ID84
-    100024: skp_camera_Last_Saved_SketchUp_View
+    100000: gun
+    100002: //RootNode
+    100004: ID24
+    100006: ID32
+    100008: ID40
+    100010: ID46
+    100012: ID54
+    100014: ID62
+    100016: ID70
+    100018: ID74
+    100020: ID78
+    100022: ID82
+    100024: ID86
+    100026: instance_0
+    100028: skp_camera_Last_Saved_SketchUp_View
     400000: //RootNode
-    400002: ID22
-    400004: ID30
-    400006: ID38
-    400008: ID46
-    400010: ID54
-    400012: ID60
-    400014: ID68
-    400016: ID72
-    400018: ID76
-    400020: ID80
-    400022: ID84
-    400024: skp_camera_Last_Saved_SketchUp_View
-    2300000: //RootNode
-    2300002: ID22
-    2300004: ID30
-    2300006: ID38
+    400002: gun
+    400004: ID24
+    400006: ID32
+    400008: ID40
+    400010: ID46
+    400012: ID54
+    400014: ID62
+    400016: ID70
+    400018: ID74
+    400020: ID78
+    400022: ID82
+    400024: ID86
+    400026: instance_0
+    400028: skp_camera_Last_Saved_SketchUp_View
+    2300000: gun
+    2300002: ID24
+    2300004: ID32
+    2300006: ID40
     2300008: ID46
     2300010: ID54
-    2300012: ID60
-    3300000: //RootNode
-    3300002: ID22
-    3300004: ID30
-    3300006: ID38
+    2300012: ID62
+    3300000: gun
+    3300002: ID24
+    3300004: ID32
+    3300006: ID40
     3300008: ID46
     3300010: ID54
-    3300012: ID60
-    4300000: SketchUp
-    4300002: ID22
-    4300004: ID30
-    4300006: ID38
+    3300012: ID62
+    4300000: gun
+    4300002: ID24
+    4300004: ID32
+    4300006: ID40
     4300008: ID46
     4300010: ID54
-    4300012: ID60
+    4300012: ID62
     9500000: //RootNode
   materials:
     importMaterials: 1
