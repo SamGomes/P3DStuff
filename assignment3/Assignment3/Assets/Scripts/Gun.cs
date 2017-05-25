@@ -6,7 +6,7 @@ public enum GunType {
     Pistol, MachineGun, Bazooka
 }
 
-public class Gun : MonoBehaviour {
+public class Gun : Pickable {
 
     public AudioClip gunSound;
     public AudioClip emptyGunSound;

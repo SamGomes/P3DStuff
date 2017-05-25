@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponInfoGUI : MonoBehaviour
+public class UI_Manager : MonoBehaviour
 {
     public Image selectWeaponsPanel = null;
     public Text pistolText = null;
@@ -12,6 +12,8 @@ public class WeaponInfoGUI : MonoBehaviour
     public Image pistolImage = null;
     public Image machineGunImage = null;
     public Image bazookaImage = null;
+    public Text armorText = null;
+    public Text lifeText = null;
     private Player player;
 
     void Start() {
@@ -56,6 +58,7 @@ public class WeaponInfoGUI : MonoBehaviour
 
     void OnGUI()
     {
+
         List<GameObject> inventory = player.getInventory();
 
 
@@ -90,6 +93,9 @@ public class WeaponInfoGUI : MonoBehaviour
 
             }
         }
+
+        armorText.text = "" + player.armor;
+        lifeText.text = "" +player.life;
 
     }
 
