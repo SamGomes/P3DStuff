@@ -12,6 +12,7 @@ public class Gun : MonoBehaviour {
     public float firingDelay;
     public bool picked;
     private int numberOfBullets;
+    public int numberOfPickupBullets;
     public int maxNumberOfBullets;
     public GunType gunType;
     
@@ -28,7 +29,7 @@ public class Gun : MonoBehaviour {
 
     void Start()
     {
-        addBullets(maxNumberOfBullets);
+        addBullets(numberOfPickupBullets);
         this.firing = false;
 
         bulletBuffer = new List<GameObject>();

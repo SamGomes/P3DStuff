@@ -85,10 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
+    <Compile Include="Assets\EndMenu\EndMenuManager.cs" />
     <Compile Include="Assets\HeadsUp\RotatePlayerArrow.cs" />
     <Compile Include="Assets\HeadsUp\WeaponInfoGUI.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\Gun.cs" />
     <Compile Include="Assets\Scripts\MoveScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />

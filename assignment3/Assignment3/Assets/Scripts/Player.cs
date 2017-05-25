@@ -102,7 +102,7 @@ public class Player : MonoBehaviour {
                 {
                     if(gun!=invGun && gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
                     {
-                        invGun.GetComponent<Gun>().addBullets(gun.GetComponent<Gun>().getNumberOfBullets());
+                        invGun.GetComponent<Gun>().addBullets(gun.GetComponent<Gun>().numberOfPickupBullets);
                         allGuns.Remove(gun);
                         Destroy(gun);
                         return;
