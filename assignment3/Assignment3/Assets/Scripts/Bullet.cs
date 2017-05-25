@@ -37,7 +37,7 @@ public class Bullet : MonoBehaviour {
         }
         if (col.gameObject.GetComponent<Enemy>())
         {
-           // col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage);
+            col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage);
         }
     } 
 }

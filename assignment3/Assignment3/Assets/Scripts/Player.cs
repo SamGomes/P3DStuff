@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
-    public int life;
+    private int life;
 
     public string changeGunKeyName;
     public float pickupMargin;
@@ -66,6 +67,12 @@ public class Player : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
+
+        if (life <= 0)
+        {
+            SceneManager.LoadScene("StartMenu");
+        }
+
         if (inventory.Count > 0)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -104,5 +111,7 @@ public class Player : MonoBehaviour {
                 addToInventory(gun);
             }
         }
+
+        
     }
 }
