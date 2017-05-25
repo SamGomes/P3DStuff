@@ -9,6 +9,7 @@ public class Portal : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        GameObject.Find("ScoreController").GetComponent<ScoreController>().score = Random.Range(0, 11000);
         SceneManager.LoadScene(levelName);
     }
 }

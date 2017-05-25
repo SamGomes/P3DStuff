@@ -139,6 +139,7 @@
     <Compile Include="Assets\Scripts\MoveScript.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Portal.cs" />
+    <Compile Include="Assets\Scripts\ScoreController.cs" />
     <Compile Include="Assets\StartMenu\StartingMenuManager.cs" />
   </ItemGroup>
   <ItemGroup>
