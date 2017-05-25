@@ -70,7 +70,7 @@ public class Player : MonoBehaviour {
 
         if (life <= 0)
         {
-           //SceneManager.LoadScene("StartMenu");
+           SceneManager.LoadScene("StartMenu");
         }
 
         if (inventory.Count > 0)

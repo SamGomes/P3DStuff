@@ -18,10 +18,7 @@ public class Gun : MonoBehaviour {
     public int maxNumberOfBullets;
     public GunType gunType;
 
-    public float x, y, z;
-
     private bool firing;
-    private List<GameObject> bulletBuffer;
 
     private float lastShot;
 
@@ -34,8 +31,6 @@ public class Gun : MonoBehaviour {
     {
         addBullets(numberOfPickupBullets);
         this.firing = false;
-
-        bulletBuffer = new List<GameObject>();
     }
 
     public void addBullets(int numberOfBullets)
@@ -66,11 +61,8 @@ public class Gun : MonoBehaviour {
         GameObject newBullet = Instantiate(bulletMesh);
 
         newBullet.transform.position = transform.position;
-        newBullet.transform.Translate(new Vector3(x,y,z));
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
- 
-        bulletBuffer.Add(newBullet);
         
         --numberOfBullets;
         
