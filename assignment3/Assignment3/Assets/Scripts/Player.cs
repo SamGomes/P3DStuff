@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour {
 
     public int life;
+    public int armor;
 
     public string changeGunKeyName;
     public float pickupMargin;
@@ -103,12 +104,15 @@ public class Player : MonoBehaviour {
                     if(gun!=invGun && gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
                     {
                         invGun.GetComponent<Gun>().addBullets(gun.GetComponent<Gun>().numberOfPickupBullets);
+                        inventory[currentGunIndex].GetComponent<Gun>().onPickup();
                         allGuns.Remove(gun);
                         Destroy(gun);
                         return;
                     }
                 } 
+
                 addToInventory(gun);
+                gun.GetComponent<Gun>().onPickup();
             }
         }
 
