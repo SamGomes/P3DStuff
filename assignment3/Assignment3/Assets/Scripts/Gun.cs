@@ -45,7 +45,14 @@ public class Gun : MonoBehaviour {
         GetComponent<AudioSource>().Play();
         lastShot = Time.realtimeSinceStartup;
         GameObject newBullet = Instantiate(bulletMesh);
-        newBullet.transform.position = transform.position + new Vector3(-6.0f,3.0f,0.0f);
+        if (transform.parent.gameObject.name == "FPSController")
+        {
+            newBullet.transform.position = transform.position + new Vector3(0.3f, 0, 0);
+        }
+        else
+        {
+            newBullet.transform.position = transform.position + new Vector3(-6.0f, 3.0f, 0.0f);
+        }
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
  
