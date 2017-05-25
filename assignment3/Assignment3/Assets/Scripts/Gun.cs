@@ -55,6 +55,7 @@ public class Gun : MonoBehaviour {
                 if((Time.realtimeSinceStartup - lastShot) >= firingDelay)
                 {
                     GetComponent<AudioSource>().Play();
+                    lastShot = Time.realtimeSinceStartup;
                 }
             }     
             return;
