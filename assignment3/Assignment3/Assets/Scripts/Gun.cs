@@ -8,6 +8,8 @@ public enum GunType {
 
 public class Gun : MonoBehaviour {
 
+    public AudioClip gunSound;
+    public AudioClip emptyGunSound;
     public GameObject bulletMesh;
     public float firingDelay;
     public bool picked;
@@ -15,7 +17,8 @@ public class Gun : MonoBehaviour {
     public int numberOfPickupBullets;
     public int maxNumberOfBullets;
     public GunType gunType;
-    
+
+    public float x, y, z;
 
     private bool firing;
     private List<GameObject> bulletBuffer;
@@ -43,21 +46,26 @@ public class Gun : MonoBehaviour {
 
     public void fire()
     {
+
         if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < firingDelay)
         {
+            if (this.numberOfBullets == 0)
+            {
+                GetComponent<AudioSource>().clip = emptyGunSound;
+                if((Time.realtimeSinceStartup - lastShot) >= firingDelay)
+                {
+                    GetComponent<AudioSource>().Play();
+                }
+            }     
             return;
         }
+        GetComponent<AudioSource>().clip = gunSound;
         GetComponent<AudioSource>().Play();
         lastShot = Time.realtimeSinceStartup;
         GameObject newBullet = Instantiate(bulletMesh);
-        if (transform.parent.gameObject.name == "FPSController")
-        {
-            newBullet.transform.position = transform.position + new Vector3(0.3f, 0, 0);
-        }
-        else
-        {
-            newBullet.transform.position = transform.position + new Vector3(-6.0f, 3.0f, 0.0f);
-        }
+
+        newBullet.transform.position = transform.position;
+        newBullet.transform.Translate(new Vector3(x,y,z));
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
  
