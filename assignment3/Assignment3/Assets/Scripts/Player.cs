@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    public int life;
+
     public string changeGunKeyName;
     public float pickupMargin;
 
@@ -19,6 +21,11 @@ public class Player : MonoBehaviour {
         return currentGunIndex;
     }
 
+
+    public void injure(int hp)
+    {
+        life -= hp;
+    }
 
     private void addToInventory(GameObject obj)
     {
@@ -51,7 +58,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-
+        life = 100;
         allGuns = new List<GameObject>();
         inventory = new List<GameObject>();
         currentGunIndex = 0;
@@ -86,9 +93,12 @@ public class Player : MonoBehaviour {
             {
                 foreach(GameObject invGun in inventory)
                 {
-                    if(gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
+                    if(gun!=invGun && gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
                     {
-
+                        invGun.GetComponent<Gun>().addBullets(gun.GetComponent<Gun>().getNumberOfBullets());
+                        allGuns.Remove(gun);
+                        Destroy(gun);
+                        return;
                     }
                 } 
                 addToInventory(gun);

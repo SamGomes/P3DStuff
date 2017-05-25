@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour {
     public float bulletSpeed;
     public float massFactor;
     public float maxBulletTime;
+    public int bulletDamage;
     private bool collided;
 
     void Start()
@@ -26,10 +27,17 @@ public class Bullet : MonoBehaviour {
 
     }
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider col)
     {
         collided = true;
         this.GetComponent<ParticleSystem>().Play();
-        //this.GetComponent<MeshRenderer>(). = false;
+        if(col.gameObject.GetComponent<Player>())
+        {
+            col.gameObject.GetComponent<Player>().injure(this.bulletDamage);
+        }
+        if (col.gameObject.GetComponent<Enemy>())
+        {
+           // col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage);
+        }
     } 
 }
