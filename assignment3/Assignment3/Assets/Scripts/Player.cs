@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
+
+    private int life;
 
     public string changeGunKeyName;
     public float pickupMargin;
@@ -19,6 +22,11 @@ public class Player : MonoBehaviour {
         return currentGunIndex;
     }
 
+
+    public void injure(int hp)
+    {
+        life -= hp;
+    }
 
     private void addToInventory(GameObject obj)
     {
@@ -51,7 +59,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-
+        life = 100;
         allGuns = new List<GameObject>();
         inventory = new List<GameObject>();
         currentGunIndex = 0;
@@ -59,6 +67,12 @@ public class Player : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
+
+        if (life <= 0)
+        {
+            SceneManager.LoadScene("StartMenu");
+        }
+
         if (inventory.Count > 0)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
@@ -86,13 +100,18 @@ public class Player : MonoBehaviour {
             {
                 foreach(GameObject invGun in inventory)
                 {
-                    if(gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
+                    if(gun!=invGun && gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
                     {
-
+                        invGun.GetComponent<Gun>().addBullets(gun.GetComponent<Gun>().getNumberOfBullets());
+                        allGuns.Remove(gun);
+                        Destroy(gun);
+                        return;
                     }
                 } 
                 addToInventory(gun);
             }
         }
+
+        
     }
 }
