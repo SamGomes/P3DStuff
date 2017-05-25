@@ -6,10 +6,15 @@ using UnityEngine.SceneManagement;
 public class Portal : MonoBehaviour {
 
     public string levelName;
+    public GameObject gameCharacter;
 
     void OnTriggerEnter(Collider other)
     {
-        GameObject.Find("ScoreController").GetComponent<ScoreController>().score = Random.Range(0, 11000);
-        SceneManager.LoadScene(levelName);
+
+        if (other.gameObject == gameCharacter)
+        {
+            GameObject.Find("ScoreController").GetComponent<ScoreController>().score = Random.Range(0, 11000);
+            SceneManager.LoadScene(levelName);
+        }
     }
 }
