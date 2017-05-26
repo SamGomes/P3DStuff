@@ -49,11 +49,12 @@ public class Enemy : MonoBehaviour
         myGun = GetComponentInChildren<Gun>().gameObject;
         player = GameObject.Find("FPSController");
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
-        fireMargin = 40.0f;
+        fireMargin = 200;
     }
 
     void Update()
     {
+
         //this cannot be done when the object is inactive
         if (life <= 0)
         {
@@ -91,19 +92,35 @@ public class Enemy : MonoBehaviour
                 GetComponent<Animator>().SetBool("normalKilled", true);
             scoreController.addScore("Kill", 250);
         }
+        //rotate enemy to always look at the player
         Vector3 lookAt = transform.position - player.transform.position;
         lookAt.y = 0;
-        transform.rotation = Quaternion.LookRotation(lookAt, new Vector3(0,1,0));
-        if ((player.transform.position - transform.position).magnitude < fireMargin)
+        transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up);
+        //myGun.transform.RotateAround(Vector3.forward, Vector3.Angle(Vector3.up, lookAt));
+        //myGun.transform.Rotate(new Vector3(-90, -90, 0));
+
+        Vector3 direction = player.transform.position - transform.position;
+        direction.y = 0;
+        Debug.DrawRay(transform.position, direction);
+        if (direction.magnitude < fireMargin)
         {
             if ((Time.realtimeSinceStartup - lastShot) > firingDelay)
             {
-                lastShot = Time.realtimeSinceStartup;
-                //avoid bugs
-                if (myGun != null)
+                
+                
+                RaycastHit objHit;
+                
+                if (Physics.Raycast(transform.position, direction.normalized, out objHit)
+                    && objHit.transform.gameObject == player)
                 {
-                    this.gameObject.GetComponentInChildren<Gun>().fire();
+                    lastShot = Time.realtimeSinceStartup;
+                    //avoid bugs
+                    if (myGun != null)
+                    {
+                        this.gameObject.GetComponentInChildren<Gun>().fire();
+                    }
                 }
+
             }
         }
 
