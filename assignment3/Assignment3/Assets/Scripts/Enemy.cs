@@ -91,8 +91,9 @@ public class Enemy : MonoBehaviour
                 GetComponent<Animator>().SetBool("normalKilled", true);
             scoreController.addScore("Kill", 250);
         }
-
-        transform.rotation = Quaternion.LookRotation(transform.position - player.transform.position, new Vector3(0,1,0));
+        Vector3 lookAt = transform.position - player.transform.position;
+        lookAt.y = 0;
+        transform.rotation = Quaternion.LookRotation(lookAt, new Vector3(0,1,0));
         if ((player.transform.position - transform.position).magnitude < fireMargin)
         {
             if ((Time.realtimeSinceStartup - lastShot) > firingDelay)
