@@ -31,7 +31,10 @@ public class Bullet : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
         collided = true;
-        this.GetComponent<ParticleSystem>().Play();
+        if (this.GetComponent<ParticleSystem>())
+        {
+            this.GetComponent<ParticleSystem>().Play();
+        }
         this.GetComponent<Collider>().enabled = false;
         this.GetComponent<MeshRenderer>().enabled = false;
         if (col.gameObject.GetComponent<Player>())
@@ -41,6 +44,10 @@ public class Bullet : MonoBehaviour {
         if (col.gameObject.GetComponent<Enemy>())
         {
             col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage, gunType, col);
+        }
+        if (col.gameObject.GetComponent<Box>())
+        {
+            col.gameObject.GetComponent<Box>().explode();
         }
     } 
 }

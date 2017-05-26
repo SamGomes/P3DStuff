@@ -106,10 +106,7 @@ public class Enemy : MonoBehaviour
         {
             if ((Time.realtimeSinceStartup - lastShot) > firingDelay)
             {
-                
-                
                 RaycastHit objHit;
-                
                 if (Physics.Raycast(transform.position, direction.normalized, out objHit)
                     && objHit.transform.gameObject == player)
                 {
