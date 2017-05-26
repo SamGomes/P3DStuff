@@ -45,5 +45,9 @@ public class Bullet : MonoBehaviour {
         {
             col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage, gunType, col);
         }
+        if (col.gameObject.GetComponent<Box>())
+        {
+            col.gameObject.GetComponent<Box>().explode();
+        }
     } 
 }

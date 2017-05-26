@@ -38,9 +38,7 @@ public class Gun : Pickable {
     }
 
     public void fire()
-    {
-
-        
+    { 
         if (numberOfPickupBullets > numberOfBullets)
         {
             numberOfPickupBullets = numberOfBullets;
