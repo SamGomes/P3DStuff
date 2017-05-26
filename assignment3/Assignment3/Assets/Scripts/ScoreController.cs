@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ScoreController : MonoBehaviour {
     public static ScoreController scoreController;
-
-    public int score = 123456;
+    private int score = 0;
+    private UI_Manager uiManager;
 
 	// Use this for initialization
 	void Awake () {
@@ -14,9 +14,25 @@ public class ScoreController : MonoBehaviour {
             scoreController = this;
         }
 	}
+
+    void Start() {
+        uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(string message, int value) {
+        score += value;
+
+        if (uiManager != null) {
+            uiManager.addScore(message, value, score);
+        }
+    }
 }

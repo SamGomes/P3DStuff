@@ -39,7 +39,10 @@ public class Gun : Pickable {
 
     public void fire()
     {
-
+        if(numberOfPickupBullets > numberOfBullets)
+        {
+            numberOfPickupBullets = numberOfBullets;
+        }
         if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < firingDelay)
         {
             if (this.numberOfBullets == 0)
@@ -61,6 +64,7 @@ public class Gun : Pickable {
         newBullet.transform.position = transform.position;
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
+        newBullet.GetComponent<Bullet>().gunType = this.gunType;
         
         --numberOfBullets;
         

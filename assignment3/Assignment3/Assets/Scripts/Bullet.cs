@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour {
     public float maxBulletTime;
     public int bulletDamage;
     private bool collided;
+    public GunType gunType;
 
     void Start()
     {
@@ -29,7 +30,6 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        Debug.Log(col.gameObject);
         collided = true;
         this.GetComponent<ParticleSystem>().Play();
         this.GetComponent<Collider>().enabled = false;
@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour {
         }
         if (col.gameObject.GetComponent<Enemy>())
         {
-            col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage);
+            col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage, gunType, col);
         }
     } 
 }

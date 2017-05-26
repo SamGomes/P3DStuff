@@ -13,7 +13,6 @@ public class Portal : MonoBehaviour {
 
         if (other.gameObject == gameCharacter)
         {
-            GameObject.Find("ScoreController").GetComponent<ScoreController>().score = Random.Range(0, 11000);
             SceneManager.LoadScene(levelName);
         }
     }

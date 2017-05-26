@@ -98,7 +98,7 @@ public class Player : MonoBehaviour {
  
 
 
-        foreach (GameObject gun in allGuns.ToArray()){       Debug.Log((allGuns[0].transform.position - transform.position).magnitude);
+        foreach (GameObject gun in allGuns.ToArray()){ 
             if( !gun.GetComponent<Gun>().picked &&((gun.transform.position - transform.position).magnitude < pickupMargin))
             {
                 foreach(GameObject invGun in inventory)
