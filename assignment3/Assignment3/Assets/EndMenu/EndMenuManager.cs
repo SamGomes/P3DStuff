@@ -51,7 +51,7 @@ public class EndMenuManager : MonoBehaviour
 
         GameObject scoreController = GameObject.Find("ScoreController");
         if (scoreController != null) {
-            currentScore = scoreController.GetComponent<ScoreController>().score;
+            currentScore = scoreController.GetComponent<ScoreController>().getScore();
         }
 
         loadHighscores();

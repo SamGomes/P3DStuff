@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+class ScoreEntry {
+    public string message;
+    public int  addedScore;
+    public int totalScore;
+}
+
 public class UI_Manager : MonoBehaviour
 {
     public Image selectWeaponsPanel = null;
@@ -16,6 +22,10 @@ public class UI_Manager : MonoBehaviour
     public Text lifeText = null;
     private Player player;
 
+    public Text scoreText;
+    private List<ScoreEntry> scores = new List<ScoreEntry>();
+    private ScorePanel scorePanel;
+
     void Start() {
         GameObject firstPersonCharacter = GameObject.Find("FirstPersonCharacter");
         this.player = firstPersonCharacter.GetComponent<Player>();
@@ -23,6 +33,36 @@ public class UI_Manager : MonoBehaviour
         pistolImage.enabled = false;
         machineGunImage.enabled = false;
         bazookaImage.enabled = false;
+
+        scorePanel = transform.Find("ScorePanel").GetComponent<ScorePanel>();
+    }
+
+    public void addScore(string message, int addedScore, int totalScore) {
+        scores.Add(new ScoreEntry() { message = message, addedScore = addedScore, totalScore = totalScore });
+
+        if (!scorePanel.GetComponent<Animator>().GetBool("newScore")) {
+            startScoreAnimation();
+        }
+
+    }
+
+    public void startScoreAnimation() {
+        if (scores.Count <= 0)
+            return;
+
+        scorePanel.newScoreText.text = scores[0].message;
+        scorePanel.newScoreScore.text = "+ " +scores[0].addedScore;
+        scorePanel.GetComponent<Animator>().SetBool("newScore", true);
+    }
+
+    public void endScoreAnimation() {
+        scoreText.text = "" +scores[0].totalScore;
+        scores.RemoveAt(0);
+
+        if (scores.Count > 0)
+            startScoreAnimation();
+        else
+            scorePanel.GetComponent<Animator>().SetBool("newScore", false);
     }
 
     void changeWeaponType(GunType weaponType)

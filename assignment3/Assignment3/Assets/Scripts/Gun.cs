@@ -63,6 +63,7 @@ public class Gun : Pickable {
         newBullet.transform.position = transform.position;
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
+        newBullet.GetComponent<Bullet>().gunType = this.gunType;
         
         --numberOfBullets;
         

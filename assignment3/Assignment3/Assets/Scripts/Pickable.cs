@@ -15,7 +15,6 @@ public class Pickable : MonoBehaviour {
 	}
 
     public void onPickup() {
-        Debug.Log(pickUpSound);
         GetComponent<AudioSource>().clip = pickUpSound;
         GetComponent<AudioSource>().Play();
     }
