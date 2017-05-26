@@ -32,7 +32,9 @@ public class Bullet : MonoBehaviour {
         Debug.Log(col.gameObject);
         collided = true;
         this.GetComponent<ParticleSystem>().Play();
-        if(col.gameObject.GetComponent<Player>())
+        this.GetComponent<Collider>().enabled = false;
+        this.GetComponent<MeshRenderer>().enabled = false;
+        if (col.gameObject.GetComponent<Player>())
         {
             col.gameObject.GetComponent<Player>().injure(this.bulletDamage);
         }

@@ -17,8 +17,7 @@ public class Gun : Pickable {
     public int numberOfPickupBullets;
     public int maxNumberOfBullets;
     public GunType gunType;
-
-    private bool firing;
+    
 
     private float lastShot;
 
@@ -30,7 +29,6 @@ public class Gun : Pickable {
     void Start()
     {
         addBullets(numberOfPickupBullets);
-        this.firing = false;
     }
 
     public void addBullets(int numberOfBullets)

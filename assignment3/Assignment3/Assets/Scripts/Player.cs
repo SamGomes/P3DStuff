@@ -95,9 +95,11 @@ public class Player : MonoBehaviour {
 
         }
 
-        foreach (GameObject gun in allGuns.ToArray()){
-            if( !gun.GetComponent<Gun>().picked &&(gun.transform.position.x < transform.position.x + pickupMargin)&&
-                (gun.transform.position.z < transform.position.z + pickupMargin))
+ 
+
+
+        foreach (GameObject gun in allGuns.ToArray()){       Debug.Log((allGuns[0].transform.position - transform.position).magnitude);
+            if( !gun.GetComponent<Gun>().picked &&((gun.transform.position - transform.position).magnitude < pickupMargin))
             {
                 foreach(GameObject invGun in inventory)
                 {
@@ -110,7 +112,6 @@ public class Player : MonoBehaviour {
                         return;
                     }
                 } 
-
                 addToInventory(gun);
                 gun.GetComponent<Gun>().onPickup();
             }
