@@ -17,8 +17,7 @@ public class Gun : Pickable {
     public int numberOfPickupBullets;
     public int maxNumberOfBullets;
     public GunType gunType;
-
-    private bool firing;
+    
 
     private float lastShot;
 
@@ -30,7 +29,6 @@ public class Gun : Pickable {
     void Start()
     {
         addBullets(numberOfPickupBullets);
-        this.firing = false;
     }
 
     public void addBullets(int numberOfBullets)
@@ -40,8 +38,11 @@ public class Gun : Pickable {
     }
 
     public void fire()
-    {
-
+    { 
+        if (numberOfPickupBullets > numberOfBullets)
+        {
+            numberOfPickupBullets = numberOfBullets;
+        }
         if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < firingDelay)
         {
             if (this.numberOfBullets == 0)
@@ -57,6 +58,10 @@ public class Gun : Pickable {
         }
         GetComponent<AudioSource>().clip = gunSound;
         GetComponent<AudioSource>().Play();
+        if (this.GetComponent<ParticleSystem>())
+        {
+            this.GetComponent<ParticleSystem>().Play();
+        }
         lastShot = Time.realtimeSinceStartup;
         GameObject newBullet = Instantiate(bulletMesh);
 

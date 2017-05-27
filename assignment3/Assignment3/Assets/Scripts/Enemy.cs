@@ -10,9 +10,13 @@ public class Enemy : MonoBehaviour
     private ScoreController scoreController;
 
     public GameObject player;
+    private GameObject myGun;
     public float firingDelay;
     private float lastShot;
     public int life;
+
+    public float fireMargin;
+
     private bool isDead = false;
     private GunType lastGunToShoot;
     private bool lastShotWasHeadShot;
@@ -42,8 +46,27 @@ public class Enemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        myGun = GetComponentInChildren<Gun>().gameObject;
         player = GameObject.Find("FPSController");
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
+        fireMargin = 200;
+    }
+
+    void Update()
+    {
+
+        //this cannot be done when the object is inactive
+        if (life <= 0)
+        {
+            //avoid bugs
+            if (myGun != null)
+            {
+                myGun.GetComponent<Gun>().picked = false;
+                myGun.gameObject.transform.parent = null;
+                myGun.transform.position = transform.position;
+                myGun.transform.Rotate(new Vector3(-90, 0, 0));
+            }
+        }
     }
 
     // Update is called once per frame
@@ -69,13 +92,33 @@ public class Enemy : MonoBehaviour
                 GetComponent<Animator>().SetBool("normalKilled", true);
             scoreController.addScore("Kill", 250);
         }
+        //rotate enemy to always look at the player
+        Vector3 lookAt = transform.position - player.transform.position;
+        lookAt.y = 0;
+        transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up);
+        //myGun.transform.RotateAround(Vector3.forward, Vector3.Angle(Vector3.up, lookAt));
+        //myGun.transform.Rotate(new Vector3(-90, -90, 0));
 
-
-        transform.rotation = Quaternion.LookRotation(transform.position - player.transform.position, Vector3.up);
-        if ((Time.realtimeSinceStartup - lastShot) > firingDelay)
+        Vector3 direction = player.transform.position - transform.position;
+        direction.y = 0;
+        Debug.DrawRay(transform.position, direction);
+        if (direction.magnitude < fireMargin)
         {
-            lastShot = Time.realtimeSinceStartup;
-            this.gameObject.GetComponentInChildren<Gun>().fire();
+            if ((Time.realtimeSinceStartup - lastShot) > firingDelay)
+            {
+                RaycastHit objHit;
+                if (Physics.Raycast(transform.position, direction.normalized, out objHit)
+                    && objHit.transform.gameObject == player)
+                {
+                    lastShot = Time.realtimeSinceStartup;
+                    //avoid bugs
+                    if (myGun != null)
+                    {
+                        myGun.GetComponentInChildren<Gun>().fire();
+                    }
+                }
+
+            }
         }
 
     }

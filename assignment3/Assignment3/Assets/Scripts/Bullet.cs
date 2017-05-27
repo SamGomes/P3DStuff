@@ -31,14 +31,23 @@ public class Bullet : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
         collided = true;
-        this.GetComponent<ParticleSystem>().Play();
-        if(col.gameObject.GetComponent<Player>())
+        if (this.GetComponent<ParticleSystem>())
+        {
+            this.GetComponent<ParticleSystem>().Play();
+        }
+        this.GetComponent<Collider>().enabled = false;
+        this.GetComponent<MeshRenderer>().enabled = false;
+        if (col.gameObject.GetComponent<Player>())
         {
             col.gameObject.GetComponent<Player>().injure(this.bulletDamage);
         }
         if (col.gameObject.GetComponent<Enemy>())
         {
             col.gameObject.GetComponent<Enemy>().injure(this.bulletDamage, gunType, col);
+        }
+        if (col.gameObject.GetComponent<Box>())
+        {
+            col.gameObject.GetComponent<Box>().explode();
         }
     } 
 }
