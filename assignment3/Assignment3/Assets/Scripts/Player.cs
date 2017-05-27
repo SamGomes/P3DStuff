@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using UnityStandardAssets.Characters.FirstPerson;
+
 public class Player : MonoBehaviour {
+    public AudioClip playerDeath;
 
     public int life;
     public int armor;
@@ -15,6 +18,8 @@ public class Player : MonoBehaviour {
     private List<GameObject> inventory;
     private List<GameObject> allGuns;
 
+    private bool isDead = false;
+
     public List<GameObject> getInventory() {
         return inventory;
     }
@@ -23,10 +28,23 @@ public class Player : MonoBehaviour {
         return currentGunIndex;
     }
 
+    public void endLevel()
+    {
+        SceneManager.LoadScene("EndMenu");
+    }
 
     public void injure(int hp)
     {
+        if (isDead)
+            return;
+
         life -= hp;
+
+        if (life > 0)
+        {
+            GetComponent<Animator>().SetTrigger("isHurt");
+            GetComponent<AudioSource>().Play();
+        }
     }
 
     private void addToInventory(GameObject obj)
@@ -50,11 +68,13 @@ public class Player : MonoBehaviour {
                 invGun.SetActive(false);
             }
         }
-        //gun.transform.rotation = transform.rotation;
-        gun.transform.rotation = transform.rotation;
+
+        Transform child = transform.GetChild(0);
+
+        gun.transform.rotation = child.rotation;
         gun.transform.Rotate(new Vector3(-90, 0, 90));
-        gun.transform.position = transform.position + transform.forward*4 + transform.up*-2;
-        gun.transform.parent = transform; //set gun as child of player     
+        gun.transform.position = child.position + child.forward*4 + child.up*-2;
+        gun.transform.parent = child; //set gun as child of player     
         gun.SetActive(true);
     }
 
@@ -68,10 +88,20 @@ public class Player : MonoBehaviour {
     }
 	// Update is called once per frame
 	void Update () {
+        if (isDead)
+            return;
 
         if (life <= 0)
         {
-           SceneManager.LoadScene("EndMenu");
+            isDead = true;
+            GetComponent<AudioSource>().clip = playerDeath;
+            GetComponent<AudioSource>().Play();
+            GetComponent<Animator>().SetTrigger("isDead");
+
+            //disable controls and physics
+            transform.parent.GetComponent<FirstPersonController>().enabled = false;
+            transform.parent.GetComponent<CharacterController>().enabled = false;
+            //transform.parent.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         if (inventory.Count > 0)

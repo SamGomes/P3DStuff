@@ -15,15 +15,6 @@ public class ScoreController : MonoBehaviour {
         }
 	}
 
-    void Start() {
-        uiManager = GameObject.Find("Canvas").GetComponent<UI_Manager>();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
     public int getScore() {
         return score;
     }
@@ -34,5 +25,9 @@ public class ScoreController : MonoBehaviour {
         if (uiManager != null) {
             uiManager.addScore(message, value, score);
         }
+    }
+
+    public void setUI_Manager(UI_Manager newManager) {
+        this.uiManager = newManager;
     }
 }

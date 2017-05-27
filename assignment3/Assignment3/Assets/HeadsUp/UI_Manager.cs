@@ -35,6 +35,7 @@ public class UI_Manager : MonoBehaviour
         bazookaImage.enabled = false;
 
         scorePanel = transform.Find("ScorePanel").GetComponent<ScorePanel>();
+        GameObject.Find("ScoreController").GetComponent<ScoreController>().setUI_Manager(this);
     }
 
     public void addScore(string message, int addedScore, int totalScore) {
@@ -53,6 +54,7 @@ public class UI_Manager : MonoBehaviour
         scorePanel.newScoreText.text = scores[0].message;
         scorePanel.newScoreScore.text = "+ " +scores[0].addedScore;
         scorePanel.GetComponent<Animator>().SetBool("newScore", true);
+        GetComponent<AudioSource>().Play();
     }
 
     public void endScoreAnimation() {
@@ -136,6 +138,21 @@ public class UI_Manager : MonoBehaviour
 
         armorText.text = "" + player.armor;
         lifeText.text = "" +player.life;
+
+
+        //quadractic interpolation
+        float x = (float)player.armor / 100.0f;
+        x = -(1 - x) * (1 - x) + 1;
+
+        lifeText.color = new Color(1 - x, 0f, 0f);
+
+        armorText.color = new Color(1 - x, 0f, 0f);
+
+        //quadractic interpolation
+        x = (float)player.life / 100.0f;
+        x = -(1 - x) * (1 - x) + 1;
+
+        lifeText.color = new Color(1 - x, 0f, 0f);
 
     }
 
