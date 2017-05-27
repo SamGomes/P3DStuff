@@ -35,7 +35,7 @@ public class UI_Manager : MonoBehaviour
         bazookaImage.enabled = false;
 
         scorePanel = transform.Find("ScorePanel").GetComponent<ScorePanel>();
-        GameObject.Find("ScoreController").GetComponent<ScoreController>().setUI_Manager(this);
+        GameObject.Find("ScoreController").GetComponent<ScoreController>().setUI_ManagerAndReset(this);
     }
 
     public void addScore(string message, int addedScore, int totalScore) {

@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
         if (collider == headCollider)
         {
 
-            life -= 4 * hp;
+            life -= headShotMultiplayer * hp;
             lastShotWasHeadShot = true;
         }
         else

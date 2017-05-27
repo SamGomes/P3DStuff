@@ -27,7 +27,8 @@ public class ScoreController : MonoBehaviour {
         }
     }
 
-    public void setUI_Manager(UI_Manager newManager) {
+    public void setUI_ManagerAndReset(UI_Manager newManager) {
         this.uiManager = newManager;
+        this.score = 0;
     }
 }
