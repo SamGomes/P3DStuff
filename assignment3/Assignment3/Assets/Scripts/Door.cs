@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Door : MonoBehaviour {
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider col)
     {
-       this.GetComponent<Animator>().SetBool("closeDoor", true);
+        if (col.gameObject.GetComponent<Player>())
+        {
+            this.GetComponent<Animator>().SetBool("closeDoor", true);
+        }
     }
 }

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MapEvents : MonoBehaviour {
     public GameObject player;
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider col)
     {
-        player.GetComponent<Player>().injure(100);
+        if (col.gameObject.GetComponent<Player>())
+        {
+            player.GetComponent<Player>().injure(100);
+        }
     }
 }
