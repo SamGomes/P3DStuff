@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
                     //avoid bugs
                     if (myGun != null)
                     {
-                        this.gameObject.GetComponentInChildren<Gun>().fire();
+                        myGun.GetComponentInChildren<Gun>().fire();
                     }
                 }
 
