@@ -12,7 +12,6 @@ public class Gun : Pickable {
     public AudioClip emptyGunSound;
     public GameObject bulletMesh;
     public float firingDelay;
-    public bool picked;
     private int numberOfBullets;
     public int numberOfPickupBullets;
     public int maxNumberOfBullets;
@@ -71,13 +70,6 @@ public class Gun : Pickable {
         newBullet.GetComponent<Bullet>().gunType = this.gunType;
         
         --numberOfBullets;
-        
-    }
-
-    void Update()
-    {
-        if(!picked)
-            transform.Rotate(new Vector3(0, 0, 30) * Time.deltaTime);
         
     }
 }

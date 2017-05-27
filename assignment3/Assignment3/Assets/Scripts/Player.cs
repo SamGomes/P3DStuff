@@ -5,7 +5,10 @@ using UnityEngine.SceneManagement;
 
 using UnityStandardAssets.Characters.FirstPerson;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
+    public AudioClip playerHit;
+    public AudioClip armorHit;
     public AudioClip playerDeath;
 
     public int life;
@@ -38,7 +41,19 @@ public class Player : MonoBehaviour {
         if (isDead)
             return;
 
-        life -= hp;
+        if (armor > 0)
+        {
+            GetComponent<AudioSource>().clip = armorHit;
+            armor -= hp;
+            if (armor < 0)
+                armor = 0;
+        }
+        else
+        {
+            GetComponent<AudioSource>().clip = playerHit;
+            life -= hp;
+        }
+
 
         if (life > 0)
         {
