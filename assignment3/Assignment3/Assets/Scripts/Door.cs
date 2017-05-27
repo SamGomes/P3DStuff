@@ -8,6 +8,7 @@ public class Door : MonoBehaviour {
     {
         if (col.gameObject.GetComponent<Player>())
         {
+            this.GetComponent<AudioSource>().Play();
             this.GetComponent<Animator>().SetBool("closeDoor", true);
         }
     }
