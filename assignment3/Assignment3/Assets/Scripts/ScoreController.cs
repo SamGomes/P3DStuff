@@ -23,7 +23,7 @@ public class ScoreController : MonoBehaviour {
         score += value;
 
         if (uiManager != null) {
-            uiManager.addScore(message, value, score);
+            uiManager.addScore(message, value);
         }
     }
 

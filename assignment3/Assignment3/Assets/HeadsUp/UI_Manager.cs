@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-class ScoreEntry {
+class ScoreEntry { 
     public string message;
     public int  addedScore;
-    public int totalScore;
 }
 
 public class UI_Manager : MonoBehaviour
@@ -25,6 +24,7 @@ public class UI_Manager : MonoBehaviour
     public Text scoreText;
     private List<ScoreEntry> scores = new List<ScoreEntry>();
     private ScorePanel scorePanel;
+    private int currentScore = 0;
 
     void Start() {
         GameObject firstPersonCharacter = GameObject.Find("FirstPersonCharacter");
@@ -38,8 +38,8 @@ public class UI_Manager : MonoBehaviour
         GameObject.Find("ScoreController").GetComponent<ScoreController>().setUI_ManagerAndReset(this);
     }
 
-    public void addScore(string message, int addedScore, int totalScore) {
-        scores.Add(new ScoreEntry() { message = message, addedScore = addedScore, totalScore = totalScore });
+    public void addScore(string message, int addedScore) {
+        scores.Add(new ScoreEntry() { message = message, addedScore = addedScore});
 
         if (!scorePanel.GetComponent<Animator>().GetBool("newScore")) {
             startScoreAnimation();
@@ -51,20 +51,40 @@ public class UI_Manager : MonoBehaviour
         if (scores.Count <= 0)
             return;
 
-        scorePanel.newScoreText.text = scores[0].message;
-        scorePanel.newScoreScore.text = "+ " +scores[0].addedScore;
+        int reps = 1;
+        ScoreEntry finalScore = scores[0];
+        if (scores.Count > 1) {
+            for (int i = 1; i < scores.Count; i++) {
+                if (finalScore.message.Equals(scores[i].message)) {
+                    reps++;
+                    finalScore.addedScore += scores[i].addedScore;
+                    scores.RemoveAt(i);
+                    i--;
+                }
+
+            }
+        }
+
+        if (reps > 1) {
+            finalScore.message = finalScore.message + " x" + reps;
+        }
+        
+        scorePanel.newScoreText.text = finalScore.message;
+        scorePanel.newScoreScore.text = "+ " + finalScore.addedScore;
         scorePanel.GetComponent<Animator>().SetBool("newScore", true);
         GetComponent<AudioSource>().Play();
     }
 
     public void endScoreAnimation() {
-        scoreText.text = "" +scores[0].totalScore;
+        currentScore += scores[0].addedScore;
+        scoreText.text = "" + currentScore;
         scores.RemoveAt(0);
 
         if (scores.Count > 0)
             startScoreAnimation();
-        else
+        else {
             scorePanel.GetComponent<Animator>().SetBool("newScore", false);
+        }
     }
 
     void changeWeaponType(GunType weaponType)
