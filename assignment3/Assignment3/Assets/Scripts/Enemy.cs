@@ -93,12 +93,10 @@ public class Enemy : MonoBehaviour
             scoreController.addScore("Kill", 250);
         }
         //rotate enemy to always look at the player
-        Vector3 lookAt = transform.position - player.transform.position;
+        Vector3 lookAt = transform.position - player.transform.GetChild(0).position;
         lookAt.y = 0;
         transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up);
-        //myGun.transform.RotateAround(Vector3.forward, Vector3.Angle(Vector3.up, lookAt));
-        //myGun.transform.Rotate(new Vector3(-90, -90, 0));
-
+       
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0;
         Debug.DrawRay(transform.position, direction);
