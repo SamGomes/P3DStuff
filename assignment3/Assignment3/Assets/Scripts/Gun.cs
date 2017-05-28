@@ -37,6 +37,11 @@ public class Gun : Pickable {
     }
 
     public void fire()
+    {
+        fire(null);
+    }
+
+    public void fire(Collider ignorable)
     { 
         if (numberOfPickupBullets > numberOfBullets)
         {
@@ -68,6 +73,7 @@ public class Gun : Pickable {
         newBullet.transform.rotation = transform.rotation;
         newBullet.transform.Rotate(new Vector3(0, 0, -90));
         newBullet.GetComponent<Bullet>().gunType = this.gunType;
+        newBullet.GetComponent<Bullet>().ignorable = ignorable;
         
         --numberOfBullets;
         

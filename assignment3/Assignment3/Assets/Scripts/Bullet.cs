@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour {
     private bool collided;
     public GunType gunType;
 
+    public Collider ignorable;
+
     void Start()
     {
         collided = false;
@@ -30,6 +32,9 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
+        if (col == ignorable)
+            return;
+
         collided = true;
         if (this.GetComponent<ParticleSystem>())
         {

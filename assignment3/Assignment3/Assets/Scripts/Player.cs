@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
 
             if (Input.GetMouseButton(0))
             {
-                (inventory[currentGunIndex].GetComponent<Gun>()).fire();
+                (inventory[currentGunIndex].GetComponent<Gun>()).fire(GetComponent<CapsuleCollider>());
             }
 
         }
