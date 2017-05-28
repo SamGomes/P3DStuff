@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Door : MonoBehaviour {
     public bool isSecretDoor;
-    private bool isClosed = false;
+    public bool isClosed = false;
 
     void OnTriggerEnter(Collider col)
     {

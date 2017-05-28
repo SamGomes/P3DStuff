@@ -10,18 +10,22 @@ public class Bullet : MonoBehaviour {
     public int bulletDamage;
     private bool collided;
     public GunType gunType;
+    public bool destroyable; 
 
     public Collider ignorable;
 
     void Start()
     {
         collided = false;
-        Destroy(gameObject, maxBulletTime);
+        if (destroyable)
+        {
+            Destroy(gameObject, maxBulletTime);
+        }
     }
 
     void Update()
     {
-        if (!collided)
+        if (destroyable && !collided)
         {
             transform.Translate(new Vector3(0, -bulletSpeed, 0) * Time.deltaTime);
             //hardcoded but better for collision detection
@@ -40,8 +44,11 @@ public class Bullet : MonoBehaviour {
         {
             this.GetComponent<ParticleSystem>().Play();
         }
-        this.GetComponent<Collider>().enabled = false;
-        this.GetComponent<MeshRenderer>().enabled = false;
+        if (destroyable)
+        {
+            this.GetComponent<Collider>().enabled = false;
+            this.GetComponent<MeshRenderer>().enabled = false;
+        }
         if (col.gameObject.GetComponent<Player>())
         {
             col.gameObject.GetComponent<Player>().injure(this.bulletDamage);

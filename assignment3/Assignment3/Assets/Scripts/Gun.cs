@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum GunType {
-    Pistol, MachineGun, Bazooka
+    Pistol, MachineGun, Bazooka, Laser
 }
 
 public class Gun : Pickable {
@@ -16,6 +16,7 @@ public class Gun : Pickable {
     public int numberOfPickupBullets;
     public int maxNumberOfBullets;
     public GunType gunType;
+    public bool isABulletsWeapon;
     
 
     private float lastShot;
@@ -27,7 +28,10 @@ public class Gun : Pickable {
 
     void Start()
     {
-        addBullets(numberOfPickupBullets);
+        if (isABulletsWeapon)
+        {
+            addBullets(numberOfPickupBullets);
+        }
     }
 
     public void addBullets(int numberOfBullets)
@@ -42,40 +46,51 @@ public class Gun : Pickable {
     }
 
     public void fire(Collider ignorable)
-    { 
-        if (numberOfPickupBullets > numberOfBullets)
+    {
+        if (this.isABulletsWeapon) //non-bullet weapons like a laser dont have bullets to fire
         {
-            numberOfPickupBullets = numberOfBullets;
-        }
-        if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < firingDelay)
-        {
-            if (this.numberOfBullets == 0)
+            if (numberOfPickupBullets > numberOfBullets)
             {
-                GetComponent<AudioSource>().clip = emptyGunSound;
-                if((Time.realtimeSinceStartup - lastShot) >= firingDelay)
+                numberOfPickupBullets = numberOfBullets;
+            }
+            if (this.numberOfBullets == 0 || (Time.realtimeSinceStartup - lastShot) < firingDelay)
+            {
+                if (this.numberOfBullets == 0)
                 {
-                    GetComponent<AudioSource>().Play();
-                    lastShot = Time.realtimeSinceStartup;
+                    if (this.GetComponent<AudioSource>())
+                    {
+                        GetComponent<AudioSource>().clip = emptyGunSound;
+                        if ((Time.realtimeSinceStartup - lastShot) >= firingDelay)
+                        {
+                            GetComponent<AudioSource>().Play();
+                            lastShot = Time.realtimeSinceStartup;
+                        }
+                    }
                 }
-            }     
-            return;
-        }
-        GetComponent<AudioSource>().clip = gunSound;
-        GetComponent<AudioSource>().Play();
-        if (this.GetComponent<ParticleSystem>())
-        {
-            this.GetComponent<ParticleSystem>().Play();
-        }
-        lastShot = Time.realtimeSinceStartup;
-        GameObject newBullet = Instantiate(bulletMesh);
+                return;
+            }
+            if (this.GetComponent<AudioSource>())
+            {
+                GetComponent<AudioSource>().clip = gunSound;
+                GetComponent<AudioSource>().Play();
+            }
 
-        newBullet.transform.position = transform.position;
-        newBullet.transform.rotation = transform.rotation;
-        newBullet.transform.Rotate(new Vector3(0, 0, -90));
-        newBullet.GetComponent<Bullet>().gunType = this.gunType;
-        newBullet.GetComponent<Bullet>().ignorable = ignorable;
-        
-        --numberOfBullets;
-        
+            if (this.GetComponent<ParticleSystem>())
+            {
+                this.GetComponent<ParticleSystem>().Play();
+            }
+            lastShot = Time.realtimeSinceStartup;
+            GameObject newBullet = Instantiate(bulletMesh);
+
+            newBullet.transform.position = transform.position;
+            newBullet.transform.rotation = transform.rotation;
+            newBullet.transform.Rotate(new Vector3(0, 0, -90));
+            newBullet.GetComponent<Bullet>().gunType = this.gunType;
+            newBullet.GetComponent<Bullet>().ignorable = ignorable;
+
+
+            --numberOfBullets;
+        }
+
     }
 }

@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour
 
     public float fireMargin;
 
+    public bool isStatic;
+
     protected bool isDead = false;
     private GunType lastGunToShoot;
     private bool lastShotWasHeadShot;
@@ -92,11 +94,14 @@ public class Enemy : MonoBehaviour
                 GetComponent<Animator>().SetBool("normalKilled", true);
             scoreController.addScore("Kill", 250);
         }
-        //rotate enemy to always look at the player
-        Vector3 lookAt = transform.position - player.transform.GetChild(0).position;
-        lookAt.y = 0;
-        transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up);
-       
+
+        if (isStatic)
+        {
+            //rotate enemy to always look at the player
+            Vector3 lookAt = transform.position - player.transform.GetChild(0).position;
+            lookAt.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up); 
+        }
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0;
         Debug.DrawRay(transform.position, direction);
