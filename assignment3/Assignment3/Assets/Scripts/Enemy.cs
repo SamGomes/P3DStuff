@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     public float fireMargin;
 
-    private bool isDead = false;
+    protected bool isDead = false;
     private GunType lastGunToShoot;
     private bool lastShotWasHeadShot;
     private int headShotMultiplayer = 4;
