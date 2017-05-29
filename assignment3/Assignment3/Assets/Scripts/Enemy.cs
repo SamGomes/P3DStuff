@@ -27,9 +27,10 @@ public class Enemy : MonoBehaviour
 
     public void injure(int hp, GunType gun, Collider collider)
     {
+        if (isDead)
+            return;
         if (collider == headCollider)
         {
-
             life -= headShotMultiplayer * hp;
             lastShotWasHeadShot = true;
         }
@@ -38,45 +39,10 @@ public class Enemy : MonoBehaviour
             lastShotWasHeadShot = false;
             life -= hp;
         }
-
         lastGunToShoot = gun;
-
         if (life > 0)
             GetComponent<Animator>().SetTrigger("gotHurt");
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        myGun = GetComponentInChildren<Gun>().gameObject;
-        player = GameObject.Find("FPSController");
-        scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
-        fireMargin = 200;
-    }
-
-    void Update()
-    {
-        //this cannot be done when the object is inactive
-        if (life <= 0)
-        {
-            //avoid bugs
-            if (myGun != null)
-            {
-                myGun.GetComponent<Gun>().picked = false;
-                myGun.gameObject.transform.parent = null;
-                myGun.transform.position = transform.position;
-                myGun.transform.Rotate(new Vector3(-90, 0, 0));
-            }
-        }
-    }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
-        if (this.isDead)
-            return;
-
-        if (life <= 0)
+        else
         {
             this.isDead = true;
             if (lastGunToShoot == GunType.Bazooka)
@@ -92,14 +58,31 @@ public class Enemy : MonoBehaviour
             else
                 GetComponent<Animator>().SetBool("normalKilled", true);
             scoreController.addScore("Kill", 250);
+
         }
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        myGun = GetComponentInChildren<Gun>().gameObject;
+        player = GameObject.Find("FPSController");
+        scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
+        fireMargin = 200;
+    }
+    
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        if (this.isDead)
+            return;
 
         if (isStatic)
         {
             //rotate enemy to always look at the player
             Vector3 lookAt = transform.position - player.transform.GetChild(0).position;
             lookAt.y = 0;
-            transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up); 
+            transform.rotation = Quaternion.LookRotation(lookAt, Vector3.up);
         }
         Vector3 direction = player.transform.position - transform.position;
         direction.y = 0;
@@ -127,6 +110,14 @@ public class Enemy : MonoBehaviour
 
     public void endDeathAnimation()
     {
+        //let go the gun
+        if (myGun != null)
+        {
+            myGun.GetComponent<Gun>().picked = false;
+            myGun.gameObject.transform.parent = null;
+            myGun.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+            myGun.transform.eulerAngles = new Vector3(-90, 0, 0);
+        }
         this.gameObject.SetActive(false);
     }
 
