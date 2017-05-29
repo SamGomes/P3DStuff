@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapEvents : MonoBehaviour {
+    public AudioClip playthroughMusicLoop;
     public AudioClip bossMusicStart;
     public AudioClip bossMusicLoop;
     public GameObject player;
@@ -13,6 +14,9 @@ public class MapEvents : MonoBehaviour {
 
     void Start()
     {
+        AudioSource player = GetComponent<AudioSource>();
+        player.clip = playthroughMusicLoop;
+        player.Play();
         spawnedBoss = false;
     }
 
@@ -46,4 +50,6 @@ public class MapEvents : MonoBehaviour {
         player.loop = true;
         player.Play();
     }
+
+    
 }
