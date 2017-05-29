@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapEvents : MonoBehaviour {
+    public AudioClip bossMusicStart;
+    public AudioClip bossMusicLoop;
     public GameObject player;
     public GameObject bossPrefab;
     public bool spawnedBoss;
@@ -21,6 +23,7 @@ public class MapEvents : MonoBehaviour {
             GameObject boss = Instantiate(bossPrefab);
             boss.transform.parent = GameObject.Find("LevelBoss").transform;
             spawnedBoss = true;
+            StartCoroutine(playComplexMusic(bossMusicStart, bossMusicLoop));
         }
     }
 
@@ -30,5 +33,17 @@ public class MapEvents : MonoBehaviour {
         {
             player.GetComponent<Player>().injure(100);
         }
+    }
+
+    private IEnumerator playComplexMusic(AudioClip start, AudioClip loop) {
+        AudioSource player = GetComponent<AudioSource>();
+
+        player.loop = false;
+        player.clip = start;
+        player.Play();
+        yield return new WaitForSeconds(player.clip.length);
+        player.clip = loop;
+        player.loop = true;
+        player.Play();
     }
 }
