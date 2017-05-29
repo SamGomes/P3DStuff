@@ -19,6 +19,13 @@ public class Boss : MonoBehaviour {
     }
 
     void afterBossDeath() {
+        ScoreController scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
+        scoreController.addScore("Boss Kill", 10000);
+        int timeBonus = 240 - (int)Time.timeSinceLevelLoad;
+        if (timeBonus > 0) {
+            scoreController.addScore("Time x" + timeBonus, timeBonus * 250);
+        }
 
+        StartCoroutine(GameObject.Find("room").GetComponent<MapEvents>().endGame());
     }
 }

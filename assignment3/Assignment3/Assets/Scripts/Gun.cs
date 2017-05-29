@@ -93,4 +93,8 @@ public class Gun : Pickable {
         }
 
     }
+
+    public bool hasFullClip() {
+        return numberOfBullets == maxNumberOfBullets;
+    }
 }

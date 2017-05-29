@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MapEvents : MonoBehaviour {
+public class MapEvents : MonoBehaviour
+{
     public AudioClip playthroughMusicStart;
     public AudioClip playthroughMusicLoop;
     public AudioClip bossMusicStart;
     public AudioClip bossMusicLoop;
+    public AudioClip victorySong;
     public GameObject player;
     public GameObject bossPrefab;
     public bool spawnedBoss;
@@ -40,7 +43,6 @@ public class MapEvents : MonoBehaviour {
 
     private IEnumerator playComplexMusic(AudioClip start, AudioClip loop) {
         AudioSource player = GetComponent<AudioSource>();
-
         player.loop = false;
         player.clip = start;
         player.Play();
@@ -48,6 +50,15 @@ public class MapEvents : MonoBehaviour {
         player.clip = loop;
         player.loop = true;
         player.Play();
+    }
+
+    public IEnumerator endGame() {
+        AudioSource player = GetComponent<AudioSource>();
+        player.loop = false;
+        player.clip = victorySong;
+        player.Play();
+        yield return new WaitForSeconds(player.clip.length+1.0f);
+        SceneManager.LoadScene("EndMenu");
     }
 
     
