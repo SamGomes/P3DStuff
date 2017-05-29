@@ -108,6 +108,7 @@ public class Player : MonoBehaviour
 
         if (life <= 0)
         {
+            life = 0;
             isDead = true;
             GetComponent<AudioSource>().clip = playerDeath;
             GetComponent<AudioSource>().Play();
@@ -150,6 +151,8 @@ public class Player : MonoBehaviour
                 {
                     if(gun!=invGun && gun.GetComponent<Gun>().gunType == invGun.GetComponent<Gun>().gunType)
                     {
+                        if (invGun.GetComponent<Gun>().hasFullClip())
+                            return;
                         invGun.GetComponent<Gun>().addBullets(gun.GetComponent<Gun>().numberOfPickupBullets);
                         inventory[currentGunIndex].GetComponent<Gun>().onPickup();
                         allGuns.Remove(gun);
