@@ -56,7 +56,6 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-
         //this cannot be done when the object is inactive
         if (life <= 0)
         {

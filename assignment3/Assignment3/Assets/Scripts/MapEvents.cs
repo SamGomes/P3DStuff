@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapEvents : MonoBehaviour {
+    public AudioClip playthroughMusicStart;
     public AudioClip playthroughMusicLoop;
     public AudioClip bossMusicStart;
     public AudioClip bossMusicLoop;
@@ -14,9 +15,7 @@ public class MapEvents : MonoBehaviour {
 
     void Start()
     {
-        AudioSource player = GetComponent<AudioSource>();
-        player.clip = playthroughMusicLoop;
-        player.Play();
+        StartCoroutine(playComplexMusic(playthroughMusicStart, playthroughMusicLoop));
         spawnedBoss = false;
     }
 
