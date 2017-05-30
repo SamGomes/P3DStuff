@@ -20,12 +20,12 @@ public class Enemy : MonoBehaviour
     public bool isStatic;
 
     protected bool isDead = false;
-    private GunType lastGunToShoot;
-    private bool lastShotWasHeadShot;
+    protected GunType lastGunToShoot;
+    protected bool lastShotWasHeadShot;
     private int headShotMultiplayer = 4;
     public Collider headCollider;
 
-    public void injure(int hp, GunType gun, Collider collider)
+    public virtual void injure(int hp, GunType gun, Collider collider)
     {
         if (isDead)
             return;
@@ -62,13 +62,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    void Start()
+    protected void initialize()
     {
         myGun = GetComponentInChildren<Gun>().gameObject;
         player = GameObject.Find("FPSController");
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
         fireMargin = 200;
+    }
+
+    // Use this for initialization
+    void Start()
+    {
+        initialize();
     }
     
     // Update is called once per frame

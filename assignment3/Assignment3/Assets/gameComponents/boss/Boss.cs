@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : MonoBehaviour {
+public class Boss : Enemy {
 
 	// Use this for initialization
 	void Start () {
+        base.initialize();
         playSound();
 	}
 	
@@ -18,7 +19,7 @@ public class Boss : MonoBehaviour {
         GetComponent<AudioSource>().Play();
     }
 
-    void afterBossDeath() {
+    public void afterBossDeath() {
         ScoreController scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
         scoreController.addScore("Boss Kill", 10000);
         int timeBonus = 240 - (int)Time.timeSinceLevelLoad;
@@ -27,5 +28,22 @@ public class Boss : MonoBehaviour {
         }
 
         StartCoroutine(GameObject.Find("room").GetComponent<MapEvents>().endGame());
+    }
+
+    override public void injure(int hp, GunType gun, Collider collider)
+    {
+        if (this.isDead)
+            return;
+
+        base.injure(hp, gun, collider);
+
+        if (isDead)
+        {
+            transform.GetChild(0).GetComponent<Animator>().SetBool("isDead", true);
+            GetComponent<Animator>().speed = 0;
+        }
+        else {
+            transform.GetChild(0).GetComponent<Animator>().SetTrigger("isHurt");
+        }
     }
 }

@@ -149,6 +149,7 @@
     <Compile Include="Assets\Scripts\ScoreController.cs" />
     <Compile Include="Assets\StartMenu\StartingMenuManager.cs" />
     <Compile Include="Assets\gameComponents\boss\Boss.cs" />
+    <Compile Include="Assets\gameComponents\boss\BossSub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />

@@ -57,7 +57,7 @@ public class MapEvents : MonoBehaviour
         player.loop = false;
         player.clip = victorySong;
         player.Play();
-        yield return new WaitForSeconds(player.clip.length+1.0f);
+        yield return new WaitForSeconds(player.clip.length+0.5f);
         SceneManager.LoadScene("EndMenu");
     }
 
