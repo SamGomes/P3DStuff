@@ -47,6 +47,10 @@ public class Bullet : MonoBehaviour {
         if (destroyable)
         {
             this.GetComponent<Collider>().enabled = false;
+            foreach (MeshRenderer childMesh in this.GetComponentsInChildren<MeshRenderer>())
+            {
+                childMesh.enabled = false;
+            }
             this.GetComponent<MeshRenderer>().enabled = false;
         }
         if (col.gameObject.GetComponent<Player>())
