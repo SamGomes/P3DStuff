@@ -3,7 +3,7 @@
 //////////////////////////////////////
 
 
-Para correr o jogo pode ser utilizado o executável na pasta /
+Para correr o jogo pode ser utilizado o executável Doom.exe
 Ou pode ser corrido o StartMenu scene no unity, desenvolvido na versão 5.6.1.
 
 Os controlos do player são:
