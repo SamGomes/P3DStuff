@@ -1,0 +1,56 @@
+Initialize engine version: 5.6.1f1 (2860b30f0b54)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 970M (ID=0x13d8)
+    Vendor:   NVIDIA
+    VRAM:     2976 MB
+    Driver:   22.21.13.8233
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.179 seconds
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\Documents\Dropbox\2 semestre\Programação 3D\GitHub\assignment3\Assignment3\Binary\Doom^2_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.073169 ms
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 25a8 -> priority: 1 
+  Thread -> id: 1244 -> priority: 1 
+  Thread -> id: 1818 -> priority: 1 
+  Thread -> id: 730 -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.477104 ms
+
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 9942.
+Total: 7.324154 ms (FindLiveObjects: 0.771827 ms CreateObjectMapping: 0.238938 ms MarkObjects: 6.254269 ms  DeleteObjects: 0.057887 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 12.076233 ms
+
+Unloading 370 unused Assets to reduce memory usage. Loaded Objects now: 655.
+Total: 4.752900 ms (FindLiveObjects: 0.121111 ms CreateObjectMapping: 0.056655 ms MarkObjects: 0.588724 ms  DeleteObjects: 3.985588 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.360141 ms
+
+Unloading 26 unused Assets to reduce memory usage. Loaded Objects now: 9977.
+Total: 9.672893 ms (FindLiveObjects: 0.671654 ms CreateObjectMapping: 0.173250 ms MarkObjects: 6.076092 ms  DeleteObjects: 2.750663 ms)
+
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.182926 ms
+
+Unloading 371 unused Assets to reduce memory usage. Loaded Objects now: 655.
+Total: 4.818998 ms (FindLiveObjects: 0.361281 ms CreateObjectMapping: 0.055834 ms MarkObjects: 0.425737 ms  DeleteObjects: 3.976145 ms)
+
