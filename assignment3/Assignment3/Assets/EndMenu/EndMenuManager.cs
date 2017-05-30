@@ -32,7 +32,7 @@ public class EndMenuManager : MonoBehaviour
     private List<HighscoreData> highscoresList = new List<HighscoreData>() {
         new HighscoreData() {name =  "André Fonseca", score = 79500},
         new HighscoreData() {name =  "Samuel Gomes", score = 77000},
-        new HighscoreData() {name =  "Tiago Almeida", score = 69500},
+        new HighscoreData() {name =  "Tiago Almeida", score = 75500},
         new HighscoreData() {name =  "Daniel Rodrigues", score = 24500},
         new HighscoreData() {name =  "Miguel Duarte", score = 21250},
     };
