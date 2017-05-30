@@ -30,11 +30,11 @@ public class EndMenuManager : MonoBehaviour
     private int maxHighscorers = 5;
 
     private List<HighscoreData> highscoresList = new List<HighscoreData>() {
-        new HighscoreData() {name =  "André Fonseca", score = 10000},
-        new HighscoreData() {name =  "Tiago Almeida", score = 9500},
-        new HighscoreData() {name =  "Samuel Gomes", score = 8200},
-        new HighscoreData() {name =  "Daniel Rodrigues", score = 6900},
-        new HighscoreData() {name =  "Miguel Duarte", score = 5800},
+        new HighscoreData() {name =  "André Fonseca", score = 79500},
+        new HighscoreData() {name =  "Samuel Gomes", score = 77000},
+        new HighscoreData() {name =  "Tiago Almeida", score = 69500},
+        new HighscoreData() {name =  "Daniel Rodrigues", score = 24500},
+        new HighscoreData() {name =  "Miguel Duarte", score = 21250},
     };
 
     public List<Text> nameHighScore;

@@ -83,7 +83,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\EndMenu\EndMenuManager.cs" />
     <Compile Include="Assets\HeadsUp\RotatePlayerArrow.cs" />
     <Compile Include="Assets\HeadsUp\ScorePanel.cs" />
@@ -148,6 +147,7 @@
     <Compile Include="Assets\Scripts\ScoreController.cs" />
     <Compile Include="Assets\StartMenu\StartingMenuManager.cs" />
     <Compile Include="Assets\gameComponents\boss\Boss.cs" />
+    <Compile Include="Assets\gameComponents\boss\BossSub.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\PostProcessing\Editor Resources\Monitors\HistogramCompute.compute" />
