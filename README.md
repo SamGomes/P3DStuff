@@ -9,4 +9,4 @@ It includes two main projects:
 Work by:
   - André Fonseca - [@affonseca](https://github.com/affonseca)
   - Samuel Gomes - [@SamGomes](https://github.com/SamGomes)
-  - Tiago Almeida - [@tiagoalmeidagit](https://github.com/tiagoalmeidagit)
+  - Tiago Almeida - [@tiagoalmeida92](https://github.com/tiagoalmeida92)
